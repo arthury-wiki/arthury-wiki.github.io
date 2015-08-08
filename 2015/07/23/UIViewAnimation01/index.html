@@ -1,0 +1,373 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>UIViewAnimation01 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="自带动画效果的属性变化
+center
+bounds
+frames
+alpaha
+transform
+contentStretch
+backgroundColor
+以上的属性的改变会自带动画效果，只需要指定好动画执行的时间便可
+myView.center = CGPoint(x:60, y:60)
+UIView.animateWithDuration(1.2, animations: {
+    s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UIViewAnimation01">
+<meta property="og:url" content="http://yoursite.com/2015/07/23/UIViewAnimation01/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="自带动画效果的属性变化
+center
+bounds
+frames
+alpaha
+transform
+contentStretch
+backgroundColor
+以上的属性的改变会自带动画效果，只需要指定好动画执行的时间便可
+myView.center = CGPoint(x:60, y:60)
+UIView.animateWithDuration(1.2, animations: {
+    s">
+<meta property="og:image" content="https://dn-arthury.qbox.me/transition.gif">
+<meta property="og:image" content="https://dn-arthury.qbox.me/transitionsb.png">
+<meta property="og:image" content="https://dn-arthury.qbox.me/hit.png">
+<meta property="og:updated_time" content="2015-07-30T07:58:07.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="UIViewAnimation01">
+<meta name="twitter:description" content="自带动画效果的属性变化
+center
+bounds
+frames
+alpaha
+transform
+contentStretch
+backgroundColor
+以上的属性的改变会自带动画效果，只需要指定好动画执行的时间便可
+myView.center = CGPoint(x:60, y:60)
+UIView.animateWithDuration(1.2, animations: {
+    s">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="http://www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="yoursite.com">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-UIViewAnimation01" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/07/23/UIViewAnimation01/" class="article-date">
+  <time datetime="2015-07-22T17:48:50.000Z" itemprop="datePublished">2015-07-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      UIViewAnimation01
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="自带动画效果的属性变化">自带动画效果的属性变化</h2><ul>
+<li>center</li>
+<li>bounds</li>
+<li>frames</li>
+<li>alpaha</li>
+<li>transform</li>
+<li>contentStretch</li>
+<li>backgroundColor</li>
+<li><p>以上的属性的改变会自带动画效果，只需要指定好动画执行的时间便可</p>
+<pre><code>myView.center = CGPoint(x:<span class="number">60</span>, y:<span class="number">60</span>)
+UIView.animateWithDuration(<span class="number">1.2</span>, animations: {
+    self.animateView.center = CGPointMake(<span class="number">300</span>, <span class="number">300</span>)
+})
+</code></pre></li>
+<li><p>非常简单的动画效果</p>
+</li>
+<li>上面那个api是选项最少的一个，更多选项版的可以直接根据代码提示去选择</li>
+</ul>
+<h2 id="Spring效果">Spring效果</h2><ul>
+<li><p>提供的api</p>
+<pre><code>UIView.animateWithDuration(<span class="string">_:</span>,<span class="string">delay:</span>,<span class="string">usingSpringWithDamping:</span>,<span class="string">initialSpringVelocity:</span>,<span class="string">options:</span>,<span class="string">animations:</span>,<span class="string">completion:</span>)
+</code></pre></li>
+<li><p>实现的是一个阻尼效应(弹簧效果)，上下波动，最后消失，对应到移动的动画效果就是不停震动，最后稳定；对应到透明度变化的动画效果就是不停地闪烁，最后稳定，其中<code>usingSpringWithDampin</code>就是类似阻尼系数(0~1)，数字越小阻尼效果越明显，回弹越剧烈，幅度越大</p>
+</li>
+<li><code>optional</code>参数不能为nil，否则会报错</li>
+<li><code>initialSpringVelocity</code>表示初始速度，数值越大一开始移动越快，初始速度取值较高而时间取值短时，会出现反弹效果</li>
+</ul>
+<h2 id="Transitions">Transitions</h2><ul>
+<li>与transition有关的属性与方法<ul>
+<li>hidden</li>
+<li>addSubview()</li>
+<li>removeFromParent()</li>
+</ul>
+</li>
+<li><p>相关的api</p>
+<pre><code>UIView.transitionFromView(<span class="string">_:</span>,<span class="string">toView:</span>,<span class="string">duration:</span>,<span class="string">options:</span>,<span class="string">completion:</span>)
+UIView.transitionWithView(<span class="string">_:</span>,<span class="string">duration:</span>,<span class="string">options:</span>,<span class="string">animations:</span>,completion)
+</code></pre></li>
+<li>效果就是让视图出现的时候带有一些转场动画</li>
+<li><img src="https://dn-arthury.qbox.me/transition.gif" alt="效果图"></li>
+<li>在storyboard中点简单配置</li>
+<li><p><img src="https://dn-arthury.qbox.me/transitionsb.png" alt="效果图"></p>
+<pre><code><span class="annotation">@IBAction</span> func loginBtnClick(<span class="string">sender:</span> AnyObject) {
+UIView.animateWithDuration(<span class="number">1.0</span>, <span class="string">delay:</span> <span class="number">0.0</span>, <span class="string">usingSpringWithDamping:</span> <span class="number">1.0</span>, <span class="string">initialSpringVelocity:</span> <span class="number">0.0</span>, <span class="string">options:</span> UIViewAnimationOptions.CurveEaseIn, <span class="string">animations:</span> {
+    self.loginBtn.center.y += <span class="number">50</span>
+    }, <span class="string">completion:</span> { _ <span class="keyword">in</span>
+    UIView.animateWithDuration(<span class="number">2.0</span>, <span class="string">delay:</span> <span class="number">0.0</span>, <span class="string">usingSpringWithDamping:</span> <span class="number">0.5</span>, <span class="string">initialSpringVelocity:</span> <span class="number">0.0</span>, <span class="string">options:</span> UIViewAnimationOptions.CurveEaseIn, <span class="string">animations:</span> {
+    self.loginBtn.bounds.origin = CGPointMake(self.loginBtn.bounds.origin.x - <span class="number">20.0</span>, self.loginBtn.bounds.origin.y)
+    self.loginBtn.titleLabel?.alpha = 0.8
+    }, completion: { _ <span class="keyword">in</span>
+    <span class="comment">//这里就是一个翻页的动画</span>
+    UIView.transitionWithView(self.banner, <span class="string">duration:</span> <span class="number">2.0</span>, <span class="string">options:</span> UIViewAnimationOptions.TransitionCurlDown, <span class="string">animations:</span> {
+    <span class="comment">//只需要修改一下隐藏属性便可</span>
+    <span class="comment">//既然有更好的设计，那么糟糕的设计直接就可以抛弃了</span>
+    self.banner.hidden = <span class="literal">false</span>
+    }, <span class="string">completion:</span> nil)
+})})}
+</code></pre></li>
+</ul>
+<h2 id="小技巧">小技巧</h2><ul>
+<li>通过代码提示来看所选的属性是什么类型的，就可以指导后面要给属性赋值的时候写什么了<br><img src="https://dn-arthury.qbox.me/hit.png" alt="效果图"></li>
+<li>如果指导都有哪几个选项，不如这个例子里我知道有center这个选项，我就可以直接使用<code>alertLabel.textAlignment = .Center</code>的形式来进行的</li>
+</ul>
+<h2 id="关于debug的一点小感悟">关于debug的一点小感悟</h2><ul>
+<li>越往底层去学，就可以从越是底层的角度去debug，去发现bug；如果我知道SB背后的实现原理以及代码的调用流程，那么出现奇怪的现象我就可以直接去看执行过程中调用了什么不合适的代码，然后去分析原因，而不是通过注释代码与log来退成bug会出错的可能性</li>
+</ul>
+<h2 id="给StroyBoard中的元素指定父视图">给StroyBoard中的元素指定父视图</h2><ul>
+<li>在StroyBoard里面的控件没有选择自己父视图的选项，这个可以通过代码来实现，也就是在获得控件的Outlet引用之后，可以在代码里面使用<code>addSubview</code>的方法来实现指定父视图</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/07/23/UIViewAnimation01/" data-id="cid2n7hu50010m2gzfcsl7jbe" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/07/23/Event-Loop/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          Event Loop
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/05/16/leiningen/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">leiningen</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">標簽</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">標簽雲</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/RegularExpressions/" style="font-size: 10px;">RegularExpressions</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">歸檔</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/08/08/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/08/正则表达式01/">正则表达式01</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/07/Pyspider02/">Pyspider02--html和css选择器</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/07/SICP01/">SICP01</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/04/Core-Graphics-Tutorial-Part-2-Gradients-and-Contexts/">Core Graphics Tutorial Part 2: Gradients and Contexts翻译</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情鏈接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="http://arthury.cn" target="_blank">博客</a>
+          </li>
+        
+          <li>
+            <a href="http://www.jianshu.com/users/b3b9816e50f6/latest_articles" target="_blank">简书</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>window._bd_share_config={"common":{},"share":{"bdCustomStyle":"/css/bdshare.css"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+</div>
+</body>
+</html>

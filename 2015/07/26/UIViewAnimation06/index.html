@@ -1,0 +1,362 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>UIViewAnimation06 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="CADisplayLink
+功能：可以提供一个周期性的调用我们赋给它的selector的机制，这一点类似于NSTimer
+使用方法：
+- (void)startDisplayLink
+{
+    //添加要触发的操作
+    self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(handleD">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UIViewAnimation06">
+<meta property="og:url" content="http://yoursite.com/2015/07/26/UIViewAnimation06/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="CADisplayLink
+功能：可以提供一个周期性的调用我们赋给它的selector的机制，这一点类似于NSTimer
+使用方法：
+- (void)startDisplayLink
+{
+    //添加要触发的操作
+    self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(handleD">
+<meta property="og:updated_time" content="2015-07-26T15:25:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="UIViewAnimation06">
+<meta name="twitter:description" content="CADisplayLink
+功能：可以提供一个周期性的调用我们赋给它的selector的机制，这一点类似于NSTimer
+使用方法：
+- (void)startDisplayLink
+{
+    //添加要触发的操作
+    self.displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(handleD">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="http://www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="yoursite.com">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-UIViewAnimation06" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/07/26/UIViewAnimation06/" class="article-date">
+  <time datetime="2015-07-26T07:26:14.000Z" itemprop="datePublished">2015-07-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      UIViewAnimation06
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="CADisplayLink">CADisplayLink</h2><ul>
+<li>功能：可以提供一个周期性的调用我们赋给它的selector的机制，这一点类似于NSTimer</li>
+<li><p>使用方法：</p>
+<pre><code>- (<span class="keyword">void</span>)startDisplayLink
+{
+    <span class="comment">//添加要触发的操作</span>
+    <span class="keyword">self</span><span class="variable">.displayLink</span> = [<span class="built_in">CADisplayLink</span> displayLinkWithTarget:<span class="keyword">self</span> selector:<span class="keyword">@selector</span>(handleDisplayLink:)];
+    [<span class="keyword">self</span><span class="variable">.displayLink</span> addToRunLoop:[<span class="built_in">NSRunloop</span> currentLoop] forMode:<span class="built_in">NSDefaultRunLoopMode</span>];
+}
+
+- (<span class="keyword">void</span>)handleDisplayLink:(<span class="built_in">CADisplayLink</span> *)displayLink
+{
+    <span class="comment">//这里是要循环执行的操作</span>
+}
+
+- (<span class="keyword">void</span>)stopDisplayLink{
+    <span class="comment">//停止runloop调用</span>
+    [<span class="keyword">self</span><span class="variable">.displayLink</span> invalidate];
+    <span class="keyword">self</span><span class="variable">.displayLink</span> = <span class="literal">nil</span>;
+}
+</code></pre></li>
+</ul>
+<h2 id="特性，与NSTimer进行比较">特性，与NSTimer进行比较</h2><ul>
+<li>原理<ul>
+<li>CADisplayLink是一个能让我们以和屏幕刷新率同步的频率将特定的内容画到屏幕上的定时器类别。CADisplayLink以特定模式注册到runloop后，每当屏幕显示内容刷新结束的时候，runloop就会向CADisplayLink指定的target发送一次指定的selector消息，CADisplayLink类对应的selector就会被调用一次</li>
+<li>NSTimer以指定的模式注册到runloop后，每当设定的周期时间到达后，runloop会向指定的target发送一次指定的selector消息</li>
+</ul>
+</li>
+<li>周期设置方式不同<ul>
+<li>iOS设备的屏幕刷新频率(FPS)是60Hz，因此CADisplayLink的selector默认调用周期是每秒60次，这个周期可以通过frameInterval属性设置，CADisplayLink的selector每秒带调用次数=60/frameInterval；比如当frameInerval设为2，每秒调用就变成30次；因此，CADisplayLink周期的设置方式略显不便</li>
+<li>NSTimer的selector调用周期可以在初始化时直接设定，相对而言会更加的灵活</li>
+</ul>
+</li>
+<li>精确度<ul>
+<li>iOS设备的屏幕刷新频率是固定的，CADisplayLink在正常情况下会在每次刷新结束被调用，经确定相当高</li>
+<li>NSTimer的精确度就显得低了点，比如NSTimer的触发时间到的时候，runloop如果鳗鱼别的调用，触发时间就会推迟到下一个runloop周期；在OSX10.9之后为了尽量避免在NSTimer触发调用时间到了而去中断当前处理的任务，NSTimer新增了tolerance属性，让用户能够设置可以容忍的触发的时间范围</li>
+</ul>
+</li>
+<li>使用场合<ul>
+<li>CADisplayLink使用场合相对专一，适合做界面的不停重绘，比如视频播放的时候需要不停的获取下一帧用于界面渲染或者是用来处理动画效果的渲染</li>
+<li>NStimer的使用范围比较广泛，各种需要单次或者循环定时处理的任务都可以使用</li>
+</ul>
+</li>
+</ul>
+<h2 id="重要的属性">重要的属性</h2><ul>
+<li>frameInterval<ul>
+<li>可读可写的NSInteger整型，标识间隔多少帧调用一次selector方法，默认值是1，即每帧都调用一次；官方文档强调，当该值被设定小于1时，结果是不可预知的</li>
+</ul>
+</li>
+<li>duration<ul>
+<li>只读的CFTimeInterval值，表示两次屏幕刷新之间的时间间隔。需要注意的是，该属性在target的selector被首次调用以后才会被赋值；selector的调用时间计算范式是：时间=duration x frameInerval</li>
+<li>现存的iOS设备屏幕的FPS都是60Hz，但是尽管如此，无法保证之后苹果不会改变FPS，所以出于安全考虑，可以根据duration判断屏幕的FPS再去使用CADisplayLink</li>
+</ul>
+</li>
+<li>timestamp<ul>
+<li>只读的CFRimeInterval值，表示屏幕显示的上一帧的时间戳，这个属性通常被target用来计算下一帧中应该显示的内容    </li>
+<li>虽然名为时间戳，但是和常见的unix时间戳差异很大，事实上这是CoreAnimation使用的时间格式。每个CALayer都有一个本地时间</li>
+</ul>
+</li>
+</ul>
+<h2 id="注意">注意</h2><ul>
+<li>iOS并不能保证能以每秒60次的频率调用回调方法，这个取决于以下两个要素<ul>
+<li>CPU的空闲程序<ul>
+<li>如果CPU忙于其他计算，就没法保证以60HZ执行屏幕的绘制动作，结果导致跳过若干次调用回调方法的机会，跳过的次数取决于CPU的忙碌程度</li>
+</ul>
+</li>
+<li>执行回调方法所用的时间<ul>
+<li>如果执行回调时间大于重绘每帧的间隔时间，就会导致跳过若干次回调调用时间，这取决于回调执行时间的长短</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="动画的实质">动画的实质</h2><ul>
+<li>其实就是设置终点坐标与起点坐标，然后在移动的期间加上动画效果，效果无非就是平滑的移动，或者是弹簧效果之类，然后配上动画的时间就搞定了；加上控制点是为了让控制点动画可以更加的可定制化，其实要做出果冻的效果非常的简单，只要做出合适的控制点，然后在各个控制带来移向终点的时候加上弹簧效果便可</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/07/26/UIViewAnimation06/" data-id="cid2n7htv000qm2gz03ra1zee" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/07/27/如何通过快速反馈-Immediate-feedback-来提供自己的工作效率/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          如何通过快速反馈(Immediate feedback)来提供自己的工作效率?
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/07/25/UIViewAnimation05/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">UIViewAnimation05</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">標簽</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">標簽雲</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/RegularExpressions/" style="font-size: 10px;">RegularExpressions</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">歸檔</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/08/08/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/08/正则表达式01/">正则表达式01</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/07/Pyspider02/">Pyspider02--html和css选择器</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/07/SICP01/">SICP01</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/04/Core-Graphics-Tutorial-Part-2-Gradients-and-Contexts/">Core Graphics Tutorial Part 2: Gradients and Contexts翻译</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情鏈接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="http://arthury.cn" target="_blank">博客</a>
+          </li>
+        
+          <li>
+            <a href="http://www.jianshu.com/users/b3b9816e50f6/latest_articles" target="_blank">简书</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>window._bd_share_config={"common":{},"share":{"bdCustomStyle":"/css/bdshare.css"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+</div>
+</body>
+</html>

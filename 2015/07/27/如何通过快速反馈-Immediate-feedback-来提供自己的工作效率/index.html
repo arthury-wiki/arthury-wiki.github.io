@@ -1,0 +1,314 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>如何通过快速反馈(Immediate feedback)来提供自己的工作效率? | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言
+一般我们在开发iOS程序的时候，常见的流程就是写代码，点击运行，然后看模拟器的结果，看输出，然后回头继续改代码，然后再修改代码，继续输出，不断的循环；这样的工作流效率其实非常的低下，首先如果是在做绘图有关的代码操作，通过这样不断运行模拟器来观察界面的变化是一件非常低效的，因为无法直观的看出界面的变化，特别是在做一些细节修改的时候；另外如果自己在做的项目体积很大，那么build的时间会很长，有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何通过快速反馈(Immediate feedback)来提供自己的工作效率?">
+<meta property="og:url" content="http://yoursite.com/2015/07/27/如何通过快速反馈-Immediate-feedback-来提供自己的工作效率/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言
+一般我们在开发iOS程序的时候，常见的流程就是写代码，点击运行，然后看模拟器的结果，看输出，然后回头继续改代码，然后再修改代码，继续输出，不断的循环；这样的工作流效率其实非常的低下，首先如果是在做绘图有关的代码操作，通过这样不断运行模拟器来观察界面的变化是一件非常低效的，因为无法直观的看出界面的变化，特别是在做一些细节修改的时候；另外如果自己在做的项目体积很大，那么build的时间会很长，有">
+<meta property="og:updated_time" content="2015-07-30T07:28:15.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何通过快速反馈(Immediate feedback)来提供自己的工作效率?">
+<meta name="twitter:description" content="前言
+一般我们在开发iOS程序的时候，常见的流程就是写代码，点击运行，然后看模拟器的结果，看输出，然后回头继续改代码，然后再修改代码，继续输出，不断的循环；这样的工作流效率其实非常的低下，首先如果是在做绘图有关的代码操作，通过这样不断运行模拟器来观察界面的变化是一件非常低效的，因为无法直观的看出界面的变化，特别是在做一些细节修改的时候；另外如果自己在做的项目体积很大，那么build的时间会很长，有">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="http://www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="yoursite.com">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-如何通过快速反馈-Immediate-feedback-来提供自己的工作效率" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/07/27/如何通过快速反馈-Immediate-feedback-来提供自己的工作效率/" class="article-date">
+  <time datetime="2015-07-27T05:39:36.000Z" itemprop="datePublished">2015-07-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      如何通过快速反馈(Immediate feedback)来提供自己的工作效率?
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言">前言</h2><ul>
+<li>一般我们在开发iOS程序的时候，常见的流程就是写代码，点击运行，然后看模拟器的结果，看输出，然后回头继续改代码，然后再修改代码，继续输出，不断的循环；这样的工作流效率其实非常的低下，首先如果是在做绘图有关的代码操作，通过这样不断运行模拟器来观察界面的变化是一件非常低效的，因为无法直观的看出界面的变化，特别是在做一些细节修改的时候；另外如果自己在做的项目体积很大，那么build的时间会很长，有时候甚至长达18秒之久，而且偶尔模拟器还会抽风一下，又不得不去重启，简直蛋疼无比，这样每天浪费在等待的时间上是非常可怕的</li>
+<li>那么问题来了？What the hell can I do with this fucking stuff?</li>
+</ul>
+<h2 id="Swift党Playground能够拯救你？">Swift党Playground能够拯救你？</h2><ul>
+<li>继Xcode5之后Apple加入了一个Playground技术，能够通过快速编译让你实时看到直接写出来的代码的效果，但是这些只能够实现观察UI的变化，与交互相关的操作并不能实现，这是Playground一个非常大的缺陷，因此Playground远远不能够满足我的需求</li>
+</ul>
+<h2 id="KZPlayground_–_逆天的Objective-C–Playground">KZPlayground – 逆天的Objective-C–Playground</h2><ul>
+<li>这是由大牛Krzysztof Zabłocki开发的Objective-C Playground，解决了Swift Playground的大部分痛点</li>
+<li>动态代码注入技术解析，KZPlayground使用的技术栈</li>
+<li>功能使用分析</li>
+<li>各个场景的结果分析<ul>
+<li>可以用来学习一些绘图的api，或者是一些动画效果的api，结合dash文档一个一个api试过去实在是太美妙了</li>
+<li>可以用来辅助自己的原型设计，通过修改属性可以实时显示出效果，这样可以辅助自己直观的进行调整设计，甚至还可以用来辅助自己去设计一些游戏场景，通过实时修改比例，颜色，尺寸等等的属性来进行分析设计</li>
+<li>可以内置到每次自己app的开发当中去，作为测试UI的工具，可以自己提供测试各种类型场景的debug模板，放到snippets当中，需要测试对应版本UI的时候拖出来测试便可，测试结束之后可以将界面切换到SB，然后进行部署</li>
+<li>KZPlayground本身是设计跑在iPad上面的，所以TimeLine上点击显示详细信息内容的功能是不能在iPhone上用的，否则会crash，另外TimeLine是可以关闭的，直接搜索到源码部分进行修改便可</li>
+<li>另外可以将会KZPlayground打包成Framework，这样每次使用的时候直接拖进去就可以了，不需要再去安装Pod那么麻烦，而且可以屏蔽掉那一大堆的警告</li>
+</ul>
+</li>
+<li>代码分析</li>
+<li>对StroyBoard的支持还不够完善</li>
+<li>我可以修改这个项目，使得这个项目支持StoryBoard，组织的形式采用原生的形式，就是自己在模拟器运行的时候注入代码，就相当于是在Injection4Ccode的基础上加上对StoryBoard的支持，可以通过采取各种技术来避免在修改的过程crash掉</li>
+<li>dyci与injection4Xcode的坑太多了，dyci虽然支持StroyBoard修改的实时反馈，但是一旦关联到代码上面就会马上crash，并且代码注入要生效就需要将相应的代码放到dyci指定的方法当中才可以，好在KZPlayground已经填好了大部分坑，KZPlayground保持了底层dyci的接口，这样在测试过程中自己也可以使用，非常的方便</li>
+<li>关于不支持swift这一点，我觉得这个其实很好解决，为什么呢？我可以通过文件的桥接来解决这个问题，对于一些内部细节属性，我可以先把接口开放出来，用来debug，等到debug结束之后，再去隐藏这些接口便可</li>
+<li>代码注入的本质，这种东西最多用来测试修改一些修过，直观的进行一些布局工作，不可能是把类似声明一个对象，添加导入一个类这样的逻辑也用CJ来进行，这是做不到，先这样的操作就必须要重启整个模拟器来刷新了，当然可以自己可以进行一些修改使得能够支持这些功能，KZPlayground就做到了</li>
+<li>调整元素的位置，这个实际上使用StroyBoard就可以看了，但是使用CJ可以做到更加的直观，StroyBoard能够预览到的最多只有位置的变化，至于更多的细节就看不出来了，不如颜色的变化，layer的变化等等都是看不出来的，但是使用CJ可以做到预览这一切的效果</li>
+<li>在Xib当中使用CJ来布局会出现非常诡异的情况，不知道用StroyBoard布局是否会这样</li>
+<li>一个项目里面可以有很多个playground，但是active的playground只能有一个，可以通过实现不同的active来进行切换</li>
+</ul>
+<h2 id="Debug_Playground_Template">Debug Playground Template</h2><ul>
+<li>通过学习别人制作的框架来做出一些基础的调试模板来辅助自己今后制作各种各样的效果</li>
+<li>贝塞尔曲线测试</li>
+<li>动画效果测试</li>
+<li>。。。</li>
+</ul>
+<h2 id="技巧">技巧</h2><ul>
+<li>iPhone模拟器的window选项卡中有一个选项叫做Stayfront，可以把模拟器固定在窗口上面，原来一直都不知道有这么好用的功能</li>
+<li>Xcode有一个插件可以快速在代码内部搜索代码文件，非常的方便</li>
+<li>现在开始要整理收藏自己经常使用的一些代码片段了，提高自己的开发效率</li>
+</ul>
+<h2 id="XTrace">XTrace</h2><ul>
+<li>可以追踪代码的调用流程</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/07/27/如何通过快速反馈-Immediate-feedback-来提供自己的工作效率/" data-id="cid2n7ht2000am2gzki8almsv" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Efficiency/">Efficiency</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/07/27/Scheme学习日志01/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">下一篇</strong>
+      <div class="article-nav-title">
+        
+          Scheme学习日志01
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/07/26/UIViewAnimation06/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">UIViewAnimation06</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">標簽</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">標簽雲</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/RegularExpressions/" style="font-size: 10px;">RegularExpressions</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">歸檔</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/08/08/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/08/正则表达式01/">正则表达式01</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/07/Pyspider02/">Pyspider02--html和css选择器</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/07/SICP01/">SICP01</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/04/Core-Graphics-Tutorial-Part-2-Gradients-and-Contexts/">Core Graphics Tutorial Part 2: Gradients and Contexts翻译</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情鏈接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="http://arthury.cn" target="_blank">博客</a>
+          </li>
+        
+          <li>
+            <a href="http://www.jianshu.com/users/b3b9816e50f6/latest_articles" target="_blank">简书</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>window._bd_share_config={"common":{},"share":{"bdCustomStyle":"/css/bdshare.css"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+</div>
+</body>
+</html>
