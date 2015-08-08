@@ -35,7 +35,8 @@ CoreGraphics
 <meta property="og:image" content="http://cdn2.raywenderlich.com/wp-content/uploads/2014/12/2-AnalysisGraphView.png">
 <meta property="og:image" content="http://cdn1.raywenderlich.com/wp-content/uploads/2014/12/2-FirstGradient.png">
 <meta property="og:image" content="http://cdn1.raywenderlich.com/wp-content/uploads/2014/12/2-RoundedCorners2.png">
-<meta property="og:updated_time" content="2015-08-04T10:43:25.000Z">
+<meta property="og:image" content="http://cdn1.raywenderlich.com/wp-content/uploads/2014/12/2-FirstGraphLine.png">
+<meta property="og:updated_time" content="2015-08-08T09:48:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Core Graphics Tutorial Part 2: Gradients and Contexts翻译">
 <meta name="twitter:description" content="前言
@@ -259,14 +260,62 @@ var graphPoints:[Int] = [<span class="number">4</span>, <span class="number">2</
   <span class="keyword">return</span> x
 }
 </code></pre></li>
-<li></li>
+<li><p>x轴上的点由7个间距相等的点构成的，上面的代码是一个闭包的实现表达。It could have been added as a function, but for small calculations like this, it’s logical to keep them inline.</p>
+</li>
+<li><code>columnXPoint</code>接受一个横轴上的点作为参数，然后计算出这个点应该在x轴上的哪一个位置</li>
+<li><p>将下面这些代码添加到<code>drawRect(_:):</code>的底部，用于计算y轴上的点：</p>
+<pre><code><span class="comment">// calculate the y point</span>
+
+<span class="keyword">let</span> topBorder:CGFloat = <span class="number">60</span>
+<span class="keyword">let</span> bottomBorder:CGFloat = <span class="number">50</span>
+<span class="keyword">let</span> graphHeight = height - topBorder - bottomBorder
+<span class="keyword">let</span> maxValue = maxElement(graphPoints)
+<span class="built_in">var</span> columnYPoint = { (graphPoint:Int) <span class="subst">-&gt; </span>CGFloat <span class="keyword">in</span>
+  <span class="built_in">var</span> y:CGFloat = CGFloat(graphPoint) / 
+          CGFloat(maxValue) * graphHeight
+  y = graphHeight + topBorder - y <span class="comment">// Flip the graph</span>
+  <span class="keyword">return</span> y
+}
+</code></pre></li>
+<li><p><code>columnYPoint</code>同样也是一个闭包表达，以7天的喝水杯数的数组来作为参数；返回喝水的倍数对应在y轴上的位置，在0以及最大的杯数范围之间。</p>
+</li>
+<li>因为原点是在左上角，并且你在左下角从原点绘制一图表，<code>columnYPoint</code>适应它的返回值这样图表就会如你与其的那样显示</li>
+<li><p>继续在<code>drawRect(_:):</code>的底部添加绘图代码：</p>
+<pre><code><span class="comment">// draw the line graph</span>
+
+UIColor.whiteColor<span class="params">()</span>.setFill<span class="params">()</span>
+UIColor.whiteColor<span class="params">()</span>.setStroke<span class="params">()</span>
+
+<span class="comment">//set up the points line</span>
+var graphPath = UIBezierPath<span class="params">()</span>
+<span class="comment">//go to start of line</span>
+graphPath.moveToPoint<span class="params">(CGPoint<span class="params">(x:columnXPoint<span class="params">(<span class="number">0</span>)</span>, 
+                              y:columnYPoint<span class="params">(graphPoints[<span class="number">0</span>])</span>)</span>)</span>
+
+<span class="comment">//add points for each item in the graphPoints array</span>
+<span class="comment">//at the correct (x, y) for the point</span>
+<span class="keyword">for</span> i in <span class="number">1</span>..&lt;graphPoints.count {
+  <span class="built_in">let</span> nextPoint = CGPoint<span class="params">(x:columnXPoint<span class="params">(i)</span>, 
+                          y:columnYPoint<span class="params">(graphPoints[i])</span>)</span>
+  graphPath.addLineToPoint<span class="params">(nextPoint)</span>
+}
+
+graphPath.stroke<span class="params">()</span>
+</code></pre></li>
+<li><p>在这个代码块当中，你为这个图表创建了轨迹。图中的贝塞尔曲线就是根据graphPoints中的数据确定x与y坐标然后绘制出来的。</p>
+</li>
+<li>在StoryBoard中中可以看到以下效果：<br><img src="http://cdn1.raywenderlich.com/wp-content/uploads/2014/12/2-FirstGraphLine.png" alt="效果图"></li>
+<li><p>现在你确定了线被正确的绘制出来了，接下来的工作就是将线给移除，将以下代码从<code>drawRect(_:)</code>删除便可</p>
+<pre><code>graphPath.<span class="function"><span class="title">stroke</span><span class="params">()</span></span>
+</code></pre></li>
 </ul>
+<p>## </p>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/04/Core-Graphics-Tutorial-Part-2-Gradients-and-Contexts/" data-id="cid2oq42r002j6agzioerioaw" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/04/Core-Graphics-Tutorial-Part-2-Gradients-and-Contexts/" data-id="cid31t7b6002nz0gzu669x70f" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -310,7 +359,7 @@ var graphPoints:[Int] = [<span class="number">4</span>, <span class="number">2</
   <div class="widget-wrap">
     <h3 class="widget-title">標簽</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -319,7 +368,7 @@ var graphPoints:[Int] = [<span class="number">4</span>, <span class="number">2</
   <div class="widget-wrap">
     <h3 class="widget-title">標簽雲</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
+      <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
     </div>
   </div>
 
@@ -328,7 +377,7 @@ var graphPoints:[Int] = [<span class="number">4</span>, <span class="number">2</
   <div class="widget-wrap">
     <h3 class="widget-title">歸檔</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
     </div>
   </div>
 
@@ -338,6 +387,10 @@ var graphPoints:[Int] = [<span class="number">4</span>, <span class="number">2</
     <h3 class="widget-title">近期文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2015/08/08/Sketch01/">Sketch01</a>
+          </li>
         
           <li>
             <a href="/2015/08/08/正则表达式02/">正则表达式02</a>
@@ -353,10 +406,6 @@ var graphPoints:[Int] = [<span class="number">4</span>, <span class="number">2</
         
           <li>
             <a href="/2015/08/07/Pyspider02/">Pyspider02--html和css选择器</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/07/SICP01/">SICP01</a>
           </li>
         
       </ul>
