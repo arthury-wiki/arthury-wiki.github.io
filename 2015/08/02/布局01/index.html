@@ -4,17 +4,33 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives: 2015/8 | Hexo</title>
+  <title>布局01 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/archives/2015/08/index.html">
+  <meta name="description" content="最傻的布局方式
+通过设置frame进行布局，这是最傻的布局方式，为什么说最傻？
+
+第一：需要为不同的尺寸去设置一个frame值
+第二：一旦视图载入之后布局定下来，之后就算计算frame相关联的属性值发生了改变，frame也不会被重新计算，布局也不会改变，举个栗子
+UIView *testView = [[UIView alloc] initWithFrame:CGRectMake((self.vi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="布局01">
+<meta property="og:url" content="http://yoursite.com/2015/08/02/布局01/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description">
+<meta property="og:description" content="最傻的布局方式
+通过设置frame进行布局，这是最傻的布局方式，为什么说最傻？
+
+第一：需要为不同的尺寸去设置一个frame值
+第二：一旦视图载入之后布局定下来，之后就算计算frame相关联的属性值发生了改变，frame也不会被重新计算，布局也不会改变，举个栗子
+UIView *testView = [[UIView alloc] initWithFrame:CGRectMake((self.vi">
+<meta property="og:updated_time" content="2015-08-02T08:58:56.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
-<meta name="twitter:description">
+<meta name="twitter:title" content="布局01">
+<meta name="twitter:description" content="最傻的布局方式
+通过设置frame进行布局，这是最傻的布局方式，为什么说最傻？
+
+第一：需要为不同的尺寸去设置一个frame值
+第二：一旦视图载入之后布局定下来，之后就算计算frame相关联的属性值发生了改变，frame也不会被重新计算，布局也不会改变，举个栗子
+UIView *testView = [[UIView alloc] initWithFrame:CGRectMake((self.vi">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -66,39 +82,63 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/08/02/布局01/" class="archive-article-date">
-  <time datetime="2015-08-02T06:23:08.000Z" itemprop="datePublished">Aug 2</time>
+      <section id="main"><article id="post-布局01" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/02/布局01/" class="article-date">
+  <time datetime="2015-08-02T06:23:08.000Z" itemprop="datePublished">2015-08-02</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/08/02/布局01/">布局01</a>
+    <h1 class="article-title" itemprop="name">
+      布局01
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="最傻的布局方式">最傻的布局方式</h2><ul>
+<li><p>通过设置frame进行布局，这是最傻的布局方式，为什么说最傻？</p>
+<ul>
+<li>第一：需要为不同的尺寸去设置一个frame值</li>
+<li><p>第二：一旦视图载入之后布局定下来，之后就算计算frame相关联的属性值发生了改变，frame也不会被重新计算，布局也不会改变，举个栗子</p>
+<pre><code>UIView *testView = [[UIView alloc] initWithFrame:CGRectMake((self.view.frame.size.width-<span class="number">100</span>)/<span class="number">2</span>,(self.view.frame.size.height-<span class="number">100</span>)/<span class="number">2</span>, <span class="number">100</span>, <span class="number">100</span> )];
+</code></pre></li>
+<li><p>这里虽然计算testView位置的时候关联了self.view.frame，想着这样之后就算视图翻身了翻转变化也没有关系，testView会根据self.view的变化进行重新布局；NO!NO!NO!太天真了，根本就不会发生变化，因为这个值并不会因为关联数据的变换而重新进行计算，一旦尺寸确定下来就不会再发生变化了，切记这一点；所以非常的不方便，特写是那种需要实时重新计算布局情况，使用这个肯定不行</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="使用AutoLayout">使用AutoLayout</h2><h2 id="使用Nib的隐藏优势">使用Nib的隐藏优势</h2><ul>
+<li>自动具有实时计算frame的特性，只用读取了nib文件，就算是直接对frame进行设置，一旦关联值发生了变化，frame值就会被重新计算，这是自带的优势，可以省去很多写代码的麻烦，因此我需要进行取舍才可以，自己应该把精力发在哪一块代码上面，是放在布局上面，还是把时间画在动画效果的制作上面；实际上要懂得把各个有点结合在一起使用才可以，确实可视化的布局可以节省很多时间不用去写那些无聊的布局代码，但是使用代码可以让自己学到很多东西，对于要研究底层的我，知道这些还是很有必要的</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/08/02/布局01/" data-id="cid2n61d10000hlgzwufstz7w" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Layout/">Layout</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+  
 </article>
-  
-  
-    </div></section>
-  
+
 </section>
       
       <aside id="sidebar">
