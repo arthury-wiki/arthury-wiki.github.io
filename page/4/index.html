@@ -68,6 +68,310 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-如何通过快速反馈-Immediate-feedback-来提供自己的工作效率" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/07/27/如何通过快速反馈-Immediate-feedback-来提供自己的工作效率/" class="article-date">
+  <time datetime="2015-07-27T05:39:36.000Z" itemprop="datePublished">2015-07-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/07/27/如何通过快速反馈-Immediate-feedback-来提供自己的工作效率/">如何通过快速反馈(Immediate feedback)来提供自己的工作效率?</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言">前言</h2><ul>
+<li>一般我们在开发iOS程序的时候，常见的流程就是写代码，点击运行，然后看模拟器的结果，看输出，然后回头继续改代码，然后再修改代码，继续输出，不断的循环；这样的工作流效率其实非常的低下，首先如果是在做绘图有关的代码操作，通过这样不断运行模拟器来观察界面的变化是一件非常低效的，因为无法直观的看出界面的变化，特别是在做一些细节修改的时候；另外如果自己在做的项目体积很大，那么build的时间会很长，有时候甚至长达18秒之久，而且偶尔模拟器还会抽风一下，又不得不去重启，简直蛋疼无比，这样每天浪费在等待的时间上是非常可怕的</li>
+<li>那么问题来了？What the hell can I do with this fucking stuff?</li>
+</ul>
+<h2 id="Swift党Playground能够拯救你？">Swift党Playground能够拯救你？</h2><ul>
+<li>继Xcode5之后Apple加入了一个Playground技术，能够通过快速编译让你实时看到直接写出来的代码的效果，但是这些只能够实现观察UI的变化，与交互相关的操作并不能实现，这是Playground一个非常大的缺陷，因此Playground远远不能够满足我的需求</li>
+</ul>
+<h2 id="KZPlayground_–_逆天的Objective-C–Playground">KZPlayground – 逆天的Objective-C–Playground</h2><ul>
+<li>这是由大牛Krzysztof Zabłocki开发的Objective-C Playground，解决了Swift Playground的大部分痛点</li>
+<li>动态代码注入技术解析，KZPlayground使用的技术栈</li>
+<li>功能使用分析</li>
+<li>各个场景的结果分析<ul>
+<li>可以用来学习一些绘图的api，或者是一些动画效果的api，结合dash文档一个一个api试过去实在是太美妙了</li>
+<li>可以用来辅助自己的原型设计，通过修改属性可以实时显示出效果，这样可以辅助自己直观的进行调整设计，甚至还可以用来辅助自己去设计一些游戏场景，通过实时修改比例，颜色，尺寸等等的属性来进行分析设计</li>
+<li>可以内置到每次自己app的开发当中去，作为测试UI的工具，可以自己提供测试各种类型场景的debug模板，放到snippets当中，需要测试对应版本UI的时候拖出来测试便可，测试结束之后可以将界面切换到SB，然后进行部署</li>
+<li>KZPlayground本身是设计跑在iPad上面的，所以TimeLine上点击显示详细信息内容的功能是不能在iPhone上用的，否则会crash，另外TimeLine是可以关闭的，直接搜索到源码部分进行修改便可</li>
+<li>另外可以将会KZPlayground打包成Framework，这样每次使用的时候直接拖进去就可以了，不需要再去安装Pod那么麻烦，而且可以屏蔽掉那一大堆的警告</li>
+</ul>
+</li>
+<li>代码分析</li>
+<li>对StroyBoard的支持还不够完善</li>
+<li>我可以修改这个项目，使得这个项目支持StoryBoard，组织的形式采用原生的形式，就是自己在模拟器运行的时候注入代码，就相当于是在Injection4Ccode的基础上加上对StoryBoard的支持，可以通过采取各种技术来避免在修改的过程crash掉</li>
+<li>dyci与injection4Xcode的坑太多了，dyci虽然支持StroyBoard修改的实时反馈，但是一旦关联到代码上面就会马上crash，并且代码注入要生效就需要将相应的代码放到dyci指定的方法当中才可以，好在KZPlayground已经填好了大部分坑，KZPlayground保持了底层dyci的接口，这样在测试过程中自己也可以使用，非常的方便</li>
+<li>关于不支持swift这一点，我觉得这个其实很好解决，为什么呢？我可以通过文件的桥接来解决这个问题，对于一些内部细节属性，我可以先把接口开放出来，用来debug，等到debug结束之后，再去隐藏这些接口便可</li>
+<li>代码注入的本质，这种东西最多用来测试修改一些修过，直观的进行一些布局工作，不可能是把类似声明一个对象，添加导入一个类这样的逻辑也用CJ来进行，这是做不到，先这样的操作就必须要重启整个模拟器来刷新了，当然可以自己可以进行一些修改使得能够支持这些功能，KZPlayground就做到了</li>
+<li>调整元素的位置，这个实际上使用StroyBoard就可以看了，但是使用CJ可以做到更加的直观，StroyBoard能够预览到的最多只有位置的变化，至于更多的细节就看不出来了，不如颜色的变化，layer的变化等等都是看不出来的，但是使用CJ可以做到预览这一切的效果</li>
+<li>在Xib当中使用CJ来布局会出现非常诡异的情况，不知道用StroyBoard布局是否会这样</li>
+<li>一个项目里面可以有很多个playground，但是active的playground只能有一个，可以通过实现不同的active来进行切换</li>
+</ul>
+<h2 id="Debug_Playground_Template">Debug Playground Template</h2><ul>
+<li>通过学习别人制作的框架来做出一些基础的调试模板来辅助自己今后制作各种各样的效果</li>
+<li>贝塞尔曲线测试</li>
+<li>动画效果测试</li>
+<li>。。。</li>
+</ul>
+<h2 id="技巧">技巧</h2><ul>
+<li>iPhone模拟器的window选项卡中有一个选项叫做Stayfront，可以把模拟器固定在窗口上面，原来一直都不知道有这么好用的功能</li>
+<li>Xcode有一个插件可以快速在代码内部搜索代码文件，非常的方便</li>
+<li>现在开始要整理收藏自己经常使用的一些代码片段了，提高自己的开发效率</li>
+</ul>
+<h2 id="XTrace">XTrace</h2><ul>
+<li>可以追踪代码的调用流程</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/07/27/如何通过快速反馈-Immediate-feedback-来提供自己的工作效率/" data-id="cid7b6hy1000fsxgzk7g6bpx5" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Efficiency/">Efficiency</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-UIViewAnimation06" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/07/26/UIViewAnimation06/" class="article-date">
+  <time datetime="2015-07-26T07:26:14.000Z" itemprop="datePublished">2015-07-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/07/26/UIViewAnimation06/">UIViewAnimation06</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="CADisplayLink">CADisplayLink</h2><ul>
+<li>功能：可以提供一个周期性的调用我们赋给它的selector的机制，这一点类似于NSTimer</li>
+<li><p>使用方法：</p>
+<pre><code>- (<span class="keyword">void</span>)startDisplayLink
+{
+    <span class="comment">//添加要触发的操作</span>
+    <span class="keyword">self</span><span class="variable">.displayLink</span> = [<span class="built_in">CADisplayLink</span> displayLinkWithTarget:<span class="keyword">self</span> selector:<span class="keyword">@selector</span>(handleDisplayLink:)];
+    [<span class="keyword">self</span><span class="variable">.displayLink</span> addToRunLoop:[<span class="built_in">NSRunloop</span> currentLoop] forMode:<span class="built_in">NSDefaultRunLoopMode</span>];
+}
+
+- (<span class="keyword">void</span>)handleDisplayLink:(<span class="built_in">CADisplayLink</span> *)displayLink
+{
+    <span class="comment">//这里是要循环执行的操作</span>
+}
+
+- (<span class="keyword">void</span>)stopDisplayLink{
+    <span class="comment">//停止runloop调用</span>
+    [<span class="keyword">self</span><span class="variable">.displayLink</span> invalidate];
+    <span class="keyword">self</span><span class="variable">.displayLink</span> = <span class="literal">nil</span>;
+}
+</code></pre></li>
+</ul>
+<h2 id="特性，与NSTimer进行比较">特性，与NSTimer进行比较</h2><ul>
+<li>原理<ul>
+<li>CADisplayLink是一个能让我们以和屏幕刷新率同步的频率将特定的内容画到屏幕上的定时器类别。CADisplayLink以特定模式注册到runloop后，每当屏幕显示内容刷新结束的时候，runloop就会向CADisplayLink指定的target发送一次指定的selector消息，CADisplayLink类对应的selector就会被调用一次</li>
+<li>NSTimer以指定的模式注册到runloop后，每当设定的周期时间到达后，runloop会向指定的target发送一次指定的selector消息</li>
+</ul>
+</li>
+<li>周期设置方式不同<ul>
+<li>iOS设备的屏幕刷新频率(FPS)是60Hz，因此CADisplayLink的selector默认调用周期是每秒60次，这个周期可以通过frameInterval属性设置，CADisplayLink的selector每秒带调用次数=60/frameInterval；比如当frameInerval设为2，每秒调用就变成30次；因此，CADisplayLink周期的设置方式略显不便</li>
+<li>NSTimer的selector调用周期可以在初始化时直接设定，相对而言会更加的灵活</li>
+</ul>
+</li>
+<li>精确度<ul>
+<li>iOS设备的屏幕刷新频率是固定的，CADisplayLink在正常情况下会在每次刷新结束被调用，经确定相当高</li>
+<li>NSTimer的精确度就显得低了点，比如NSTimer的触发时间到的时候，runloop如果鳗鱼别的调用，触发时间就会推迟到下一个runloop周期；在OSX10.9之后为了尽量避免在NSTimer触发调用时间到了而去中断当前处理的任务，NSTimer新增了tolerance属性，让用户能够设置可以容忍的触发的时间范围</li>
+</ul>
+</li>
+<li>使用场合<ul>
+<li>CADisplayLink使用场合相对专一，适合做界面的不停重绘，比如视频播放的时候需要不停的获取下一帧用于界面渲染或者是用来处理动画效果的渲染</li>
+<li>NStimer的使用范围比较广泛，各种需要单次或者循环定时处理的任务都可以使用</li>
+</ul>
+</li>
+</ul>
+<h2 id="重要的属性">重要的属性</h2><ul>
+<li>frameInterval<ul>
+<li>可读可写的NSInteger整型，标识间隔多少帧调用一次selector方法，默认值是1，即每帧都调用一次；官方文档强调，当该值被设定小于1时，结果是不可预知的</li>
+</ul>
+</li>
+<li>duration<ul>
+<li>只读的CFTimeInterval值，表示两次屏幕刷新之间的时间间隔。需要注意的是，该属性在target的selector被首次调用以后才会被赋值；selector的调用时间计算范式是：时间=duration x frameInerval</li>
+<li>现存的iOS设备屏幕的FPS都是60Hz，但是尽管如此，无法保证之后苹果不会改变FPS，所以出于安全考虑，可以根据duration判断屏幕的FPS再去使用CADisplayLink</li>
+</ul>
+</li>
+<li>timestamp<ul>
+<li>只读的CFRimeInterval值，表示屏幕显示的上一帧的时间戳，这个属性通常被target用来计算下一帧中应该显示的内容    </li>
+<li>虽然名为时间戳，但是和常见的unix时间戳差异很大，事实上这是CoreAnimation使用的时间格式。每个CALayer都有一个本地时间</li>
+</ul>
+</li>
+</ul>
+<h2 id="注意">注意</h2><ul>
+<li>iOS并不能保证能以每秒60次的频率调用回调方法，这个取决于以下两个要素<ul>
+<li>CPU的空闲程序<ul>
+<li>如果CPU忙于其他计算，就没法保证以60HZ执行屏幕的绘制动作，结果导致跳过若干次调用回调方法的机会，跳过的次数取决于CPU的忙碌程度</li>
+</ul>
+</li>
+<li>执行回调方法所用的时间<ul>
+<li>如果执行回调时间大于重绘每帧的间隔时间，就会导致跳过若干次回调调用时间，这取决于回调执行时间的长短</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="动画的实质">动画的实质</h2><ul>
+<li>其实就是设置终点坐标与起点坐标，然后在移动的期间加上动画效果，效果无非就是平滑的移动，或者是弹簧效果之类，然后配上动画的时间就搞定了；加上控制点是为了让控制点动画可以更加的可定制化，其实要做出果冻的效果非常的简单，只要做出合适的控制点，然后在各个控制带来移向终点的时候加上弹簧效果便可</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/07/26/UIViewAnimation06/" data-id="cid7b6hz50017sxgza2i5cyw9" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-UIViewAnimation05" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/07/25/UIViewAnimation05/" class="article-date">
+  <time datetime="2015-07-25T11:00:04.000Z" itemprop="datePublished">2015-07-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/07/25/UIViewAnimation05/">UIViewAnimation05</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="CAKeyFrameAnimation">CAKeyFrameAnimation</h2><ul>
+<li>keyframe就是关键帧，这个关键指的是改变运动物体运动趋势的帧，每一帧物体应该如何进行动画都可以进行设置，但是关键的帧只有那几个，一般不会有太多，把握住在关键帧物体的运动趋势便可，比如矩形的各个角、抛物线的顶点</li>
+</ul>
+<h2 id="Control_Point_Views(控制点视图)">Control Point Views(控制点视图)</h2><ul>
+<li>想要制作出富有弹性的动画，控制点是必不可少</li>
+<li>控制点可以加在View上面，也可以加在Layer上面，通过控制点可以做出非常多酷炫的动画，这一点很关键</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/07/25/UIViewAnimation05/" data-id="cid7b6hz70019sxgzbfbj8nut" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Swift小问题汇总" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/07/25/Swift小问题汇总/" class="article-date">
+  <time datetime="2015-07-25T05:06:04.000Z" itemprop="datePublished">2015-07-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/07/25/Swift小问题汇总/">Swift小问题汇总</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="‘Double’_is_not_convertible_to_‘CGFloat’">‘Double’ is not convertible to ‘CGFloat’</h2><ul>
+<li><p>swift不能进行隐式类型转换，必须要显式转换才可以</p>
+<pre><code><span class="built_in">let</span> number = CGFloat<span class="params">(M_<span class="literal">PI</span>)</span>
+</code></pre></li>
+<li><p>注意显式转化的语法，要转换的数据放在里面</p>
+</li>
+</ul>
+<h2 id="关于全局的异常断点">关于全局的异常断点</h2><ul>
+<li>不要一开始的时候就加上去，等到出现异常再加，但是要注意，加了异常断点之后如果bug出现的方式与没加之前出现的方式不一样，就要注意这个bug可能是因为加入了异常断点之后引入的，这个时候就不能再靠这个异常断点了，要去掉之后再来分析</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/07/25/Swift小问题汇总/" data-id="cid7b6hzr001ssxgz06r3yn4h" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-UIViewAnimation04" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/07/24/UIViewAnimation04/" class="article-date">
@@ -200,7 +504,7 @@ t2</code><br><img src="https://dn-arthury.qbox.me/一次曲线.png" alt="效果�
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/07/24/UIViewAnimation04/" data-id="cid5zbapi00156sgzzvxfdwf7" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/07/24/UIViewAnimation04/" data-id="cid7b6hzb001bsxgzaycv9gsc" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -352,7 +656,7 @@ t2</code><br><img src="https://dn-arthury.qbox.me/一次曲线.png" alt="效果�
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/07/24/Pyspider01/" data-id="cid5zbaqs00226sgz3sypb9vd" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/07/24/Pyspider01/" data-id="cid7b6i08002bsxgzvkruw4wt" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -402,7 +706,7 @@ t2</code><br><img src="https://dn-arthury.qbox.me/一次曲线.png" alt="效果�
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/07/24/Linux命令备忘录/" data-id="cid5zbard002q6sgzolpyegnj" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/07/24/Linux命令备忘录/" data-id="cid7b6i0v0032sxgz7j046y5m" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -613,7 +917,7 @@ t2</code><br><img src="https://dn-arthury.qbox.me/一次曲线.png" alt="效果�
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/07/24/Crawler01/" data-id="cid5zbarq00346sgzfpmm4fs6" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/07/24/Crawler01/" data-id="cid7b6i17003gsxgzb3zjo6ca" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -695,7 +999,7 @@ t2</code><br><img src="https://dn-arthury.qbox.me/一次曲线.png" alt="效果�
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/07/24/UIViewAnimation03/" data-id="cid5zbapm00176sgz5r7ivjtf" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/07/24/UIViewAnimation03/" data-id="cid7b6hzf001dsxgza29uysod" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -854,7 +1158,7 @@ UIImage<span class="list">(<span class="keyword">name:</span><span class="string
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/07/24/UIViewAnimation02/" data-id="cid5zbapr00196sgzvdn7mkjo" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/07/24/UIViewAnimation02/" data-id="cid7b6hzg001fsxgzibuhzkq3" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -862,964 +1166,6 @@ UIImage<span class="list">(<span class="keyword">name:</span><span class="string
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a></li></ul>
 
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Event-Loop" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/07/23/Event-Loop/" class="article-date">
-  <time datetime="2015-07-23T08:30:00.000Z" itemprop="datePublished">2015-07-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/23/Event-Loop/">Event Loop</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="理解进程与线程">理解进程与线程</h2><ul>
-<li><a href="http://www.ruanyifeng.com/blog/2013/04/processes_and_threads.html" target="_blank" rel="external">参考阮一峰的博客</a></li>
-<li>简单的比喻就是cpu是供电厂，来给每一个工厂供电，一个cpu一次只能给一个工厂供电，进程就是工厂里面的车间，它代表cpu能够处理的单个任务，cpu一次只能运行一个进程，其他进程处于非运行状态</li>
-<li>线程就是车间里面的工人，它们协同完成一个任务</li>
-</ul>
-<h2 id="为什么javascript是单线程？">为什么javascript是单线程？</h2><ul>
-<li><a href="http://www.ruanyifeng.com/blog/2014/10/event-loop.html" target="_blank" rel="external">参考阮一峰博客</a></li>
-<li>javascript是单线程的，这就表示一个车间里面只有一个工人，靠这个工人一个人来完成任务(使用直觉想象成图像来理解就非常容易理解了)</li>
-<li>这个是由于由其用途决定的，作为浏览器的脚本语言，主要用来与用户互动，以及操作DOM，于是就被设计成单线程的，假设有两个线程，一个线程把罐子打开了，另一个工人又把罐子开了，这时浏览器无法判断以哪一个线程为准(其实如果能解决好这个同步问题，javascript说不定会比现在强大的更多)</li>
-<li>这里有一个关于本质的例子，为了利用多核cpu的计算能力，html5提出web worker标准，允许javascript脚本创建多个线程，然后子线程完全受主线程控制，且不得操作dom，也就是子线程的做的所有事情都需要经过主线程的亲自审核才可以，并没有什么卵用，javascript的本质就是单线程，通过再牛逼的标准也改变不了这个事实</li>
-</ul>
-<h2 id="任务队列的理解">任务队列的理解</h2><ul>
-<li>单线程意味着只有一个工人，这个工人拿到任务清单，就会一个一个去执行，上一个任务没有执行完之前，下一个任务就不会执行，如果前面一个任务耗时很长，后面一个任务就不得不一直等着</li>
-<li>任务执行时间长并不代表此时cpu在高速运转，有时候在等在io设备的回应，这段时间cpu完全就是闲着的，就像等着水烧开才能够开始煮面一样，不得不等着水烧开，再进行下一个任务(这个时候电量浪费了，工人可以先去做其他任务，把电给用起来)</li>
-<li>javascript语言的设计者觉得，这个时候主线程可以不管IO设备(工人可以不用一直干等着水烧开)，挂起处于等待中的任务(让开水自己烧着)，工人先去执行剩下的任务，比如洗菜；等到水烧开了，再回头把面放进去</li>
-<li>因此任务可以分为两种，一种是同步任务(synchronous)，另一种是异步任务(asynchronous)；同步任务就是那种要让工人(主线程)一直不停工作的类型，比如洗菜，这个时候不可能分身再去做其他事情，这样的任务只能得到上一个执行完了之后再执行下一个；异步任务是指烧水这样的任务，烧水期间工人可以分身去做其他事情，等到水烧开开水壶提醒的时的候，工人才会去下面(主线程才回去执行这个任务)</li>
-<li>其实煮面这个异步任务可以拆解成烧水与下面这两个同步任务来执行，同步任务可以理解为特殊的异步任务，没有等待阶段的异步任务</li>
-<li>异步任务的运行机制(这样的设计真的合理吗？)<ul>
-<li>拿到任务清单，就会形成一个执行栈(execution context stack)，开始一个一个的执行任务</li>
-<li>当遇到异步任务进入到一个等到阶段之后，这个任务就会被直接挂起，然后工人会直接跳到下一个任务的执行</li>
-<li>当异步任务的一个等待阶段结束之后，就会发出一个通知，这个通知(消息)由一个叫做任务队列(task queue)的清单记录，当前一轮下来把执行栈里面的任务全部都过一边之后，工人(主线程)就会回头去看这个任务队列，看一下哪些异步任务的可以接下去做了，越是有开始了一个执行栈，开始执行任务，不断循环重复，指导把全部的任务都执行完</li>
-</ul>
-</li>
-<li>只要主线程空了，就回去读取任务队列，这就是javascript的运行机制，这个过程会不断的重复</li>
-</ul>
-<h2 id="事件与回调函数">事件与回调函数</h2><ul>
-<li>任务队列是一个时间的队列，一个异步任务的一个等待阶段结束之后，就会发出通知，这个通知就是下一个阶段那个任务已经可以执行了，比如烧水结束之后，就会得到一个通知，就是下面这个任务可以执行了，主线程回来读的时候就是在读需要执行哪些任务</li>
-<li>回调函数(call back)就是指异步任务上一个阶段指定下一个阶段要完成的任务，比如上一个阶段是烧水，那么烧水阶段指定的下一个阶段的任务就是下面，这个下面就是烧水阶段的回调函数，当工人回头执行任务队列当中的任务时，执行的就是这个回调函数</li>
-<li>在iOS开发当中就是像链接服务器刷新tableview的一个异步任务，向服务器发送请求，在等待服务器返回数据期间，工人在执行的任务就是显示一个HDU，等到服务器的数据请求回来之后，执行的任务就是刷新列表与关闭HDU，具体细节记得不是很清楚了</li>
-</ul>
-<h2 id="Event_Loop">Event Loop</h2><ul>
-<li>工人不断重复读取任务队列中的事件，这个不断循环的过程就称之为Event Loop(事件循环)<br><img src="https://dn-arthury.qbox.me/eventloop.png" alt="示意图"></li>
-<li>如图所示，stack(栈)里面有一系列的函数(任务)被调用，它们去调用web的api或者是其他的api，是同步任务就指定到底，是异步就挂起跳过，异步事件的一个等待阶段结束之后，就会把回调函数放到callbackqueue里面，重新装入stack里面，就是这样一个循环的过程</li>
-<li>注意，执行栈里面的任务是优先执行的，就算执行栈里面的任务还没执行完，前面挂起的异步任务有了回应，工人也不会中断当前的任务跑去执行队列里面的任务，而是等到清空stack里面的任务之后，才会把任务队列里面的任务装到stack里面进行新一轮的循环，也就是新一轮的Event Loop</li>
-</ul>
-<h2 id="定时器">定时器</h2><ul>
-<li>任务队列当中除了放置定时事件，即指定某些代码在执行多少时间</li>
-<li>如果给某一个任务指定了定时器，那么这个任务在被工人执行的时候，就会被直接挂起，然后在定时的时间到了之后，回调就会被放到task queue里面，然后装到satck里面去执行，这个定时的时间并不是指倒计时一结束，这个方法就会被立刻执行</li>
-<li><p>如果设置的倒计时是0，那么工人在执行这个任务的时候，这个任务会直接被送到task queue里面，并不会直接执行回调函数，还是要等到stack一轮结束之后才会执行</p>
-<pre><code>console.<span class="built_in">log</span>(<span class="number">1</span>);
-setTimeout(function({console.<span class="built_in">log</span>(<span class="number">2</span>);},<span class="number">1000</span>);
-console.<span class="built_in">log</span>(<span class="number">3</span>);
-</code></pre></li>
-<li>上面代码的执行结果是1，3，2，因为console.log(1)、console.log(3)、setTimeout这三个函数是同一轮的任务，而console.log(2)是属于下一轮的任务</li>
-<li>小知识：HTML5标准规定了setTimeout()的第二个参数的最小值（最短间隔），不得低于4毫秒，如果低于这个值，就会自动增加。在此之前，老版本的浏览器都将最短间隔设为10毫秒。另外，对于那些DOM的变动（尤其是涉及页面重新渲染的部分），通常不会立即执行，而是每16毫秒执行(加入到task queue)一次。这时使用requestAnimationFrame()的效果要好于setTimeout())</li>
-</ul>
-<h2 id="Node-js的Event_Loop">Node.js的Event Loop</h2><ul>
-<li>Node.js也是单线程的Event Loop，但是它的运行机制不同于浏览器环境<br><img src="https://dn-arthury.qbox.me/nodejs.jpg" alt="效果图"></li>
-<li>运行机制解析<ul>
-<li>V8引擎解析JS脚本，类似于一个解释器</li>
-<li>解析后的代码，调用Node API</li>
-<li>libuv库负责Node API的执行，将任务分配给线程去执行，形成一个Event Loop，以异步的方式(阶段性的)将任务执行结果返回给v8引擎</li>
-<li>v8引擎再将结果返回给用户</li>
-</ul>
-</li>
-</ul>
-<h2 id="process-nextTick、setImmediate与setTimeout">process.nextTick、setImmediate与setTimeout</h2><ul>
-<li><code>process.nextTick</code>是将回调直接放到当前这一次stack的底部，也就是不用等到下一轮的event loop</li>
-<li><code>setImmediate</code>是将回调放到当前任务队列的尾部，也就是放到下一轮的Event Loop进行</li>
-<li><code>setTimeout(fn,0)</code>是将回调插入到当前任务队列当中，不一定是在末尾，这个不同node的版本，实现的原理都不一样，简直就是糟糕的设计，这么模糊不清</li>
-<li>最新版的node不推荐使用<code>prcess.nextTick</code>，推荐使用<code>setImmediate</code>，原因在于nextTick会阻断连续的IO操作</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/07/23/Event-Loop/" data-id="cid5zbari002v6sgzlysek3xz" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/System/">System</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-UIViewAnimation01" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/07/23/UIViewAnimation01/" class="article-date">
-  <time datetime="2015-07-22T17:48:50.000Z" itemprop="datePublished">2015-07-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/23/UIViewAnimation01/">UIViewAnimation01</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="自带动画效果的属性变化">自带动画效果的属性变化</h2><ul>
-<li>center</li>
-<li>bounds</li>
-<li>frames</li>
-<li>alpaha</li>
-<li>transform</li>
-<li>contentStretch</li>
-<li>backgroundColor</li>
-<li><p>以上的属性的改变会自带动画效果，只需要指定好动画执行的时间便可</p>
-<pre><code>myView.center = CGPoint(x:<span class="number">60</span>, y:<span class="number">60</span>)
-UIView.animateWithDuration(<span class="number">1.2</span>, animations: {
-    self.animateView.center = CGPointMake(<span class="number">300</span>, <span class="number">300</span>)
-})
-</code></pre></li>
-<li><p>非常简单的动画效果</p>
-</li>
-<li>上面那个api是选项最少的一个，更多选项版的可以直接根据代码提示去选择</li>
-</ul>
-<h2 id="Spring效果">Spring效果</h2><ul>
-<li><p>提供的api</p>
-<pre><code>UIView.animateWithDuration(<span class="string">_:</span>,<span class="string">delay:</span>,<span class="string">usingSpringWithDamping:</span>,<span class="string">initialSpringVelocity:</span>,<span class="string">options:</span>,<span class="string">animations:</span>,<span class="string">completion:</span>)
-</code></pre></li>
-<li><p>实现的是一个阻尼效应(弹簧效果)，上下波动，最后消失，对应到移动的动画效果就是不停震动，最后稳定；对应到透明度变化的动画效果就是不停地闪烁，最后稳定，其中<code>usingSpringWithDampin</code>就是类似阻尼系数(0~1)，数字越小阻尼效果越明显，回弹越剧烈，幅度越大</p>
-</li>
-<li><code>optional</code>参数不能为nil，否则会报错</li>
-<li><code>initialSpringVelocity</code>表示初始速度，数值越大一开始移动越快，初始速度取值较高而时间取值短时，会出现反弹效果</li>
-</ul>
-<h2 id="Transitions">Transitions</h2><ul>
-<li>与transition有关的属性与方法<ul>
-<li>hidden</li>
-<li>addSubview()</li>
-<li>removeFromParent()</li>
-</ul>
-</li>
-<li><p>相关的api</p>
-<pre><code>UIView.transitionFromView(<span class="string">_:</span>,<span class="string">toView:</span>,<span class="string">duration:</span>,<span class="string">options:</span>,<span class="string">completion:</span>)
-UIView.transitionWithView(<span class="string">_:</span>,<span class="string">duration:</span>,<span class="string">options:</span>,<span class="string">animations:</span>,completion)
-</code></pre></li>
-<li>效果就是让视图出现的时候带有一些转场动画</li>
-<li><img src="https://dn-arthury.qbox.me/transition.gif" alt="效果图"></li>
-<li>在storyboard中点简单配置</li>
-<li><p><img src="https://dn-arthury.qbox.me/transitionsb.png" alt="效果图"></p>
-<pre><code><span class="annotation">@IBAction</span> func loginBtnClick(<span class="string">sender:</span> AnyObject) {
-UIView.animateWithDuration(<span class="number">1.0</span>, <span class="string">delay:</span> <span class="number">0.0</span>, <span class="string">usingSpringWithDamping:</span> <span class="number">1.0</span>, <span class="string">initialSpringVelocity:</span> <span class="number">0.0</span>, <span class="string">options:</span> UIViewAnimationOptions.CurveEaseIn, <span class="string">animations:</span> {
-    self.loginBtn.center.y += <span class="number">50</span>
-    }, <span class="string">completion:</span> { _ <span class="keyword">in</span>
-    UIView.animateWithDuration(<span class="number">2.0</span>, <span class="string">delay:</span> <span class="number">0.0</span>, <span class="string">usingSpringWithDamping:</span> <span class="number">0.5</span>, <span class="string">initialSpringVelocity:</span> <span class="number">0.0</span>, <span class="string">options:</span> UIViewAnimationOptions.CurveEaseIn, <span class="string">animations:</span> {
-    self.loginBtn.bounds.origin = CGPointMake(self.loginBtn.bounds.origin.x - <span class="number">20.0</span>, self.loginBtn.bounds.origin.y)
-    self.loginBtn.titleLabel?.alpha = 0.8
-    }, completion: { _ <span class="keyword">in</span>
-    <span class="comment">//这里就是一个翻页的动画</span>
-    UIView.transitionWithView(self.banner, <span class="string">duration:</span> <span class="number">2.0</span>, <span class="string">options:</span> UIViewAnimationOptions.TransitionCurlDown, <span class="string">animations:</span> {
-    <span class="comment">//只需要修改一下隐藏属性便可</span>
-    <span class="comment">//既然有更好的设计，那么糟糕的设计直接就可以抛弃了</span>
-    self.banner.hidden = <span class="literal">false</span>
-    }, <span class="string">completion:</span> nil)
-})})}
-</code></pre></li>
-</ul>
-<h2 id="小技巧">小技巧</h2><ul>
-<li>通过代码提示来看所选的属性是什么类型的，就可以指导后面要给属性赋值的时候写什么了<br><img src="https://dn-arthury.qbox.me/hit.png" alt="效果图"></li>
-<li>如果指导都有哪几个选项，不如这个例子里我知道有center这个选项，我就可以直接使用<code>alertLabel.textAlignment = .Center</code>的形式来进行的</li>
-</ul>
-<h2 id="关于debug的一点小感悟">关于debug的一点小感悟</h2><ul>
-<li>越往底层去学，就可以从越是底层的角度去debug，去发现bug；如果我知道SB背后的实现原理以及代码的调用流程，那么出现奇怪的现象我就可以直接去看执行过程中调用了什么不合适的代码，然后去分析原因，而不是通过注释代码与log来退成bug会出错的可能性</li>
-</ul>
-<h2 id="给StroyBoard中的元素指定父视图">给StroyBoard中的元素指定父视图</h2><ul>
-<li>在StroyBoard里面的控件没有选择自己父视图的选项，这个可以通过代码来实现，也就是在获得控件的Outlet引用之后，可以在代码里面使用<code>addSubview</code>的方法来实现指定父视图</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/07/23/UIViewAnimation01/" data-id="cid5zbaps001b6sgziywvsbn1" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-leiningen" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/05/16/leiningen/" class="article-date">
-  <time datetime="2015-05-16T12:07:27.000Z" itemprop="datePublished">2015-05-16</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/05/16/leiningen/">leiningen</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前言">前言</h2><ul>
-<li>学习了clojure，自然就会想要用clojure去开发，这里介绍一下leiningen这个clojure项目构建工具</li>
-</ul>
-<h2 id="lein-try">lein-try</h2><ul>
-<li>这是一个leiningen的小插件，可以让你尝试各种Clojure库</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/05/16/leiningen/" data-id="cid5zbaox000p6sgzj0xenl5r" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Clojure" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/05/13/Clojure/" class="article-date">
-  <time datetime="2015-05-13T04:20:42.000Z" itemprop="datePublished">2015-05-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/05/13/Clojure/">Clojure</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="学习资源">学习资源</h2><ul>
-<li><a href="http://xumingming.sinaapp.com/302/clojure-functional-programming-for-the-jvm-clojure-tutorial/#introduction" target="_blank" rel="external">基础入门</a></li>
-</ul>
-<h2 id="Clojure开发环境配置">Clojure开发环境配置</h2><ul>
-<li>参考资料：<ul>
-<li><a href="http://segmentfault.com/a/1190000002591631" target="_blank" rel="external">在OS X上配置Clojure开发环境</a></li>
-</ul>
-</li>
-<li>遇到了环境变量的问题，目前的想要尝试的方法是通过脚本去解决</li>
-<li>Clojure中1.6版对于clojure_contrib没有特殊的要求，使用mvn安装了之后不知道路径是哪里，展示不要去管</li>
-<li>加入了rlwrap进行自动补全</li>
-<li>配置在emacs下的开发环境，要选择是手动下载配置还是使用安装配置，需要好好斟酌一下<ul>
-<li>先说自动安装配置，这个是最适合我的emacs配置<ul>
-<li>遇到的问题是leiningen的下载，无法使用brew进行安装，会出现无法下载的问题，在寻找新的办法</li>
-</ul>
-</li>
-<li>先去尝试手动安装，看一下最新版的swank-clojure，以及init.el如何对应.emacs的手动安装，配置文件要如何进行对应，等待尝试<ul>
-<li>lein在连接了vpn之后现在成功了，现在是下载插件出了问题，使用了配置文件感觉根本就没有下载下来，</li>
-<li>寻找到了另外一种解决办法，叫做cider</li>
-<li>cider下载失败是因为gnu的软件源被我给注释了，之后就可以正常下载了</li>
-<li>现在cider已经下载好了，接下来就是花时间去调整配置了，但是现在并不知道要如何才能够用上cider</li>
-<li>另外在配置的过程中意外的解决了用emacs打开的文件的时候会询问冲突的问题</li>
-</ul>
-</li>
-<li>总算是配置完成了，简直累死人，这些配置过程记录下来是很有必要的，因为自己可能要在服务器上配置自己的开发环境，为了避免做重复功，就需要把这些东西给记录清楚才可以</li>
-<li>关于cider的使用<ul>
-<li>这个是emacs针对clojure进行调整开发的插件，不知如何在emacs中直接运行clojure</li>
-<li>使用体验有点奇葩，入门资料太少了，或许我应该去找一些因为的教材才对</li>
-<li>使用C-c M-j进入到repl之后，再切换到代码编辑的窗口，就可以使用cider定义好的一些列的快捷键了，注意一定要遵循好这些步骤才可以</li>
-<li>想要进入已经激活的repl，直接用C-c M-c再输入相应的host就可以了，host直接就可以看到的，在buffer的列表里面切换到这个server，然后就可以看到了</li>
-</ul>
-</li>
-<li>新建一个clojure项目<ul>
-<li>使用lein new 项目名(小写字母)</li>
-<li>编辑profiles.clj文件，添加cider插件</li>
-<li>进入到src源文件里面开始编辑</li>
-</ul>
-</li>
-<li>关于clojure的repl<ul>
-<li>代码在这里面是一行一编译运行的，一次只可以执行一行代码，也就是我刚才定义了一个函数，但是却没有编译执行，导致我下面调用在各个函数的时候找不到这个函数，所以就会出现错误</li>
-<li>cider的正确使用方法应该是编写一个函数或者一个命令具使用C-x C-e运行一次，这样才是正确的使用方法，而不是全部写完之后才编译运行，这样会出错</li>
-<li>开启repl使用C-c M-j的方法，原来使用C-c M-c再加上自己指定端口的方式现在可以通过分屏的方法来取代，分屏的才是王道</li>
-<li>要开始运行看现实结果的时候一定要注意光标一旦要移动到最后才可以。这样才会执行完整的代码，否则会报错</li>
-</ul>
-</li>
-<li>现在环境配置都差不多了，那么要如何进行开发呢？能够用来做什么呢？</li>
-<li>有没有必要把command作为M键</li>
-</ul>
-</li>
-</ul>
-<h2 id="为什么要学习Clojure？">为什么要学习Clojure？</h2><ul>
-<li>jvm虚拟机非常的强大，我非常的看好，但是java又实在是太沉重繁琐，所以我选择了lisp在jvm上面的方言，Clojure，相比于java这个是生产效率上的提升，也就是既有java的强大特性又能够进行快速开发</li>
-<li>再一次体会到英语学习的重要性，多看英语视频，多看英语原著，这样才可以开阔自己的眼界</li>
-<li>我看到了Clojure可以用来写Processing，这又掀起了我浓厚的兴趣去学习</li>
-<li>ClojureScript非常不错，可以实现javascript，非常有意思</li>
-<li>Clojure可以简单的开发web应用</li>
-<li>我需要非常了解clojure的特性，与java的不同之处，如何实现java能够实现的东西，优势又在什么地方；面向对象中的类与对象的这些概念要如何对应到函数式编程里面，或许我会爱上这些东西</li>
-</ul>
-<h2 id="函数式编程的思想/优点">函数式编程的思想/优点</h2><ul>
-<li>将函数作为参数就是高阶函数</li>
-<li>优点：<ul>
-<li>数据不能够进行修改，也就是并不需要进行上锁就可以对数据进行并发的访问，那提高的效率是相当可观的</li>
-</ul>
-</li>
-<li>在lisp当中什么都是函数，包括一组数据也可以是函数，这个说起来可能有点奇怪，注意用括号()包起来的东西就是对一个函数的调用，举个例子<code>([1 2 3] 0);输出1</code>，’({:a 1 :b 2 :c 3} :b);=&gt; 2’，容器可以看作是一个函数，它能接受一个参数，返回所对应的值；对于map还可以有这样的写法，<code>(:b {:a 1 :b 2 :c 3})</code>，当然这只适用于map的情况</li>
-<li><p>关于在面向对象中的类的概念在函数式当中是如何体现的，如何实现的，还是？看来我很有必要了解一下面向过程(OP–Procedure Oriented)、面向对象(OO–Object Oriented)以及函数式(FP)之间的区别与联系，还有必要了解一下clojure的设计哲学</p>
-<blockquote>
-<p>面向对象中的类是对数据类型的抽象，而函数式中的类是闭包，对函数的抽象；面向对象的核心是类，函数式的核心是函数(我想我需要写一个小demo)<br>偶然复杂性的一个例子就是现代面向对象程序设计语言的一个发展趋势，即它要将所有可运行代码打包在类定义、继承和类型声明这样的层次里。Clojure 通过支持“纯函数”去除了所有这些东西，所谓纯函数就是传入几个实参，然后，只根据这些实参产生一个返回值。然而我并不知道这些要如何去实现面向对象可以实现的东西，这是一种全新的编程思想，不要再用原来面向对象的老观点去看待，怎么去使用纯函数来实现自己想要实现的东西，意外的会开启新世界的大门<br>面向对象解决问题的思维与函数式解决问题的思维是不一样的，所以不要在函数式里面用面向对象的思维来思考问题，总是想把东西抽象成类来解决是不合适的<br>clojure除了可以直接调用java的类或者方法之外，还有更多的选择来与java进行交互，可以根据具体的情况进行选择</p>
-<ul>
-<li>举个栗子：用类来抽象与用函数来抽象<ul>
-<li>用类来实现抽象<ul>
-<li>我要做一个围棋游戏，我需要先定义一个棋盘类，再来一个棋子类</li>
-<li>棋盘类的具体属性可以是大小，颜色，格子数，方法可以有胜负的判断之类的</li>
-<li>棋子类的具体属性可以是颜色，大小，方法可以使如何走下一步之类的</li>
-</ul>
-</li>
-<li>用函数来抽象(尝试使用函数式思维来处理自己遇到的问题)<br>许多程序员认为是类的东西，实际上就是Clojure用map和记录形式提供的数据表<ul>
-<li>对于棋盘的模拟，直接用一个集合就可以搞定了</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</blockquote>
-<pre><code>(ns joy.chess)
-(defn initial-board []
-[<span class="string">\r</span> <span class="string">\n</span> <span class="string">\b</span> <span class="string">\q</span> <span class="string">\k</span> <span class="string">\b</span> <span class="string">\n</span> <span class="string">\r</span>
-<span class="string">\p</span> <span class="string">\p</span> <span class="string">\p</span> <span class="string">\p</span> <span class="string">\p</span> <span class="string">\p</span> <span class="string">\p</span> <span class="string">\p</span>         ; 小写表示黑棋
-<span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span>
-<span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span>
-<span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span>
-<span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span>
-<span class="string">\P</span> <span class="string">\P</span> <span class="string">\P</span> <span class="string">\P</span> <span class="string">\P</span> <span class="string">\P</span> <span class="string">\P</span> <span class="string">\P</span>         ; 大写表示白棋
-<span class="string">\R</span> <span class="string">\N</span> <span class="string">\B</span> <span class="string">\Q</span> <span class="string">\K</span> <span class="string">\B</span> <span class="string">\N</span> <span class="string">\R])</span>
-</code></pre></li>
-</ul>
-<h2 id="命名空间的问题">命名空间的问题</h2><ul>
-<li>可以通过不同的命名空间来建立一定的层次结构</li>
-<li>通过命令空间封装是最为普遍的一种封装方式，当然如果选择词法闭包，则又更多的封装选择，比如block级封装、局部封装(虽然不知道具体要如何去使用)</li>
-<li>任何时候总有一个默认的名字空间，初始化的时候这个默认的名字空间是“user”，这个默认的名字空间的值被保存在特殊符号<em>ns</em>.里</li>
-<li><p>关于默认名字名字空间user</p>
-<ul>
-<li>“user” 这个名字空间提供对于clojure.core 这个名字空间里面所有符号的访问。同样道理对于那些通过ns 宏来改变成默认名字空间的名字空间里面也是可以看到 clojure.core里面的所有的函数的；如果要访问哪些不在默认名字空间里面的符号、函数， 那么你必须要指定全限定的完整名字，比如 clojure.string 包里面定义了一个join 函数。它把多个字符串用一个分隔符隔开然后连起来，返回这个连起来的字符串。它的全限定名是clojure.string/join</li>
-<li><p>require函数加载clojure库，接受一个或者多个名字空间的名字；require是进行显示的加载，任何引用到的命名空间必须已经加载过，或者是clojure核心命名空间之一，这样会被隐式的加载，要么通过:require显示加载。</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">require</span></span> <span class="variable">'clojure.string</span>)</span>
-<span class="comment">;;这样就会加载这个类库</span>
-<span class="comment">;;然而加载进来之后在调用函数的时候不加名字空间还是无法调用，那么加载进来的意义何在?</span>
-</code></pre></li>
-</ul>
-</li>
-<li><p>clojure里面名字空间和方法名之间的分隔符是<code>/</code>而不是java里面使用的<code>.</code></p>
-<pre><code>(clojure.<span class="built_in">string</span>/join <span class="string">"$"</span> [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]);;=&gt;<span class="string">"1$2$3"</span>
-</code></pre></li>
-<li><p>alias函数(这个在zsh的配置文件里面也有经常使用到，感觉非常的便利)给一个名字空间指定一个别名以减少我们打字的工作，当然这个别名的定义只在当前的名字空间里面有效；不想加载整个库，有想要使用里面部分方法的时候就可以考虑这个</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">alias</span></span> 'su 'clojure.string)</span>
-<span class="list">(<span class="keyword">su/join</span> <span class="string">"$"</span> <span class="collection">[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</span>)</span><span class="comment">;;=&gt;"1$2$3"</span>
-</code></pre></li>
-<li><p>refer函数使得指定的名字空间里面的函数在当前名字空间里面可以访问(不用使用全限定名字)。一个特例就是如果当前名字空间有那个名字空间一样的名字， 那么你访问的时候还是要制定名字空间的。但是它只为已经加载的程序库创建映射</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">refer</span></span> 'clojure.string)</span>
-<span class="list">(<span class="keyword">join</span> <span class="string">"$"</span> <span class="collection">[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</span>)</span><span class="comment">;;=&gt;"1$2$3"</span>
-</code></pre></li>
-<li><p>还可以使用rename关键字和一个map为同样的函数设置一个别名；rename除了可以与:refer共同起作用，还可以与:use共同起作用</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">ns</span></span> joy.yet-another
- <span class="list">(<span class="attribute">:refer</span> joy.ch1 <span class="attribute">:rename</span> <span class="collection">{hello hi}</span>)</span>)</span>
-<span class="list">(<span class="keyword">hi</span>)</span>
-</code></pre></li>
-<li><p>use命令，通常require和refer是结合在一起使用，而这个相当于require和refer的简洁形式</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">use</span></span> 'clojure.string)</span>
-</code></pre></li>
-<li><p>import命令，一般用来加载java类，非java类一般用use来加载，在命名空间创建时，会自动导入java.lang包里的类，那么问题来了，如果我要使用第三方的库要怎么办?</p>
-</li>
-<li><p>ns宏可以用来改变默认名字空间，通常在一个源代码的最上面指定这个</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">ns</span></span> com.ociweb.demo
-  <span class="list">(<span class="attribute">:use</span> clojure.string)</span>
-  <span class="list">(<span class="attribute">:import</span> <span class="list">(<span class="keyword">java.text</span> NumberFormat)</span> <span class="list">(<span class="keyword">javax.swing</span> JFrame JLable)</span>)</span>)</span>
-  <span class="comment">;;use以及import这些指令写在ns里面的时候格式如上</span>
-  <span class="comment">;;输出当前的命名空间</span>
-  <span class="list">(<span class="keyword">println</span> <span class="string">"The current namepace is "</span> *ns*)</span><span class="comment">;;=&gt;输出当前的命名空间</span>
-  <span class="comment">;;如果多个命名空间的函数命名冲突，就必须要结合命名空间来调用了</span>
-</code></pre></li>
-<li>create-ns函数可以创建一个新的名字空间，但是不会变成默认的名字空间</li>
-</ul>
-<h2 id="分发平台">分发平台</h2><ul>
-<li>Clojure Core</li>
-<li>Clojure Contrib</li>
-<li>两个版本比如相同，不能混合使用</li>
-</ul>
-<h2 id="命名规范">命名规范</h2><ul>
-<li>Clojure采用的命名规范采用的是小写字母的形式，多个字母之间使用短线连接，而不是采用驼峰命名法，这个有一点特别</li>
-</ul>
-<h2 id="特性">特性</h2><ul>
-<li>延迟计算，需要的时候才回去调用</li>
-<li><p>动态语言：不需要去声明变量的类型，非常的便利</p>
-<ul>
-<li><p>动态类型系统(Duck Typing)：所谓动态体现在很多方面，首先Clojure使用动态类型系统，每个Symbol所代表的值的类型是在运行的时候确定的；对于一个函数而言，它只关心参数能接受某些操作，并不会对具体的类型做出限制，比如<code>fn[a b](+ a b)</code>，它只要求a和b必须能作为+的参数，而并不对其类型做限制(这让我想要知道Clojure是否为强类型语言)；当然动态还体现在Symbol的动态绑定上，利用binding来进行动态绑定，这样可以实现高效的单元测试，来一个demo说明一下</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">defn</span></span> some-op <span class="collection">[]</span> <span class="list">(<span class="keyword">send-email</span>)</span> <span class="comment">;定义了一个some-op函数，不接受参数，函数具体的内容是调用send-email函数)</span>
-<span class="comment">;在单元测试的时候不可能真的去发邮件，于是可以这样做</span>
-<span class="list">(<span class="keyword">binding</span> <span class="collection">[send-email <span class="list">(<span class="keyword"><span class="built_in">fn</span></span> <span class="collection">[]</span>)</span>]</span> <span class="list">(<span class="keyword">some-op</span>)</span>)</span>
-<span class="comment">;这里先将send-email与一个空函数进行绑定，然后再调用some-op</span>
-<span class="comment">;这样的特性在开发大型系统的时候非常的有帮助</span></span>
-</code></pre></li>
-</ul>
-</li>
-<li><p>支持分数，也就是不会丢失精度，这个特性有点强大</p>
-</li>
-<li>repl，非常简单的交互式学习方法，输入一行代码，直接就反馈出结果</li>
-<li>名字空间，就相当于是一个文件名，自己写的代码所属的文件是哪一个？</li>
-<li>并发编程<ul>
-<li>这是clojure的一个杀手级特性，既然用了clojure来进行编程，那么就要好好利用这一个特性才可以，把区别于java的地方找出来</li>
-</ul>
-</li>
-<li>不可变性<ul>
-<li>clojure会保证各个数据的历史版本，就像是git的版本跟踪一样，每一个状态与时间关联在了一起</li>
-</ul>
-</li>
-</ul>
-<h2 id="代码的处理">代码的处理</h2><ul>
-<li><a href="">效果图</a></li>
-</ul>
-<h2 id="语法">语法</h2><ul>
-<li>lisp的语法相对而言有点奇怪，但也不尽然，用久了自然就会习惯，主要是要学习一些新的名词概念</li>
-<li><p>函数</p>
-<ul>
-<li>调用：(a b c)表示对函数a的调用，参数是b和c，<code>(function-name arg1 arg2 agr3)</code></li>
-<li><p>定义：</p>
-<pre><code><span class="comment">;写一个简单的hello问好函数</span>
-<span class="comment">;如果没有一个标识符与定义的函数进行绑定，就需要使用defn进行说明，调用的时候就使用函数名进行调用</span>
-<span class="list">(<span class="keyword"><span class="built_in">defn</span></span> hello <span class="collection">[name]</span> <span class="list">(<span class="keyword">println</span> <span class="string">"Hello,"</span> name)</span>)</span><span class="comment">;非常的简单，分号都被省略掉了</span>
-<span class="list">(<span class="keyword">hello</span> <span class="string">"Arthury"</span>)</span> <span class="comment">;=&gt;Hello, Arthury</span>
-<span class="comment">;;可以定义接受多个版本的参数，并且支持在定义内部加上一席文档描述</span>
-<span class="list">(<span class="keyword"><span class="built_in">defn</span></span> make-a-set
-  <span class="string">"Taks either one or two values and makes a set form them"</span>
-  <span class="list">(<span class="collection">[x]</span> #<span class="collection">{x}</span>)</span>
-  <span class="list">(<span class="collection">[x y]</span> #<span class="collection">{x y}</span>)</span>)</span>
-<span class="comment">;如果有一个标识符用来绑定，就是用def，调用的时候使用标识符来调用</span>
-<span class="list">(<span class="keyword"><span class="built_in">def</span></span> say-hello <span class="list">(<span class="keyword">hello</span> <span class="collection">[name]</span> <span class="list">(<span class="keyword">println</span> <span class="string">"Hello,"</span> name)</span>)</span>
-<span class="list">(<span class="keyword">say-hello</span> <span class="string">"Arthury"</span>)</span>
-<span class="comment">;;一次性函数，定义完之后直接调用，之后就无法再进行使用了，使用fn来进行声明，这种一次性函数连名字都可以省掉了</span>
-<span class="list">(<span class="list">(<span class="keyword"><span class="built_in">fn</span></span> <span class="collection">[name]</span> <span class="list">(<span class="keyword">println</span> <span class="string">"Hello "</span> name)</span>)</span> <span class="string">"Arthury"</span>)</span><span class="comment">;;写完之后直接在后面跟上参数便可，非常的简单粗暴</span>
-<span class="comment">;;还有一种定义可以在调用函数的时候重载元数(其实就是接受的参数的数量)，这个有点像是objective-c里面的嵌套调用，可以自己选择参数的数量</span>
-<span class="list">(<span class="keyword"><span class="built_in">fn</span></span>
-  <span class="list">(<span class="collection">[x]</span> #<span class="collection">{x}</span>)</span>
-  <span class="list">(<span class="collection">[x y]</span> #<span class="collection">{x y}</span>)</span> <span class="number">42</span>)</span>
-<span class="comment">;;同样可以让函数接受任意数量的参数，使用&amp;就可以实现，只要不超过20个</span>
-<span class="list">(<span class="list">(<span class="keyword"><span class="built_in">fn</span></span> arity2+ <span class="collection">[x y &amp; z]</span> <span class="collection">[x y z]</span>)</span> <span class="number">1</span> <span class="number">2</span>)</span><span class="comment">;;=&gt;[1 2 nil]</span></span>
-</code></pre></li>
-<li><p>以#()定义原位(in-place)函数</p>
-<ul>
-<li><p>可以使用了#()来方便的创建匿名函数，使用了#()读取器的特性，这个可以很方便的将函数作为一个参数来进行使用，非常的便利</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">def</span></span> make-a-list_ #<span class="list">(<span class="keyword"><span class="built_in">list</span></span> %)</span>)</span><span class="comment">;;%表示要接受参数，#()在很多场景下都是可以使用，非常的灵活</span>
-<span class="list">(<span class="keyword"><span class="built_in">def</span></span> make-a-list1 #<span class="list">(<span class="keyword"><span class="built_in">list</span></span> %<span class="number">1</span> %<span class="number">2</span>)</span>)</span><span class="comment">;;可以接受多个参数</span>
-<span class="list">(<span class="keyword"><span class="built_in">def</span></span> make-a-list2 #<span class="list">(<span class="keyword"><span class="built_in">list</span></span> %<span class="number">1</span> %<span class="number">2</span> %&amp;)</span>)</span><span class="comment">;;同样可以接受可变的参数</span>
-</code></pre></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>block</p>
-<ul>
-<li>如果要把一系列表达式或一个表达式的 block 当做一个整体对待，那就要用到 do form 了。所有的表达式都会求值，但只有最后一个会返回；这样可以在repl里面一次性编译多个表达式，但是block的意义仅限于此吗？<br>这样</li>
-</ul>
-</li>
-<li><p>不一样的操作数</p>
-<ul>
-<li>Clojure中的操作符是前置的，这样的一个好处是当操作数很多的时候，只需要写一个操作符便可，这样看来一个操作符就相当于一个函数，<code>(+ a b c)</code>表示<code>a + b + c</code></li>
-</ul>
-</li>
-<li><p>语法糖</p>
-<ul>
-<li><p>概念解释</p>
-<ul>
-<li>Bindings<ul>
-<li>不存在变量这一说法，binding也是一个新概念，可以理解为标识符与表达式的绑定</li>
-<li>分类：<ul>
-<li>全局binding</li>
-<li>线程本地(thread local)</li>
-<li>函数内本地的</li>
-<li>表达式内部的binding</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Symbols</p>
-<ul>
-<li>这个理解为象征，类似java里面的变量的名字，是用来给东西命名的</li>
-<li>Symbols的值是它所代表的名字的值，如果要使用Symbols的值，就需要把它用引号引起来，<code>&#39;n&#39;</code>，就相当于标识符</li>
-<li><p>标识符而可以代表运行环境中的对象，因此可以与特定对象绑定起来，比如字符串或者函数之类的，都是可以的</p>
-<pre><code>(def my-string <span class="string">"Hello World!"</span>) ;把my-string与<span class="string">"Hello World"</span>绑定在一起
-(def <span class="keyword">say</span>-hello
-(fn <span class="comment">[name]</span> (println (str <span class="string">"Hello"</span> name)))) ;把<span class="keyword">say</span>-hello与函数fn绑定在一起，具体的函数也是属于特定的对象
-</code></pre></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>与#相关</p>
-<ul>
-<li>正则表达式:#”pattern”</li>
-<li>匿名函数:#(single-expression)，这个有用于做filter的筛选条件，总之匿名函数用的还是比较多的，而是比较方便使用的一种形式</li>
-</ul>
-</li>
-<li><p>操作</p>
-<ul>
-<li><p>def</p>
-<ul>
-<li><p>相当于定义加赋值，可以用来定义的时候同时赋值，这是一个special form，一般是用来绑定标识符与特定对象的</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">def</span></span> n <span class="number">2</span>)</span>
-<span class="comment">;这里表示一个名字叫"n"的symbol被定义</span>
-</code></pre></li>
-</ul>
-</li>
-<li><p>let</p>
-<ul>
-<li>这也是一个special form，let会创建局限于一个当前form的bindings，它的第一个参数是一个vector，里面包含名字-表达式的对子，表达式的值会被解析然后赋给左边的标识符；这些binding(标识符与表达式的绑定)可以在这个vector后面的表达式里面的使用，这个binding还可以被多处赋值以改变它们的值，也就是可以改变当前标识符所绑定的标识符；let命令剩下的参数是一些利用这个binding来进行计算的一些表达式。但是要注意：如果是属于调用其他函数(一般指自己写的函数)的表达式，那么这个函数是无法利用let创建的这个binding的(原来自己想当然认为可以使用，结果导致了后面的理解困难，后面如果再遇到困难就回想一下自己是否默认了什么奇怪的前提)</li>
-<li>用处<ul>
-<li>绑定”变量”的，<code>(let [x 1 y 2] (print x &quot;,&quot; y))</code>，输出<code>x=&gt;1, y=&gt;2</code></li>
-<li>绑定可以理解为是赋值，let起到的作用是局部绑定，就可以理解为局部变量</li>
-</ul>
-</li>
-<li>隐式的do：let 体的部分有时被形容成“隐式的 do”，因为其遵循着相同的规则：可以包括任意数量的表达式，所有的都会求值，但只有最后一个会返。</li>
-</ul>
-</li>
-<li><p>binding        </p>
-<ul>
-<li><p>这个与let类似，但是它创建的本地binding会暂时的覆盖已经存在的全局binding，这个binding可以创建这个binding的form以及这个form里面调用的函数里面都能够看到，但是一旦跳出这个binding那么被覆盖的全局binding的值会回复到之前的状态，就像是局部变量与全局变量一样；但是使用let给定一个binding并不会影响全局binding，let的原理并不是覆盖，只是享有优先访问权的而已，如果使用binding就是覆盖，虽然离开各自的form都会失效</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">def</span></span> ^<span class="attribute">:dynamic</span> v <span class="number">1</span>)</span> <span class="comment">; v is a global binding</span>
-<span class="list">(<span class="keyword"><span class="built_in">defn</span></span> f1 <span class="collection">[]</span>
-  <span class="list">(<span class="keyword">println</span> <span class="string">"f1: v ="</span> v)</span>)</span> <span class="comment">; global binding</span>
-<span class="list">(<span class="keyword"><span class="built_in">defn</span></span> f2 <span class="collection">[]</span>
-  <span class="list">(<span class="keyword">println</span> <span class="string">"f2: before let v ="</span> v)</span> <span class="comment">; global binding</span>
-  <span class="list">(<span class="keyword"><span class="built_in">let</span></span> <span class="collection">[v <span class="number">2</span>]</span> <span class="comment">; creates local binding v that shadows global one</span>
-    <span class="list">(<span class="keyword">println</span> <span class="string">"f2: in let, v ="</span> v)</span> <span class="comment">; 调用会输出2，访问的是局部的binding，并不是全局的binding，通过优先权来进行实现</span>
-    <span class="list">(<span class="keyword">f1</span>)</span>)</span> <span class="comment">;这里调用其他函数还是会访问全局的binding</span>
-  <span class="list">(<span class="keyword">println</span> <span class="string">"f2: after let v ="</span> v)</span>)</span> <span class="comment">; 调用会输出1</span>
-<span class="list">(<span class="keyword"><span class="built_in">defn</span></span> f3 <span class="collection">[]</span>
-  <span class="list">(<span class="keyword">println</span> <span class="string">"f3: before binding v ="</span> v)</span> <span class="comment">; global binding</span>
-  <span class="list">(<span class="keyword">binding</span> <span class="collection">[v <span class="number">3</span>]</span> <span class="comment">; same global binding with new, temporary value</span>
-    <span class="list">(<span class="keyword">println</span> <span class="string">"f3: in binding, v ="</span> v)</span> <span class="comment">; 调用会输出3，访问的是全局的binding，通过覆盖来实现</span>
-    <span class="list">(<span class="keyword">f1</span>)</span>)</span> <span class="comment">;输出3，因为全局的binding已被覆盖，只要没有跳出当前的form，效果就还在</span>
-  <span class="list">(<span class="keyword">println</span> <span class="string">"f3: after binding v ="</span> v)</span>)</span> <span class="comment">; global binding</span>
-</code></pre></li>
-<li><p>binding只能用于动态的变量上，动态绑定的特性</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>循环</p>
-<ul>
-<li><p>构建循环的经典方式是递归调用</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">defn</span></span> sum-dowm-from <span class="collection">[sum x]</span>
-  <span class="list">(<span class="keyword"><span class="built_in">if</span></span> <span class="list">(<span class="keyword"><span class="built_in">pos?</span></span> x)</span>
-    <span class="list">(<span class="keyword"><span class="built_in">recur</span></span> <span class="list">(<span class="keyword"><span class="built_in">+</span></span> sum x)</span> <span class="list">(<span class="keyword"><span class="built_in">dec</span></span> x)</span>)</span><span class="comment">;;这里的表达式很可能是与上面函数的参数相对应的，值的绑定直接就是一一对应上去，所以要注意的是写表达式的时候要一一对应上去</span>
-    sum)</span>)</span><span class="comment">;;这里写sum就会直接返回自身，数据自身也可以是一个函数;简而言之，出现在表达式结尾位置的form，其值可以作为整个表达式的返回值;这里整个if form也是整个函数的返回值</span>
-</code></pre></li>
-<li><p>recur，专门用于尾递归的form</p>
-<ul>
-<li>recur里的表达式都是先依次执行，然后同时绑定在函数实参上，也就是这里会自动执行重新的绑定</li>
-<li><p>可以用loop指定recur跳转的位置，同样也可以使用fn</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">defn</span></span> sum-down-form <span class="collection">[initial-x]</span>
-  <span class="list">(<span class="keyword"><span class="built_in">loop</span></span> <span class="collection">[sum <span class="number">0</span>, x initial-x]</span>
-    <span class="list">(<span class="keyword"><span class="built_in">if</span></span> <span class="list">(<span class="keyword"><span class="built_in">pos?</span></span> x)</span>
-      <span class="list">(<span class="keyword"><span class="built_in">recur</span></span> <span class="list">(<span class="keyword"><span class="built_in">+</span></span> sum x)</span> <span class="list">(<span class="keyword"><span class="built_in">dec</span></span> x)</span>)</span>
-      sum)</span>)</span>)</span>
-</code></pre></li>
-<li><p>recur form都是在结尾位置使用，作为返回值使用，因为是递归</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>副作用</p>
-<ul>
-<li>副作用操作指的是上面的操作会对下面产生影响？</li>
-</ul>
-</li>
-<li>注释<ul>
-<li>不一样的注释，使用<code>;</code>进行注释</li>
-</ul>
-</li>
-<li><p>不一样的原生数据结构(集合)</p>
-<ul>
-<li>clojure中的集合具有不可修改的、异源的以及持久的，不可修改意味着一旦一个集合产生滞后，你不能从集合里面删除一个元素，往里面加入元素也是不可以的；异源代表着集合中的数据类型可以不一样；持久意味着当一个集合新的版本产生之后，旧的版本还是在的，Clojure以一种非常高效的，共享内存的方式来实现这个的，比如有一个map里面有一千个name-valuea pair, 现在要往map里面加一个，那么对于那些没有变化的元素， 新的map会共享旧的map的内存，而只需要添加一个新的元素所占用的内存，这种比普通的编程语言直接生成一个新的集合要高效多了</li>
-<li>clojure中集合是不能进行修改，一些函数可以根据已有的集合高效的创造出一个新的集合；同时也有一些函数操作一个已有的集合（比如vector)来产生另外一种类型的集合(比如LazySeq)</li>
-<li>vector: <code>[a b c]</code>或者<code>vector &quot;a&quot; &quot;b&quot; &quot;c&quot;</code>，这里面的a、b、c就是标识符，代表运行环境里的某个对象，这也是一种有序的集合，函数定义的时候指定参数列表用的就是vector，多个参数写在一个vector里面；这种几个对于从最后面删除一个元素，或者获取最后面一个元素是非常高效的；另外，除非你要写的程序要特别用到list的从前面添加/删除效率很高的这个特性， 否则一般来说我们鼓励你们用vector而不是lists。这主要是因为语法上[…] 比 ‘(…) 更自然，更不容易弄混淆。因为函数，宏以及special form的语法也是(…)。</li>
-<li><p>map: <code>{:a 1 :b 2}</code>(也可以写成<code>{:a 1, :b 2}</code>，这里的逗号没有什么实际意义，一般只为提高可读性)，其中的:a与:b是键，以:开头的表达式被称为关键字，而1与2是它们对应的值；有点像是字典类型，但是这些符号只代表它们自己，不代表其他任何的对象；map一般采用关键字做键，但是也可以采用其他类型的做键</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">def</span></span> popsicle-map <span class="list">(<span class="keyword"><span class="built_in">hash-map</span></span> <span class="attribute">:red</span> <span class="attribute">:cherry</span>, <span class="attribute">:green</span> <span class="attribute">:apple</span>, <span class="attribute">:purple</span> <span class="attribute">:grape</span>)</span>)</span>
-<span class="list">(<span class="keyword"><span class="built_in">def</span></span> posicle-map <span class="collection">{<span class="attribute">:red</span> <span class="attribute">:cherry</span>, <span class="attribute">:green</span> <span class="attribute">:apple</span>, <span class="attribute">:purple</span> <span class="attribute">:grape</span>}</span>)</span>
-<span class="list">(<span class="keyword"><span class="built_in">def</span></span> posicle-map <span class="list">(<span class="keyword"><span class="built_in">sorted-map</span></span> <span class="attribute">:red</span> <span class="attribute">:cherry</span>, <span class="attribute">:green</span> <span class="attribute">:apple</span>, <span class="attribute">:purple</span> <span class="attribute">:grape</span>)</span>)</span>
-<span class="comment">;;获取数据的方法有三种</span>
-<span class="list">(<span class="keyword"><span class="built_in">get</span></span> posicle-map <span class="attribute">:green</span>)</span>
-<span class="list">(<span class="keyword">posicle-map</span> <span class="attribute">:green</span>)</span>
-<span class="list">(<span class="attribute">:green</span> posicle-map)</span>
-<span class="comment">;;contains?函数在这里的用处就是检查map是否包含有对应的key，注意是看检查key</span>
-<span class="list">(<span class="keyword"><span class="built_in">contains?</span></span> posicle-map <span class="attribute">:green</span>)</span> <span class="comment">;=&gt;true</span>
-<span class="comment">;;key与vals函数分别返回map里面所有可以与值的集合</span>
-<span class="list">(<span class="keyword"><span class="built_in">key</span></span> posicle-map)</span> <span class="comment">;=&gt; (:red :green :purple)</span>
-<span class="list">(<span class="keyword"><span class="built_in">vals</span></span> posicle-map)</span> <span class="comment">;=&gt; (:cherry :apple :grape)</span>
-<span class="comment">;;assoc函数可以更新maps的元素，没有就添加，有就更新值</span>
-<span class="list">(<span class="keyword"><span class="built_in">assoc</span></span> posicle-map <span class="attribute">:green</span> <span class="attribute">:lime</span> <span class="attribute">:blue</span> <span class="attribute">:blueberry</span>)</span> <span class="comment">;=&gt;{:blue :blueberry, :green :lime, :purple :grape, :red :cherry}</span>
-<span class="comment">;;dissoc也是在现有的基础上创建一个新的map，同时忽略掉给定的key，第二个参数就是填写要忽略的key</span>
-<span class="list">(<span class="keyword"><span class="built_in">dissoc</span></span> popsicle-map <span class="attribute">:green</span> <span class="attribute">:blue</span>)</span> <span class="comment">;=&gt;{:purple :grape, :red :cherry}</span>
-<span class="comment">;;可以使用doseq与destructuring来遍历map</span>
-<span class="comment">;;select-keys函数接收一个map对象，以及一个key集合作为参数，它返回这个集合里面key在那个集合里面的一个子map</span>
-<span class="list">(<span class="keyword"><span class="built_in">select-keys</span></span> popsicle-map <span class="collection">[<span class="attribute">:red</span> <span class="attribute">:green</span> <span class="attribute">:blue</span>]</span>)</span> <span class="comment">;=&gt;{:green :apple :red :cherry}，如果参数里面的key找不到，就会被无视掉</span>
-<span class="comment">;;conj 函数添加一个map里面的所有元素到另外一个map里面去。如果目标map里面的key在源map里面也有，那么目标map的值会被更新成源map里面的值</span>
-<span class="comment">;;map里面可以嵌套map，而且可以无限嵌套，这样看上去就好像一个json数组</span>
-<span class="list">(<span class="keyword"><span class="built_in">def</span></span> person <span class="collection">{
-<span class="attribute">:name</span> <span class="string">"Arthury"</span>
-<span class="attribute">:address</span> <span class="collection">{
-  <span class="attribute">:street</span> <span class="string">"644 Glen Summit"</span>
-  <span class="attribute">:city</span> <span class="string">"HanZhou"</span>}</span>
-<span class="attribute">:employer</span> <span class="collection">{
-    <span class="attribute">:name</span> <span class="string">"Mike"</span>
-    <span class="attribute">:address</span> <span class="collection">{
-        <span class="attribute">:city</span> <span class="string">"Beijing"</span>}</span>}</span>}</span>)</span>
-  <span class="comment">;;get-in函数、宏-&gt;以及reduce函数都可以用来获得内嵌的key，这是三种用于获得内嵌key的方法</span>
-  <span class="list">(<span class="keyword"><span class="built_in">get-in</span></span> person <span class="collection">[<span class="attribute">:employer</span> <span class="attribute">:address</span> <span class="attribute">:city</span>]</span>)</span><span class="comment">;;法一</span>
-  <span class="list">(<span class="keyword"><span class="built_in">-&gt;</span></span> person <span class="attribute">:employer</span> <span class="attribute">:adress</span> <span class="attribute">:city</span>)</span><span class="comment">;;法二</span>
-  <span class="list">(<span class="keyword"><span class="built_in">reduce</span></span> get person <span class="collection">[<span class="attribute">:employer</span> <span class="attribute">:address</span> <span class="attribute">:city</span>]</span>)</span><span class="comment">;;法三</span>
-  <span class="comment">;;assoc-in函数可以用来修改一个内嵌的key的值(这里的修改是"修改")</span>
-  <span class="list">(<span class="keyword">assoc-in</span> person <span class="collection">[<span class="attribute">:employer</span> <span class="attribute">:address</span> <span class="attribute">:city</span>]</span> <span class="string">"Clayton"</span>)</span>
-  <span class="comment">;;update-in函数也是用来更新给定的内嵌的key对应的值，只是这个新值是通过一个给定的函数来计算出来</span>
-  <span class="list">(<span class="keyword"><span class="built_in">update-in</span></span> person <span class="collection">[<span class="attribute">:employer</span> <span class="attribute">:address</span> <span class="attribute">:zip</span>]</span> str <span class="string">"-1234"</span>)</span> <span class="comment">;;这段代码会将原来的zip更新为"-1234"</span>
-</code></pre></li>
-<li><p>set: <code>#{1 2 3}</code>，这是一个包含不重复元素，但是不要求集合里面的元素保持它们添加时候的顺序； Clojure 支持两种不同的set： 排序的和不排序的。如果添加到set里面的元素相互之间不能比较大小，那么一个ClassCastException 异常会被抛出来</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">def</span></span> stooges <span class="list">(<span class="keyword"><span class="built_in">hash-set</span></span> <span class="string">"Moe"</span> <span class="string">"Larray"</span> <span class="string">"Curly"</span>)</span>)</span> <span class="comment">;没有排序的</span>
-<span class="list">(<span class="keyword"><span class="built_in">def</span></span> stooges #<span class="collection">{<span class="string">"Moe"</span> <span class="string">"Larray"</span> <span class="string">"Curly"</span>}</span>)</span> <span class="comment">;同上</span>
-<span class="list">(<span class="keyword"><span class="built_in">def</span></span> stooges <span class="list">(<span class="keyword"><span class="built_in">sorted-set</span></span> <span class="string">"Moe"</span> <span class="string">"Larray"</span> <span class="string">"Curly"</span>)</span>)</span> <span class="comment">;会进行排序的</span>
-</code></pre></li>
-<li><p>Lists: 这是一个有序的集合</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">def</span></span> set-name <span class="list">(<span class="keyword"><span class="built_in">list</span></span> <span class="string">"Moe"</span> <span class="string">"Larry"</span> <span class="string">"Curly"</span>)</span>)</span>
-<span class="list">(<span class="keyword"><span class="built_in">def</span></span> set-name <span class="list">(<span class="keyword"><span class="built_in">quote</span></span> <span class="list">(<span class="string">"Moe"</span> <span class="string">"Larry"</span> <span class="string">"Curly"</span>)</span>)</span>)</span>
-<span class="list">(<span class="keyword"><span class="built_in">def</span></span> set-name '<span class="list">(<span class="string">"Moe"</span> <span class="string">"Larry"</span> <span class="string">"Curly"</span>)</span>)</span>
-<span class="comment">;;这几个创建出来的list都是一样的</span>
-<span class="comment">;;注意:空的lisp可以用()表示，这个与nil不同，在某一些lisp方言当中，()与nil是等价的</span>
-</code></pre></li>
-<li><p>数据结构之间是可以相互嵌套的，而且Clojure并没有要求vector、map或set里的元素是同一类型，也就是可以使混合类型</p>
-<pre><code><span class="collection">[<span class="number">1</span> <span class="number">2</span> <span class="string">"abc"</span> <span class="collection">[<span class="attribute">:a</span> <span class="number">1</span>]</span>]</span>
-<span class="collection">{<span class="attribute">:a</span> <span class="number">1</span>, <span class="string">"b"</span> <span class="number">2</span>, <span class="string">"abc"</span> #<span class="collection">{<span class="number">1</span> <span class="attribute">:a</span> <span class="attribute">:b</span>}</span>}</span><span class="comment">;这里面的逗号是随便加的，可以随便加，并不一定要全部加，关键字本身也可以直接作为元素</span>
-</code></pre></li>
-<li><p>集合的求值问题</p>
-<ul>
-<li>一般集合在求值的时候，其包含的各项会先求值，除非是以宏或特殊form名字开头的list</li>
-<li><p>字面标量值会对自身求值，返回自身</p>
-<pre><code><span class="number">1</span>;=&gt;<span class="number">1</span>
-</code></pre></li>
-<li><p>集合vector，其求值也是先对其包含的项求值，完成之后，继续对vector求值；map的求值也同vector</p>
-<pre><code>[<span class="number">2</span> <span class="number">3</span>];=&gt;[<span class="number">2</span> <span class="number">3</span>]
-</code></pre></li>
-<li><p>集合list的求值有点不同，它会调用函数，或者触发特殊form；无论是list头是什么函数，都会用list余下的项作为实参调用，也就是list集合的第一个元素会被当成是函数来进行调用</p>
-<pre><code>(cons <span class="number">1</span> [<span class="number">2</span> <span class="number">3</span>]);=&gt;(<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>);;cons自身也包含在这个<span class="built_in">list</span>里面
-</code></pre></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>quote:这是一个特殊的form，可以让它的参数不求值，在某些时候会非常的有用；无论多么复杂的实参，quote都能起作用，里面还可以进行各种各样的嵌套，最后整个东西都会返回</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">quote</span></span> <span class="list">(<span class="keyword"><span class="built_in">cons</span></span> <span class="number">1</span> <span class="collection">[<span class="number">2</span> <span class="number">3</span>]</span>)</span>)</span><span class="comment">;;=&gt;(cons 1 [2 3])</span>
-</code></pre><ul>
-<li><p>应用场景：可以使用list做数据集合，然后让list其中的函数不被调用</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">cons</span></span> <span class="number">1</span> <span class="list">(<span class="keyword"><span class="built_in">quote</span></span> <span class="list">(<span class="keyword">2</span> <span class="number">3</span>)</span>)</span>)</span><span class="comment">;;=&gt;(1 2 3),这样2就不会被当成是函数来调用从而出错</span>
-</code></pre></li>
-<li><p>简便写法，可以用<code>&#39;</code>代替<code>quote</code></p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">cons</span></span> <span class="number">1</span> '<span class="list">(<span class="keyword">2</span> <span class="number">3</span>)</span>)</span><span class="comment">;;=&gt;(1 2 3)</span>
-</code></pre></li>
-<li><p>一组对比，写的是什么，就会一模一样的返回什么</p>
-<pre><code><span class="list">[<span class="keyword">1</span> <span class="list">(<span class="keyword"><span class="built_in">+</span></span> <span class="number">2</span> <span class="number">3</span>)</span>] <span class="comment">;;=&gt; [1 5]</span>
-'<span class="list">(<span class="keyword">1</span> <span class="list">(<span class="keyword"><span class="built_in">+</span></span> <span class="number">2</span> <span class="number">3</span>)</span>)</span> <span class="comment">;;=&gt; (1 (+ 2 3)),写的是什么，返回的就是什么</span></span>
-</code></pre></li>
-<li><p>与quote对应的有一个语法quote，功能差不多，但是多了一些额外的特性，比较适合用来构建代码的集合</p>
-<pre><code>`(<span class="number">1</span> <span class="number">2</span> <span class="number">4</span>);=&gt;(<span class="number">1</span> <span class="number">2</span> <span class="number">4</span>)，写法就是一个反引号
-</code></pre><ul>
-<li><p>语法quote会自动对其实参里未限定的符号进行限定，这里的限定是指对其所在命名空间进行匹配，如果符号命名的var或类还不存在，语法quote会使用当前的命名空间</p>
-<pre><code>`<span class="built_in">map</span>
-;=&gt; clojure.core/<span class="built_in">map</span>
-`Integer
-;=&gt; java.lang.Integer
-`(<span class="built_in">map</span> even? [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>])
-;=&gt; (clojure.core/<span class="built_in">map</span> clojure.core/even? [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>])
-`is-always-right
-;=&gt;user/is-always-right
-</code></pre></li>
-<li><p>反quote，quote阻止了其实参及其所有子form求值，但是如果想要做到对其中某些form求值，就可以使用反quote，<code>~</code></p>
-<pre><code>`<span class="params">(+ <span class="number">10</span> <span class="params">(* <span class="number">3</span> <span class="number">2</span>)</span>)</span>
-;=&gt;<span class="params">(clojure.core/+ <span class="number">10</span> <span class="params">(clojure.core/* <span class="number">3</span> <span class="number">2</span>)</span>)</span>
-`<span class="params">(+ <span class="number">10</span> ~<span class="params">(* <span class="number">3</span> <span class="number">2</span>)</span>)</span>
-;=&gt;<span class="params">(clojure.core/+ <span class="number">10</span> <span class="number">6</span>)</span>
-<span class="params">(let [x '<span class="params">(<span class="number">2</span> <span class="number">3</span>)</span>] `<span class="params">(<span class="number">1</span> ~x)</span>)</span>;;=&gt; <span class="params">(<span class="number">1</span> <span class="params">(<span class="number">2</span> <span class="number">3</span>)</span>)</span>
-</code></pre></li>
-<li><p>类似于反quote的还有一个反quote拼接，这是反quote的一个变体</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">let</span></span> <span class="list">[<span class="keyword">x</span> '<span class="list">(<span class="keyword">2</span> <span class="number">3</span>)</span>] `<span class="list">(<span class="keyword">1</span> ~@x)</span>)<span class="comment">;;=&gt;(1 2 3);;这里是直接把序列x拼装到最终的list里，而不是作为嵌套list插入，区别就在这里</span></span></span>
-</code></pre></li>
-</ul>
-</li>
-<li><p>auto-gensym</p>
-<ul>
-<li><p>如果需要哟个未限定的符号，只要在语法quote里，最简单的做法是，在符号名后添加一个#，让clojure生成一个新的未限定符号</p>
-<pre><code>`potion<span class="preprocessor"># </span>
-</code></pre></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>():一个括号里面可以执行不止一个的操作，同样<code>()</code>也可以理解为是一个容器(或者说是一个form)，这个容器的作用还不是很清楚，现在只知道调用一个函数就需要使用<code>()</code>,并不知道在<code>()</code>里面嵌套<code>()</code>是什么样的标准</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">let</span></span> <span class="collection">[a <span class="number">1</span> b <span class="number">2</span>]</span> <span class="list">(<span class="keyword"><span class="built_in">+</span></span> a b)</span>)</span>
-</code></pre></li>
-<li><p>真与假</p>
-<ul>
-<li>对于if而言，除了false与nil，其余的都是true，像数字0之类的也会被当成是true；如果一个对象不是nil或false，它就一直是”true”</li>
-<li><p>另外要注意的是不要创建布尔对象，因为这样的对象无论值是什么，有时候会被当成true，有时候又会被当成false，所以不要用；如果要解析字符串，直接用Boolean类的静态方法valueOf便可，而不要使用其构造函数</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">if</span></span> <span class="list">(<span class="keyword">Boolean/value</span> <span class="string">"false"</span>)</span> <span class="attribute">:truthy</span> <span class="attribute">:falsey</span>)</span><span class="comment">;;=&gt;:falsey</span>
-</code></pre></li>
-<li><p>介绍一下seq函数，使用seq做终止条件是检查序列是否为空的惯用习惯，因为空集合并非为false，所以需要这样来操作</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">defn</span></span> print-seq <span class="collection">[s]</span>
-  <span class="list">(<span class="keyword"><span class="built_in">when</span></span> <span class="list">(<span class="keyword"><span class="built_in">seq</span></span> s)</span>
-    <span class="list">(<span class="keyword"><span class="built_in">prn</span></span> <span class="list">(<span class="keyword"><span class="built_in">first</span></span> s)</span>)</span>
-    <span class="list">(<span class="keyword"><span class="built_in">recur</span></span> <span class="list">(<span class="keyword">reset</span> s)</span>)</span>)</span>)</span>
-</code></pre></li>
-</ul>
-</li>
-<li><p>解构</p>
-<ul>
-<li>可以方便的实现对集合元素的访问</li>
-<li>解构与访问器方法<ul>
-<li>在面向对象程序设计语言当中，都会需要创建一个类来管理自己的数据对象，每一个数据对象都对应着自己的一套getter和setter方法；然而在clojure当中并没有类这个概念，构建应用对象最常见的做法是根据需要组合出map和vector</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>if语句</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">def</span></span> bug-numbers <span class="collection">[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span>]</span>)</span>
-<span class="list">(<span class="keyword"><span class="built_in">if</span></span> <span class="list">(<span class="keyword"><span class="built_in">pos?</span></span> <span class="list">(<span class="keyword"><span class="built_in">count</span></span> bug-numbers)</span>)</span>
-  <span class="list">(<span class="keyword">println</span> <span class="string">"No ready for release"</span>)</span>)</span>
-<span class="comment">;具体作用是判断集合bug-numbers中的元素是否大于0，然后决定是否执行println函数，这里面使用到了两个库函数，一个是pos，另一个是count</span>
-</code></pre></li>
-<li><p>宏-&gt;，也称之为”thread”，它本质上是调用一系列的函数，前一个函数的返回值作为后一个函数的参数，有点像是递归调用，但是宏-&gt;貌似不止有<code>-&gt;</code>这一种而已</p>
-<pre><code><span class="list">(<span class="keyword">f1</span> <span class="list">(<span class="keyword">f2</span> <span class="list">(<span class="keyword">f3</span> x)</span>)</span>)</span>
-<span class="list">(<span class="keyword"><span class="built_in">-&gt;</span></span> x f3 f2 f1)</span>
-<span class="comment">;;针对于map当中的嵌套key的访问写法上可能有点不一样</span>
-<span class="list">(<span class="keyword"><span class="built_in">-&gt;</span></span> map-name key-1 key-2 key-3)</span>
-</code></pre></li>
-<li><p>介绍几个初级函数</p>
-<ul>
-<li><p>conj:可以用来添加元素，根据不同的数据类型会选择出最合适的添加方式</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">conj</span></span> <span class="collection">[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</span> <span class="number">4</span>)</span> <span class="comment">;=&gt; [1 2 3 4]</span>
-<span class="list">(<span class="keyword"><span class="built_in">conj</span></span> '<span class="list">(<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>)</span> <span class="number">4</span>)</span> <span class="comment">;=&gt; (4 1 2 3)</span>
-</code></pre></li>
-<li><p>remove: 创建一个只包含所指定的谓词函数测试结果为false的元素的集合，把为true的都剔除掉</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">def</span></span> less-set <span class="list">(<span class="keyword"><span class="built_in">remove</span></span> #<span class="list">(<span class="keyword"><span class="built_in">=</span></span> % <span class="string">"Curly"</span>)</span> set-name)</span>)</span>
-</code></pre></li>
-<li><p>disj函数通过去掉给定的set里面的一些元素来创建一个新的set，对比区别一下remove，注意disj只能应用于set集合，其他的集合是不可以的</p>
-</li>
-<li>into: 见两个list里面的元素合并成一个新的大list</li>
-<li><p>str:返回字符串，注意这里是返回字符串，而不是输出字符串</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">str</span></span>)</span> <span class="comment">;=&gt;""</span>
-<span class="list">(<span class="keyword"><span class="built_in">str</span></span> x)</span> <span class="comment">;这里的要么是标识符，要么就是直接的字符串，如果就是直接的字符串，那要放在""里面，否则会报错</span>
-<span class="list">(<span class="keyword"><span class="built_in">str</span></span> <span class="string">"x"</span>)</span> <span class="comment">;=&gt;"x"</span>
-<span class="list">(<span class="keyword"><span class="built_in">str</span></span> <span class="string">"x"</span> <span class="string">"d"</span>)</span> <span class="comment">;=&gt;"xd"，会把所有的字符串合成之后返回</span>
-<span class="list">(<span class="keyword"><span class="built_in">str</span></span> 'x)</span> <span class="comment">;=&gt;"x"，这两个效果是一样的</span>
-<span class="list">(<span class="keyword"><span class="built_in">str</span></span> 'x 'd)</span> <span class="comment">;=&gt;"xd"</span>
-<span class="list">(<span class="keyword"><span class="built_in">str</span></span> <span class="string">"x) ;=&gt;这个是另外一种效果，目前还是未知的
-(str x y z) ;这里的xyz都是标识符</span></span>
-</code></pre></li>
-<li><p>println:输出字符串并且自动换行</p>
-<pre><code><span class="list">(<span class="keyword">println</span> <span class="string">"hello"</span> <span class="string">"world"</span>)</span> <span class="comment">;=&gt;hello world，中间的空格也会被保留，也可以像str那样使用'来传参数</span>
-</code></pre></li>
-<li><p>first: 返回集合的第一个字符，集合为空就返回nil</p>
-</li>
-<li>second: 返回集合的第二个字符</li>
-<li>last: 返回集合的最后一个字符</li>
-<li><p>nth:</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">nth</span></span> coll index)</span>
-<span class="list">(<span class="keyword"><span class="built_in">nth</span></span> coll index not-found)</span>
-<span class="comment">;;返回集合中指定索引的元素，索引是从0开始，如果越界就会抛出异常</span>
-</code></pre></li>
-<li><p>get: 用法同nth，但是如果所用越界是返回nil，而不是抛出异常，也就会更加的友好；如果集合类型是map，那么第二个参数就应该是key</p>
-</li>
-<li>next: 返回一个集合除了第一个元素之后的所有元素，如果没有更多的元素就会返回nil</li>
-<li>butlast: 返回一个集合除了最后一个元素之后的所有元素，如果只有一个元素就会返回nil</li>
-<li><p>drop-last: 见名知意，就是丢下一个集合中最后几个元素</p>
-<pre><code>(<span class="keyword">drop</span>-<span class="keyword">last</span> <span class="keyword">number</span> <span class="keyword">set</span>)
-</code></pre></li>
-<li><p>filter: 筛选函数，第一参数是自己的筛选规则，一般是自己写的匿名函数，第二个参数是等到筛选的参数</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">filter</span></span> #<span class="list">(<span class="keyword"><span class="built_in">&gt;</span></span> <span class="list">(<span class="keyword"><span class="built_in">count</span></span> %)</span> <span class="number">3</span>)</span> you-set)</span> <span class="comment">;筛选该集合中字符数超过三个的元素</span>
-</code></pre></li>
-<li><p>nthnext: 返回一个集合从索引值出直到末尾的所有元素</p>
-</li>
-<li><p>every?: 扫描集合中所有的元素，如果全部满足条件，就返回true，否则就返回false</p>
-<pre><code><span class="list">(<span class="keyword">every?</span> #<span class="list">(<span class="keyword"><span class="built_in">instance?</span></span> String %)</span> your-set)</span> <span class="comment">;扫描集合中所有的元素，看里面的元素是否为String实例，如果全部都是，就返回true，否则返回false</span>
-</code></pre></li>
-<li><p>not-every?:扫描集合中所有的元素，如果全部满足条件，就返回false，否则就返回true</p>
-</li>
-<li>some:扫描集合中的元素，遇到满足条件的就返回true，否则就返回nil，但是需要知己写匿名函数来做判断规则</li>
-<li>contains?: 这个函数可以操作sets和maps， 当操作set的时候, 它返回给定的set是否包含某个元素。这比在list和vector上面使用的some函数就简单多了</li>
-<li>not-any?:扫描集合中的元素，遇到满足条件的就返回false,否则就返回true</li>
-<li><p>subs: 返回一个子字符串</p>
-<pre><code><span class="list">(<span class="keyword">subs</span> <span class="string">"haha"</span> <span class="number">1</span>)</span> <span class="comment">;=&gt;aha ;返回索引(包括索引))之后的子字符串，这个是目前已知的用法</span>
-</code></pre></li>
-<li><p>count: 返回集合里面的元素个数</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">count</span></span> <span class="collection">[<span class="number">19</span> <span class="string">"yellow"</span> <span class="literal">true</span>]</span>)</span> <span class="comment">;=&gt; 3</span>
-</code></pre></li>
-<li><p>reverse: 把集合里面的元素反转</p>
-<pre><code>(reverse [<span class="number">2</span> <span class="number">4</span> <span class="number">7</span>]) ;=&gt;(<span class="number">7</span> <span class="number">4</span> <span class="number">2</span>)
-</code></pre></li>
-<li><p>map: 接受多个参数，第一个参数是要对后面集合的操作，后面的参数是要被操作的集合</p>
-<pre><code>(<span class="built_in">map</span> <span class="preprocessor">#(+ % <span class="number">3</span>) [<span class="number">2</span> <span class="number">4</span> <span class="number">7</span>]) ;=&gt;( <span class="number">5</span> <span class="number">7</span> <span class="number">10</span>)，第一个参数是要求对后面的集合采取+<span class="number">3</span>的操作，这里%是书写语法的要求，并不是取余的操作</span>
-(<span class="built_in">map</span> + [<span class="number">2</span> <span class="number">4</span> <span class="number">7</span>] [<span class="number">5</span> <span class="number">6</span>] [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span>]) ;=&gt;(<span class="number">8</span> <span class="number">12</span>)，这里第一个参数就是一个加法函数，对后面的集合进行操作，如果不够加就以最短的集合为标准，多出来的就会被直接无视掉
-</code></pre></li>
-<li><p>apply: 与map有点类似，但是还是有不少的不同点的</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">apply</span></span> + <span class="collection">[<span class="number">2</span> <span class="number">4</span> <span class="number">7</span>]</span>)</span> <span class="comment">;=&gt;13，第一个参数是一个操作数，第二个参数是一个集合，对这个集合操作之后返回一个值</span>
-</code></pre></li>
-<li><p>reduce: 接收一个需要两个参数的函数, 一个可选的value以及一个集合。它会以value以及集合的第一个元素作为参数来调用给定的函数（如果指定了value的话）， 要么以集合的第一个元素以及第二个元素为参数来调用给定的函数（如果没有指定value的话)。接着就以这个返回值以及集合里面的下一个元素为参数来调用给定的函数，知道集合里面的元素都被计算了 — 最后返回一个值</p>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="与Java的交互">与Java的交互</h2><ul>
-<li>clojure程序可以使用所有的java类以及接口，包括各种java类中的方法都可以直接调用，可以手动使用import函数来导入其他包的类，这就是说可以使用所有java可以使用的框架，然后使用clojure来进行实现，这简直是太棒了！这样java的框架基本基本上都可以使用了，这个不错，搞清楚怎么把这些导入到自己的项目里面，另外看一下clojure自己有没有一些框架，不是java的，jvm虚拟机是一个好东西</li>
-<li><p>clojure与其宿主共生，它提供了丰富而强大的特性，而java则提供了对象模型、程序库和运行时等方面的支持，相辅相成简直完美；注意，可以与java进行交互是因为可以使用java现存的大量的第三方库，然而使用clojure去解决问题是不使用面向对象的方法来的，所以不存在去构造类的说法，clojure有自己解决问题的模式</p>
-</li>
-<li><p>这里直接导入java的库就可以使用了，那么为什么需要使用lein来组织文件的目录，意义？</p>
-</li>
-<li><p>新建一个对象</p>
-<ul>
-<li><p>使用new方法可以轻松的做到</p>
-<pre><code><span class="list">(<span class="keyword">Classname.</span> args*)</span>
-<span class="list">(<span class="keyword"><span class="built_in">new</span></span> Classname args*)</span>
-<span class="comment">;;不明白这里的args*要如何进行理解？应该是类的构造方法，这里要传入进去的是构造函数的参数？有点意思</span>
-<span class="list">(<span class="keyword"><span class="built_in">new</span></span> java.util.HashMap <span class="collection">{<span class="string">"foo"</span> <span class="number">42</span> <span class="string">"bar"</span> <span class="number">9</span> <span class="string">"baz"</span> <span class="string">"quux"</span>}</span>)</span><span class="comment">;;这样就穿建立一个简单的HashMap</span>
-<span class="comment">;;当然也可以与标识符进行绑定</span>
-<span class="list">(<span class="keyword"><span class="built_in">def</span></span> my-hash-map <span class="list">(<span class="keyword"><span class="built_in">new</span></span> java.util.HashMap <span class="collection">{<span class="string">"foo"</span> <span class="number">42</span> <span class="string">"bar"</span> <span class="number">9</span> <span class="string">"baz"</span> <span class="string">"quux"</span>}</span>)</span>)</span>
-</code></pre></li>
-<li><p>还可以用更简洁的Clojure form，这个才是最常用的方法</p>
-<pre><code><span class="list">(<span class="keyword">java.util.HashMap.</span> <span class="collection">{<span class="string">"foo"</span> <span class="number">42</span> <span class="string">"bar"</span> <span class="number">9</span> <span class="string">"baz"</span> <span class="string">"quux"</span>}</span>)</span>
-</code></pre></li>
-<li><p>调用java对象的方法</p>
-<pre><code>(. <span class="keyword">object</span>-name <span class="keyword">method</span> arg);;形式一
-(.<span class="keyword">method</span> <span class="keyword">object</span>-name arg);;形式二
-</code></pre><ul>
-<li><p>方法的连续调用，可以用..宏串起来</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">.</span></span> <span class="list">(<span class="keyword"><span class="built_in">.</span></span> calendar getTimeZone)</span> getDisplayName)</span><span class="comment">;;形式一</span>
-<span class="list">(<span class="keyword"><span class="built_in">..</span></span> calendar getTimeZone getDisplayName)</span><span class="comment">;;形式二，这个更加的常用</span>
-<span class="comment">;;另外一个宏同样可以用来连续调用方法，是.?.，与..这个宏的区别就在于在调用过程中如果有一个方法返回nil，那么就不会继续调用了，可以防止出现NullPointerException异常，然而这个要调用牵扯到命名空间的问题，目前还不是很了解，至少目前在使用的时候出现了问题</span>
-</code></pre></li>
-<li><p>设置java实例对象的属性，如果没有setXXX这样的修改方法，java实例属性可以通过set!函数设定</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">let</span></span> <span class="collection">[origin <span class="list">(<span class="keyword">java.awt.Point.</span> <span class="number">0</span> <span class="number">0</span>)</span>]</span>
-  <span class="list">(<span class="keyword"><span class="built_in">set!</span></span> <span class="list">(<span class="keyword">.x</span> origin)</span> <span class="number">15</span>)</span><span class="comment">;;set!的第一个实参是一个实例成员访问的form</span>
-  <span class="list">(<span class="keyword"><span class="built_in">str</span></span> origin)</span>)</span>
-</code></pre></li>
-<li><p>使用doto函数来调用一个对象上的多个方法，第一个参数是对象，后面的参数都是对该对象方法的调用</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">doto</span></span> calendar
-  <span class="list">(<span class="keyword">.set</span> Calendar/YEAR <span class="number">1996</span>)</span>
-  <span class="list">(<span class="keyword">.set</span> Calendar/MONTH Calendar/AUGUST)</span>)</span>
-<span class="comment">;;一看就懂的东西</span>
-<span class="comment">;;定义的是HashMap对象，并且往里面添加元素</span>
-<span class="list">(<span class="keyword"><span class="built_in">def</span></span> my-hash-map <span class="list">(<span class="keyword">java.util.HashMap.</span>)</span>)</span>
-<span class="list">(<span class="keyword"><span class="built_in">doto</span></span> my-hash-map
-  <span class="list">(<span class="keyword">.put</span> <span class="string">"HOME"</span> <span class="string">"home.me"</span>)</span>
-  <span class="list">(<span class="keyword">.put</span> <span class="string">"SRC"</span> <span class="string">"src"</span>)</span>
-  <span class="list">(<span class="keyword">.put</span> <span class="string">"BIN"</span> <span class="string">"classes"</span>)</span>)</span>
-</code></pre></li>
-</ul>
-</li>
-<li><p>memfn宏 </p>
-</li>
-</ul>
-</li>
-<li><p>Proxies</p>
-<ul>
-<li>proxy 创建一个继承了指定类并且/或者实现了0个或者多个接口的类的对象。这对于创建那种必须要实现某个接口才能得到通知的listener对象很有用</li>
-<li>在clojure中还是有对象这个概念的，但是类的概念并没有提及，类都是使用java中的类型，并没有看到可以使用clojure来进行自定义类</li>
-</ul>
-</li>
-</ul>
-<h2 id="异常处理">异常处理</h2><ul>
-<li>抛出和捕获运行时异常：分别叫throw和catch</li>
-</ul>
-<h2 id="如何调用各种各样的库">如何调用各种各样的库</h2><ul>
-<li><p>调用clojure的库</p>
-<pre><code>(clojure.<span class="type">string</span>/upper-<span class="keyword">case</span> <span class="string">"load noises!"</span>)
-;;直接使用`library/<span class="keyword">method</span>`的形式来进行调用
-</code></pre><ul>
-<li>clojure自带的一些库<ul>
-<li>clojure.string，可以与java.lang.String对比一下</li>
-<li>里面有提供一些常用的方法，比如大小写转换，去除空格之类的方法</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="并发编程(杀手级特性)">并发编程(杀手级特性)</h2><ul>
-<li>传统的通过锁来队并发进行管理是非常困难的，不知道什么时候要加锁，什么时候不应该，忘了或者加多了，或者时机不对，都会导致非常糟糕的结果出现</li>
-<li>使用clojure来进行并发式编程是非常好的，因为在这里面所有的数据都是只读得，除非显示的使用Var、Ref、Atom、Agent来标明它们是可以修改的，这些都有提供安全的方法去管理共享状态</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/05/13/Clojure/" data-id="cid5zbarz003d6sgzzoenowbv" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
     </footer>
   </div>
   
@@ -1829,7 +1175,7 @@ UIView.animateWithDuration(<span class="number">1.0</span>, <span class="string"
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
     </nav>
   
 </section>
@@ -1842,7 +1188,7 @@ UIView.animateWithDuration(<span class="number">1.0</span>, <span class="string"
   <div class="widget-wrap">
     <h3 class="widget-title">標簽</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -1851,7 +1197,7 @@ UIView.animateWithDuration(<span class="number">1.0</span>, <span class="string"
   <div class="widget-wrap">
     <h3 class="widget-title">標簽雲</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
+      <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 10px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
     </div>
   </div>
 
@@ -1860,7 +1206,7 @@ UIView.animateWithDuration(<span class="number">1.0</span>, <span class="string"
   <div class="widget-wrap">
     <h3 class="widget-title">歸檔</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
     </div>
   </div>
 
@@ -1872,23 +1218,23 @@ UIView.animateWithDuration(<span class="number">1.0</span>, <span class="string"
       <ul>
         
           <li>
+            <a href="/2015/08/11/api获取/">api获取</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/11/Mac优化清理/">Mac优化清理</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/11/TableView01/">TableView01</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/11/如何制作一个app？01/">如何制作一个app？01</a>
+          </li>
+        
+          <li>
             <a href="/2015/08/10/Web02/">Web02 -- React入门</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/10/BigData01/">BigData01</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/10/Web01/">Web01 -- 资源工具介绍</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/10/Nodejs02/">Nodejs02--使用Node构建一个实时聊天工具</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/10/Nodejs01/">Nodejs01</a>
           </li>
         
       </ul>
