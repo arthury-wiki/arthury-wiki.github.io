@@ -12,9 +12,7 @@
 关闭Mac休眠模式
 打开Termal，输入sudo pmset hibernatemode 0(默认是3)
 然后再输入sudo rm /var/vm/sleepimage
-
-禁用Mac虚拟内存
-禁用虚拟内存的前提是">
+再创建一个空白的sleepimage文件s">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mac优化清理">
 <meta property="og:url" content="http://yoursite.com/2015/08/11/Mac优化清理/index.html">
@@ -25,10 +23,8 @@
 关闭Mac休眠模式
 打开Termal，输入sudo pmset hibernatemode 0(默认是3)
 然后再输入sudo rm /var/vm/sleepimage
-
-禁用Mac虚拟内存
-禁用虚拟内存的前提是">
-<meta property="og:updated_time" content="2015-08-11T12:24:05.000Z">
+再创建一个空白的sleepimage文件s">
+<meta property="og:updated_time" content="2015-08-11T15:10:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mac优化清理">
 <meta name="twitter:description" content="前言
@@ -37,9 +33,7 @@
 关闭Mac休眠模式
 打开Termal，输入sudo pmset hibernatemode 0(默认是3)
 然后再输入sudo rm /var/vm/sleepimage
-
-禁用Mac虚拟内存
-禁用虚拟内存的前提是">
+再创建一个空白的sleepimage文件s">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -119,13 +113,18 @@
 <h2 id="关闭Mac休眠模式">关闭Mac休眠模式</h2><ul>
 <li>打开Termal，输入<code>sudo pmset hibernatemode 0</code>(默认是3)</li>
 <li>然后再输入<code>sudo rm /var/vm/sleepimage</code></li>
+<li>再创建一个空白的sleepimage文件<code>sudo touch /private/var/vm/sleepimage</code></li>
+<li>将这个空白的文件设为只读<code>sudo chflags uchg /private/var/vm/sleepimage</code></li>
+<li>ok</li>
+<li>使用命令<code>pmset -g</code>可以参看各个属性的设置情况</li>
 </ul>
-<h2 id="禁用Mac虚拟内存">禁用Mac虚拟内存</h2><ul>
-<li>禁用虚拟内存的前提是Mac的内存大小在4GB以上，否则不要轻易尝试</li>
-<li>具体原理参见<a href="https://support.apple.com/zh-cn/HT201464" target="_blank" rel="external">在 Mac 上使用“活动监视器”</a></li>
-<li>在Termal中中输入<code>sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist</code></li>
-<li>禁用虚拟内存之后，再输入<code>sudo rm /private/var/vm/swapfile*</code>删除交换文件</li>
-<li>如果之后想要重启虚拟内存可以输入<code>sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist</code></li>
+<h2 id="禁用Mac虚拟内存"><del>禁用Mac虚拟内存</del></h2><ul>
+<li><del>禁用虚拟内存的前提是Mac的内存大小在4GB以上，否则不要轻易尝试</del></li>
+<li><del>具体原理参见<a href="https://support.apple.com/zh-cn/HT201464" target="_blank" rel="external">在 Mac 上使用“活动监视器”</a></del></li>
+<li><del>在Termal中中输入<code>sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist</code></del></li>
+<li><del>禁用虚拟内存之后，再输入<code>sudo rm /private/var/vm/swapfile*</code>删除交换文件</del></li>
+<li><del>如果之后想要重启虚拟内存可以输入<code>sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist</code></del></li>
+<li>现在已经不推荐这个做法了，禁用虚拟内存带来的坏处比它带来的好处更多</li>
 <li>想要临时释放不活跃的内存可以执行<code>purg</code>，需要Xcode支持</li>
 </ul>
 <h2 id="Xcode文件清理">Xcode文件清理</h2><ul>
@@ -188,7 +187,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">標簽</h3>
+    <h3 class="widget-title">标签</h3>
     <div class="widget">
       <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
     </div>
@@ -197,7 +196,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">標簽雲</h3>
+    <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
       <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 10px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
     </div>
@@ -206,7 +205,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">歸檔</h3>
+    <h3 class="widget-title">归档</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
     </div>
@@ -246,7 +245,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">友情鏈接</h3>
+    <h3 class="widget-title">友情链接</h3>
     <div class="widget">
       <ul>
         
@@ -287,7 +286,7 @@
 </nav>
   <!-- totop start -->
 <div id="totop">
-<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 </div>
 
 <!-- totop end -->
