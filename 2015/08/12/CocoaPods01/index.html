@@ -34,7 +34,7 @@ platform :ios, &amp;#39;7.0&amp;#39;
 
 加速CocoaPods类库的安装
 pod install">
-<meta property="og:updated_time" content="2015-08-11T16:43:40.000Z">
+<meta property="og:updated_time" content="2015-08-11T17:04:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CocoaPods01">
 <meta name="twitter:description" content="配置CocoaPods
@@ -136,6 +136,11 @@ pod install">
 <li><code>pod install --verbose --no-repo-update</code></li>
 <li><code>pod update --verbose --no-repo-update</code></li>
 <li>带了这些参数在执行命令的时候就不会去升级spec仓库了，这样速度会提升不少</li>
+</ul>
+<h2 id="CocoaPods更新">CocoaPods更新</h2><ul>
+<li>先更新gem，<code>sudo gem update --system</code></li>
+<li>再更新CocoaPods， <code>sudo gem install cocoapods</code></li>
+<li>配置CocoaPods，<code>pod setup</code></li>
 </ul>
 
       
