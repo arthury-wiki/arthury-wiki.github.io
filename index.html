@@ -68,6 +68,69 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-关于github的多账号管理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/11/关于github的多账号管理/" class="article-date">
+  <time datetime="2015-08-11T14:27:51.000Z" itemprop="datePublished">2015-08-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/11/关于github的多账号管理/">关于github的多账号管理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言">前言</h2><ul>
+<li>由于工作学习的原因需要使用多个github账号，于是如何管理这些账号就变得很重要，刚开始的时候在这里吃了不少亏，现在让我来分享一下我管理的经验</li>
+</ul>
+<h2 id="生成多个ssh公钥">生成多个ssh公钥</h2><ul>
+<li><code>ssh-keygen -t rsa -C &quot;your_email@youremail.com&quot;</code></li>
+<li>之后按照提示输入相关的信息便可，密码随意</li>
+</ul>
+<h2 id="添加生成的公钥">添加生成的公钥</h2><ul>
+<li>这一步非常重要，千万不要忘记这一步，否则后面会很坑爹</li>
+<li><code>ssh-add 公钥的地址(~/.ssh/xxx)</code></li>
+<li>可以使用<code>ssh-add -l</code>看已经添加的公钥，密码填写生成公钥时候填写的密码</li>
+</ul>
+<h2 id="修改配置文件config">修改配置文件config</h2><pre><code><span class="comment"># github</span>
+Host arthury_wiki(执行git <span class="built_in">clone</span>等命令时候的区分)
+    HostName github.com
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/xxx
+</code></pre><h2 id="配置远程仓库地址">配置远程仓库地址</h2><ul>
+<li>正常是<code>git@github.com:YourAcccountName/YourRepoName.git</code></li>
+<li>为了区分各个账号，就需要使用配置文件中的Host来进行区分，改为<code>git@arthury_wiki:YourAcccountName/YourRepoName.git</code></li>
+</ul>
+<h2 id="Ok">Ok</h2>
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/08/11/关于github的多账号管理/" data-id="cid7gih8i000lfkgz9vhun1hu" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-api获取" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/08/11/api获取/" class="article-date">
@@ -101,7 +164,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/11/api获取/" data-id="cid7b6hyl000wsxgz0jtkxtcb" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/11/api获取/" data-id="cid7gih91000zfkgzn2xtw2vq" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -171,7 +234,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/11/Mac优化清理/" data-id="cid7b6i0t002zsxgz7m1kccsf" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/11/Mac优化清理/" data-id="cid7gihb30032fkgzo6sc75kb" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -217,7 +280,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/11/TableView01/" data-id="cid7b6hzp001psxgzauusk6ss" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/11/TableView01/" data-id="cid7gih9v001sfkgzfrt2e5jm" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -273,7 +336,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/11/如何制作一个app？01/" data-id="cid7b6hy3000isxgze058risl" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/11/如何制作一个app？01/" data-id="cid7gih8f000ifkgzi5v7li3n" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -411,7 +474,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/10/Web02/" data-id="cid7b6hyw000zsxgzxfdabib9" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/10/Web02/" data-id="cid7gih930012fkgzbyi41i94" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -466,7 +529,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/10/BigData01/" data-id="cid7b6i1k003qsxgzb3ynhndt" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/10/BigData01/" data-id="cid7gihbs003tfkgzgmbpzt3e" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -511,7 +574,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/10/Web01/" data-id="cid7b6hz00012sxgzvw3nk6pw" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/10/Web01/" data-id="cid7gih940015fkgzi66puru7" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -563,7 +626,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/10/Nodejs02/" data-id="cid7b6i0h002msxgz11pxors6" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/10/Nodejs02/" data-id="cid7gihaq002pfkgzvkblp94o" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -616,110 +679,13 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/10/Nodejs01/" data-id="cid7b6i0k002psxgz4s5y68fk" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/10/Nodejs01/" data-id="cid7gihau002sfkgz77y29o5l" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
 
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nodejs/">Nodejs</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-QuartzCode02" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/08/09/QuartzCode02/" class="article-date">
-  <time datetime="2015-08-08T17:42:56.000Z" itemprop="datePublished">2015-08-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/09/QuartzCode02/">QuartzCode02--Layer Basics</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Layers_Arrangement">Layers Arrangement</h2><ul>
-<li>Alignment<ul>
-<li>为了能够一次性校对多种layer，你可以使用在toolbar上面的按钮。从左到右分别是左对齐、下对齐、垂直中心对齐、中心对齐、水平中心对齐、上对齐以及右对齐</li>
-<li>当多种layer被选中的时候，如果你点击任意的对齐按钮，这些layer将会与第一个被选中的layer对齐。按住command键当相机对齐按钮的时候来修改它的行为</li>
-<li>layer也可以根据它们的anchor point来对齐。按住alt键当点击中心对齐按钮的时候来使用anchor point来对齐它们</li>
-</ul>
-</li>
-<li>Make Grid<ul>
-<li>在QuartzCode中，你可以快速将layer布置到一个网格当中，通过使用Layers&gt;Make Grid来进行实现…QuartzCode自动添加新的layer到那些layer当中落在了网格的区域    - </li>
-</ul>
-</li>
-<li>Arrange Layers on Path<ul>
-<li>你也可以将layer布置到一个轨迹当中，通过使用Layer&gt;Arrage Layers on Path；你可以在轨迹的弹出框中选择你已经创建好的任意形状</li>
-</ul>
-</li>
-</ul>
-<h2 id="Selection">Selection</h2><ul>
-<li>添加layer<ul>
-<li>想要添加layer，只需简单点击toolbar。在toolbar中选中了一个layer之后(可以点击shapes在弹出菜单当中进行选择)，在画布当中进行点击并且进行拖拽以此嵌入layer。可以按住shift键进行拖拽，这样就可以让拖拽的图形变得方方正正</li>
-</ul>
-</li>
-<li>选择layers<ul>
-<li>只需在画布当中点击便可；当然，你也可以在旁边的Layer List中进行选择</li>
-<li>想要选中当前选中layer的子layer，可以按下Enter键或者是在子layer上面进行双击</li>
-</ul>
-</li>
-<li>选中多个layer<ul>
-<li>这里有几个方法可以让你选中多个layer：<ul>
-<li>1.最常用的拖拽鼠标覆盖自己要选中的layer，简单粗暴</li>
-<li>2.按住shift键去选择自己想要选中的layer</li>
-<li>3.使用上面两种方法在Layer List中进行操作</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>移动layer<ul>
-<li>一个被选中的later可以使用鼠标拖拽的方式进行移动，如果按住option键进行拖动，那么就会拖拽出一个副本</li>
-<li>layers会被自动snapp到其他layer的控制点山，如果要关闭snap，可以在移动layer的时候按住command键</li>
-<li>一个被选中layer可以通过上下左右来进行移动，这样每次只会移动1px，如果按住了shift键进行就会移动10px(这一点倒是和sketch一样)</li>
-</ul>
-</li>
-<li>调整layer的大小<ul>
-<li>想要调整选中layer的大小，点击并且拖拽控制点就可以进行调整。如果在调整过程中想要维持layer的比例，那么可以按住shift键再进行拖拽。当被调整的layer拥有子layer的时候，它的子layer将不会跟着被调整，除非是group layer和effect layer</li>
-</ul>
-</li>
-</ul>
-<h2 id="Sublayers_and_Grouping">Sublayers and Grouping</h2><ul>
-<li>要让一个layer成为另一个layer的子layer，只需要在Layer List当中简单的拖拽一个layer到你想要作为父layer的layer中便可。任意的layer都可以作为其他layer的子layer</li>
-<li>如果要group多个layer，直接使用toolbar上面的group与ungroup便可。虽然组合与添加子layer看起来很相似，但是在QuartzCode当中有一些不同的地方</li>
-<li>但你组合多个layer的时候，layer将会被放置在一组的layer里面。一组的layer尺寸会随着子layer的尺寸变化而变化，一旦子layer的尺寸发生了变化，那么这一组的layer尺寸都会跟着变化</li>
-</ul>
-<h2 id="Rotation">Rotation</h2><ul>
-<li>想要旋转layer，可以使用Layer Inspector中的rotation控制条来进行调整。默认的，这些layer是围绕着它的中心或者是{0.5,0.5}的anchor point。父layer的旋转会影响到它的子layer。</li>
-<li>为了改变layer在不同点的的旋转角度，可以在Layer Panel中改变anchor point。Anchor point在画布上就是一个蓝色的小标记，很好辨认</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/08/09/QuartzCode02/" data-id="cid7b6i010023sxgzybr7ychz" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/QuartzCode/">QuartzCode</a></li></ul>
 
     </footer>
   </div>
@@ -743,7 +709,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">標簽</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -752,7 +718,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">標簽雲</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 10px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
+      <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 10px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
     </div>
   </div>
 
@@ -761,7 +727,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">歸檔</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
     </div>
   </div>
 
@@ -771,6 +737,10 @@
     <h3 class="widget-title">近期文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2015/08/11/关于github的多账号管理/">关于github的多账号管理</a>
+          </li>
         
           <li>
             <a href="/2015/08/11/api获取/">api获取</a>
@@ -786,10 +756,6 @@
         
           <li>
             <a href="/2015/08/11/如何制作一个app？01/">如何制作一个app？01</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/10/Web02/">Web02 -- React入门</a>
           </li>
         
       </ul>

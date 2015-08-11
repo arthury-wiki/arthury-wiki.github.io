@@ -4,17 +4,42 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Tag: bigdata | Hexo</title>
+  <title>关于github的多账号管理 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/tags/bigdata/index.html">
+  <meta name="description" content="前言
+由于工作学习的原因需要使用多个github账号，于是如何管理这些账号就变得很重要，刚开始的时候在这里吃了不少亏，现在让我来分享一下我管理的经验
+
+生成多个ssh公钥
+ssh-keygen -t rsa -C &amp;quot;your_email@youremail.com&amp;quot;
+之后按照提示输入相关的信息便可，密码随意
+
+添加生成的公钥
+这一步非常重要，千万不要忘记这一步，否则后面会很坑爹">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于github的多账号管理">
+<meta property="og:url" content="http://yoursite.com/2015/08/11/关于github的多账号管理/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description">
+<meta property="og:description" content="前言
+由于工作学习的原因需要使用多个github账号，于是如何管理这些账号就变得很重要，刚开始的时候在这里吃了不少亏，现在让我来分享一下我管理的经验
+
+生成多个ssh公钥
+ssh-keygen -t rsa -C &amp;quot;your_email@youremail.com&amp;quot;
+之后按照提示输入相关的信息便可，密码随意
+
+添加生成的公钥
+这一步非常重要，千万不要忘记这一步，否则后面会很坑爹">
+<meta property="og:updated_time" content="2015-08-11T14:41:43.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
-<meta name="twitter:description">
+<meta name="twitter:title" content="关于github的多账号管理">
+<meta name="twitter:description" content="前言
+由于工作学习的原因需要使用多个github账号，于是如何管理这些账号就变得很重要，刚开始的时候在这里吃了不少亏，现在让我来分享一下我管理的经验
+
+生成多个ssh公钥
+ssh-keygen -t rsa -C &amp;quot;your_email@youremail.com&amp;quot;
+之后按照提示输入相关的信息便可，密码随意
+
+添加生成的公钥
+这一步非常重要，千万不要忘记这一步，否则后面会很坑爹">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -66,39 +91,79 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/08/10/BigData01/" class="archive-article-date">
-  <time datetime="2015-08-10T09:35:30.000Z" itemprop="datePublished">Aug 10</time>
+      <section id="main"><article id="post-关于github的多账号管理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/11/关于github的多账号管理/" class="article-date">
+  <time datetime="2015-08-11T14:27:51.000Z" itemprop="datePublished">2015-08-11</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/08/10/BigData01/">BigData01</a>
+    <h1 class="article-title" itemprop="name">
+      关于github的多账号管理
     </h1>
   
 
-    </header>
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言">前言</h2><ul>
+<li>由于工作学习的原因需要使用多个github账号，于是如何管理这些账号就变得很重要，刚开始的时候在这里吃了不少亏，现在让我来分享一下我管理的经验</li>
+</ul>
+<h2 id="生成多个ssh公钥">生成多个ssh公钥</h2><ul>
+<li><code>ssh-keygen -t rsa -C &quot;your_email@youremail.com&quot;</code></li>
+<li>之后按照提示输入相关的信息便可，密码随意</li>
+</ul>
+<h2 id="添加生成的公钥">添加生成的公钥</h2><ul>
+<li>这一步非常重要，千万不要忘记这一步，否则后面会很坑爹</li>
+<li><code>ssh-add 公钥的地址(~/.ssh/xxx)</code></li>
+<li>可以使用<code>ssh-add -l</code>看已经添加的公钥，密码填写生成公钥时候填写的密码</li>
+</ul>
+<h2 id="修改配置文件config">修改配置文件config</h2><pre><code><span class="comment"># github</span>
+Host arthury_wiki(执行git <span class="built_in">clone</span>等命令时候的区分)
+    HostName github.com
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/xxx
+</code></pre><h2 id="配置远程仓库地址">配置远程仓库地址</h2><ul>
+<li>正常是<code>git@github.com:YourAcccountName/YourRepoName.git</code></li>
+<li>为了区分各个账号，就需要使用配置文件中的Host来进行区分，改为<code>git@arthury_wiki:YourAcccountName/YourRepoName.git</code></li>
+</ul>
+<h2 id="Ok">Ok</h2>
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/08/11/关于github的多账号管理/" data-id="cid7gih8i000lfkgz9vhun1hu" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li></ul>
+
+    </footer>
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/08/11/api获取/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">api获取</div>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-  
-    </div></section>
-  
+
 </section>
       
       <aside id="sidebar">
