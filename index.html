@@ -250,6 +250,7 @@
 <li>这一步非常重要，千万不要忘记这一步，否则后面会很坑爹</li>
 <li><code>ssh-add 公钥的地址(~/.ssh/xxx)</code></li>
 <li>可以使用<code>ssh-add -l</code>看已经添加的公钥，密码填写生成公钥时候填写的密码</li>
+<li>出现问题多看看这一步是不是出现了问题，也就是先把添加的公钥列出来看一下</li>
 </ul>
 <h2 id="修改配置文件config">修改配置文件config</h2><pre><code><span class="comment"># github</span>
 Host arthury_wiki(执行git <span class="built_in">clone</span>等命令时候的区分)
@@ -428,6 +429,11 @@ Host arthury_wiki(执行git <span class="built_in">clone</span>等命令时候�
         <h2 id="初始化UITaleView的一些坑">初始化UITaleView的一些坑</h2><ul>
 <li>UITableView的使用有两种方法，一种是直接继承UITableViewController来控制，另一种是继承UIViewController来控制</li>
 <li>使用UIViewController来实现的时候一定要记得设置delegate与datasource不要只设置一个而忘记了设置第二个，太久没开发连一些一本的设置都忘了，真是惭愧</li>
+</ul>
+<h2 id="如何避免顶部的导航栏遮住tableview">如何避免顶部的导航栏遮住tableview</h2><ul>
+<li>要明确一点就是屏幕高度的组成等于状态栏高度(status bar height)加顶部导航栏高度(nav bar height)加底部导航栏高度(bottom bar height)</li>
+<li>知道原理之后就会变得很简单了，想要不被遮住，只要设置y为状态栏高度加导航栏高度便可，获得状态栏高度的代码为<code>let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height</code>，通过代码设置很简单，当然还可以通过SB来设置，这样就可以省略掉很多代码了</li>
+<li>具体就是去掉VC当中的Under Top Bars与Under Bottom Bars的勾选，这样上下导航栏就会被考虑到布局当中去，另外在设置顶部约束的时候，不要去掉<code>Constrain to margins</code>的选项，否则状态栏的高度就会被忽略掉</li>
 </ul>
 
       

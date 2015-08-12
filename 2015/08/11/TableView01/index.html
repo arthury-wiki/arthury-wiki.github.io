@@ -8,20 +8,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="初始化UITaleView的一些坑
 UITableView的使用有两种方法，一种是直接继承UITableViewController来控制，另一种是继承UIViewController来控制
-使用UIViewController来实现的时候一定要记得设置delegate与datasource不要只设置一个而忘记了设置第二个，太久没开发连一些一本的设置都忘了，真是惭愧">
+使用UIViewController来实现的时候一定要记得设置delegate与datasource不要只设置一个而忘记了设置第二个，太久没开发连一些一本的设置都忘了，真是惭愧
+
+如何避免顶部的导航栏遮住ta">
 <meta property="og:type" content="article">
 <meta property="og:title" content="TableView01">
 <meta property="og:url" content="http://yoursite.com/2015/08/11/TableView01/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="初始化UITaleView的一些坑
 UITableView的使用有两种方法，一种是直接继承UITableViewController来控制，另一种是继承UIViewController来控制
-使用UIViewController来实现的时候一定要记得设置delegate与datasource不要只设置一个而忘记了设置第二个，太久没开发连一些一本的设置都忘了，真是惭愧">
-<meta property="og:updated_time" content="2015-08-11T13:09:18.000Z">
+使用UIViewController来实现的时候一定要记得设置delegate与datasource不要只设置一个而忘记了设置第二个，太久没开发连一些一本的设置都忘了，真是惭愧
+
+如何避免顶部的导航栏遮住ta">
+<meta property="og:updated_time" content="2015-08-12T02:29:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="TableView01">
 <meta name="twitter:description" content="初始化UITaleView的一些坑
 UITableView的使用有两种方法，一种是直接继承UITableViewController来控制，另一种是继承UIViewController来控制
-使用UIViewController来实现的时候一定要记得设置delegate与datasource不要只设置一个而忘记了设置第二个，太久没开发连一些一本的设置都忘了，真是惭愧">
+使用UIViewController来实现的时候一定要记得设置delegate与datasource不要只设置一个而忘记了设置第二个，太久没开发连一些一本的设置都忘了，真是惭愧
+
+如何避免顶部的导航栏遮住ta">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -98,6 +104,11 @@ UITableView的使用有两种方法，一种是直接继承UITableViewController
         <h2 id="初始化UITaleView的一些坑">初始化UITaleView的一些坑</h2><ul>
 <li>UITableView的使用有两种方法，一种是直接继承UITableViewController来控制，另一种是继承UIViewController来控制</li>
 <li>使用UIViewController来实现的时候一定要记得设置delegate与datasource不要只设置一个而忘记了设置第二个，太久没开发连一些一本的设置都忘了，真是惭愧</li>
+</ul>
+<h2 id="如何避免顶部的导航栏遮住tableview">如何避免顶部的导航栏遮住tableview</h2><ul>
+<li>要明确一点就是屏幕高度的组成等于状态栏高度(status bar height)加顶部导航栏高度(nav bar height)加底部导航栏高度(bottom bar height)</li>
+<li>知道原理之后就会变得很简单了，想要不被遮住，只要设置y为状态栏高度加导航栏高度便可，获得状态栏高度的代码为<code>let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height</code>，通过代码设置很简单，当然还可以通过SB来设置，这样就可以省略掉很多代码了</li>
+<li>具体就是去掉VC当中的Under Top Bars与Under Bottom Bars的勾选，这样上下导航栏就会被考虑到布局当中去，另外在设置顶部约束的时候，不要去掉<code>Constrain to margins</code>的选项，否则状态栏的高度就会被忽略掉</li>
 </ul>
 
       
