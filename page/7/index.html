@@ -68,6 +68,529 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-Elisp" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/04/28/Elisp/" class="article-date">
+  <time datetime="2015-04-28T10:55:25.000Z" itemprop="datePublished">2015-04-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/04/28/Elisp/">Elisp</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="更多的资源(在这里介绍的是简单的应用)">更多的资源(在这里介绍的是简单的应用)</h2><ul>
+<li>想要进一步了解Elisp的语法，可以看&lt;<common lisp:="" a="" gentle="" introduction="" to="" symbolic="" computation="">&gt;</common></li>
+</ul>
+<h2 id="-emacs文件">.emacs文件</h2><ul>
+<li>该配置文件使用的就是lisp语言</li>
+</ul>
+<h2 id="lisp语言简介">lisp语言简介</h2><ul>
+<li>lisp可以用来进行ai方面的研究与开发，当然ai方面使用比较多还有lua</li>
+</ul>
+<h2 id="语言介绍">语言介绍</h2><ul>
+<li>在lisp当中所有的表达与函数调用都是用()包围起来的</li>
+<li></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/04/28/Elisp/" data-id="cid95vz58003uhbgzjymkoz0t" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-WatchKit" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/04/28/WatchKit/" class="article-date">
+  <time datetime="2015-04-28T00:18:24.000Z" itemprop="datePublished">2015-04-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/04/28/WatchKit/">WatchKit</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="初步了解">初步了解</h2><ul>
+<li>Watch App的开发需要使用到运行在iPhone上的Watch扩展来辅助运行，也就是不能够独立于iPhone的存在，既然这样要如何发挥出Watch App的优势就是关键</li>
+<li>能够利用到Watch的一些比较酷炫的功能是最合适不过，比如重力传感器或者<br>是force touch等等的功能，演示又是一个问题</li>
+<li>与apple wacth交互的同时还要与iPhone进行交互</li>
+<li>苹果现在并不允许开发者创建原生的Watch app<blockquote>
+<p>WatchKit app仅包含Storyboard和用户界面相关资源，而负责应用逻辑、更新<br>界面的代码位于WatchKit extension。简而言之，Watch app提供展现信息的视<br>图、与用户交互，而挑重担的是iPhone app。</p>
+</blockquote>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/04/28/WatchKit/" data-id="cid95vz35001khbgzj1ynyz32" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Emacs" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/04/26/Emacs/" class="article-date">
+  <time datetime="2015-04-26T11:12:32.000Z" itemprop="datePublished">2015-04-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="常用快捷键">常用快捷键</h2><ul>
+<li>Meta键的映射，目前键盘上并没有找到</li>
+<li>C-a 移动到一行的开头；C-e 移动到一行的结尾</li>
+<li>M-a 移动到句首；移动到句末</li>
+<li>ESC } 下一段落</li>
+<li>ESC { 上一段落</li>
+<li>C-x C-s(save-buffer)，保存缓冲区文件<ul>
+<li>出现问题之后可以采用C-s(停止接受输入) C-q(激活控制流)</li>
+<li>也可以使用<code>enable-flow-control</code>命令来进行解决</li>
+</ul>
+</li>
+<li>ESC x 可以用来输入没有键盘快捷键的命令，输入之后按下return</li>
+<li>C-x C-w(write-file)，重命名并保存文件，不命名则使用原来的名字<ul>
+<li>这个命令同样可以用来创建一个不可修改文件的副本，重命名保存到不同的路径便可，这样就可以有一个可以修改的私有版本了</li>
+</ul>
+</li>
+<li>C-x C-c，退出Emacs</li>
+<li>在文件末尾插入文件的快捷键<ul>
+<li>先按下esc，松开之后再按下&gt;(就是shift+.)，然后再输入<code>C+x</code>，稍等一下出现提示之后，再按下i键便可，会自动跳到文件末尾插入</li>
+<li>另外esc + &gt;也可以单独用来作为跳到文件末尾的快捷键</li>
+<li>esc + &lt; 可以调到文件的开头</li>
+</ul>
+</li>
+<li>C-x C-f 打开文件</li>
+<li>C-x C-v 重新选择要打开的文件</li>
+<li>C-u 8 C-v 向下滚动8行，当然数字是可以改变的</li>
+<li>C-g 可以取消不想要执行的命令，注意是g</li>
+<li>C-h可以调出帮助文档，当然需要相应的参数<ul>
+<li>t 教程</li>
+<li>k 按键释义</li>
+<li>f 函数释义</li>
+<li>i info文档</li>
+</ul>
+</li>
+<li>C-x i 在当前为止插入文件</li>
+<li>C-q C-l 在当前为止插入分页符</li>
+<li>C-x ] 移动到下一个分页符所在位置</li>
+<li>C-x [ 移动到下一个分页符所在位置</li>
+<li>C-/ 撤销操作，undo，类似的操作还有C-y，还有ESC y可以恢复删除环里面所有的文本</li>
+<li>C-r redo，也就是取消撤销的操作</li>
+<li>C-l 重新绘制屏幕，当屏幕变得有点混乱之后就可以使用这个来整理一下屏幕</li>
+<li>删除操作<ul>
+<li>C-d 删除一个字符</li>
+<li>ESC-d 删除的是整个单词(具体的效果要自己在实战当中进行总结)</li>
+<li>C-k 可以做到删除一整行的作用，注意使用的时候一定要把光标移动到开头，<br>删除是从光标之后开始的</li>
+<li>ESC-k 删除光标之后的句子直到段尾</li>
+<li>C-x DEL 删除光标之前的句子直到段首</li>
+<li>C-w 删除文本块，就是从光标开始，要设置一个文本文本标记(Mark set)，<br>mark set与当前的光标所包围的区域就是文本块，这时候就是可以使用C-w进<br>行删除，使用C-space来设置文本标记点<ul>
+<li>可以互换两个标记的地方，使用<code>C-x C-x</code>组合键来实现</li>
+<li>C-w其实是剪切，剪切下来的文本在适当的地方使用C-y来进行黏贴</li>
+<li>大范围的标记<ul>
+<li>ESC h 自动标记当前光标所在的段落</li>
+<li>C-x h 自动标记整个缓冲区的内容</li>
+<li>如果已经有使用页面的分页符，那么可以使用<code>C-x C-p</code>来快速标<br>记整个页面</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>ESC-C-k 效果是删除从行首(不是整个文件的首部)开始到光标所在的位置<br>(这一按下esc之后还有一条横线，不要忘记这个)</li>
+<li>被删除之后的数据会进入到删除环里面，等着随时被恢复，实际上删除环里<br>面可以容纳30次左右的删除，当然也可以自己通过命令来扩充容量，但是一般不会有这样的必要</li>
+</ul>
+</li>
+<li>复制与删除<ul>
+<li>使用文本标记辅助自己选中想要复制的文本块，然后按下ESC-w进行复制，<br>之后在恰当位置使用C-y便可</li>
+</ul>
+</li>
+<li>没有键盘快捷键的命令(输入命令的时候同样可以使用Tab进行补全)<ul>
+<li><code>auto-fill-mode</code> 开启/关闭自动换行模式，看一下状态栏上面有没有fill，<br>但是只对当前的缓冲区有效果</li>
+<li><code>goto-line n</code> 跳转到第n行</li>
+<li><code>goto-char n</code> 跳转到文件的第n个字符</li>
+<li>重复执行某一个命令<ul>
+<li>ESC n command n代表你想要执行的命令的次数，command代表你想要执行的命令</li>
+<li>demo: esc 500 C-n 就是向下换行500次</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>简化编辑的小技巧<ul>
+<li>C-t 可以交换前后两个字符的位置，一般在打英文的时候会使用到，现在想想纯英文的世界实在是太美好了，不用去在意输入法的问题</li>
+<li>C-x C-t可以交换两个文本行</li>
+<li>以下操作全部都统一把光标移动到首字母上去，因为之后对光标头开始到单词尾结束产生作用<ul>
+<li>ESC c 首字母大写</li>
+<li>ESC l 将首字母改成全小写</li>
+<li>ESC u 将首字母改成全大写</li>
+<li>以上是对当前的字母进行操作，还可以对前一个单词进行操作</li>
+<li>在以上的操作命令之前加上ESC-便可(注意这里的横线是要加上去的)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>撤销所有修改，返回最后一次保存的状态<ul>
+<li>revert-buffer 这将会让文件直接返回到最后一次存盘的状态，是恢复当前的文件</li>
+</ul>
+</li>
+<li>关闭掉辅助窗口的快捷键<ul>
+<li>C-x 1(数字)</li>
+</ul>
+</li>
+</ul>
+<h2 id="自动备份的文件">自动备份的文件</h2><ul>
+<li>Emacs会在第一次保存某一个文件的时候创建一个备份，就是平时看到的文件名后面加一个~，但是并不能直接从备份文件中进行恢复的命令</li>
+<li>使用备份文件覆盖当前文件的操作<ul>
+<li>直接对~文件进行编辑，然后使用<code>C-x C-w 文件名 RETURN</code>来进行覆盖</li>
+<li>Emacs支持保存多份的备份，每一次存盘之前都会有一个备份，可以无限备份下去，但是最后是备份最近的几次就好，这就是版本控制模式(VC mode)</li>
+</ul>
+</li>
+</ul>
+<h2 id="出现了非正常退出Emacs的时候怎么办？">出现了非正常退出Emacs的时候怎么办？</h2><ul>
+<li>Emacs有一个auto-save的功能，其实就是自动保存的功能，这个会生成一个#<br>文件名#的文件，这个文件在Emacs非正常退出之后就会出现，就是自动保存的文<br>件内容，如果出现了非正常的退出就可以从这个文件里面恢复</li>
+<li>使用<code>recover-this-file</code>命令可以从自动保存的文件里面进行恢复，非常强大</li>
+<li>可以使用<code>aoto-save-interval</code>命令来修改自动保存的间隔，是以敲击键盘达<br>到多少次来作为判断的标准</li>
+<li>如果对Emacs文件进行了大量的文件删除工作就会就不会进行自动保存，此时<br>要进行一次存盘才会重新开始自动保存；或者使用<code>ESC 1 ESC x auto-save
+RETURN</code>(这里是数字1)来强制自动保存</li>
+</ul>
+<h2 id="Mac键盘的映射修改">Mac键盘的映射修改</h2><ul>
+<li>在系统设置之下可以交换control与caplock</li>
+</ul>
+<h2 id="自己输入emacs命令会发生什么？">自己输入emacs命令会发生什么？</h2><ul>
+<li>会直接进入search缓冲区进行编辑，目录就在输入命令的当前目录里面</li>
+</ul>
+<h2 id="自动补全功能这一块">自动补全功能这一块</h2><ul>
+<li>使用打开文件的快捷键的时候，可以打出开头的几个字母，注意这几个字母一<br>定要是开头的并且要能够唯一识别一个文件的，然后按下Tab键便可自动补全；<br>其实如果打出的首字母不够确认，那么Emacs就会给出一个列表，对照着列表可<br>以再打几个字母，然后再按下Tab， 这种使用Tab来进行补全的办法在shell环境<br>下都是可以使用的，没有任何的问题，就比如cd路径的时候也可以这样做，非常<br>的方便</li>
+<li>注意这里是大的字母可以无视大小写，系统会进行自动修正，所以没有必要特<br>意去写大写
+<h2 id="如何使用Emacs打开一大批的文件">如何使用Emacs打开一大批的文件</h2></li>
+<li>可以在shell下输入<code>Emacs file*</code>来打开名字以file开头的文件</li>
+</ul>
+<h2 id="缓冲区的概念">缓冲区的概念</h2><ul>
+<li>就是自己实际编辑的文件并不是真正的文件，而是缓冲区(buffer)里面的文件，只有保存了缓存区里面的修改之后，实际的文件才会发生变动；如果不保存退出对于原来的文件并不会有什么影响</li>
+</ul>
+<h2 id="不同的编辑模式">不同的编辑模式</h2><ul>
+<li>针对于不同的情况，Emacs有不同的编辑模式</li>
+<li>其中还有分为主模式与副模式</li>
+<li>这些模式将会一个一个进行详细的介绍</li>
+</ul>
+<h2 id="编辑界面">编辑界面</h2><ul>
+<li><a href="https://dn-arthury.qbox.me/Emacs_mainView.png" target="_blank" rel="external">效果图</a></li>
+</ul>
+<h2 id="常用按键说明">常用按键说明</h2><ul>
+<li>esc键相当于meta键，但是meta键一般的键盘上是不存在的，一般的键盘上会使用alt来取代meta键</li>
+</ul>
+<h2 id="如何打开菜单上的File">如何打开菜单上的File</h2><ul>
+<li>使用F10便可</li>
+</ul>
+<h2 id="模式介绍">模式介绍</h2><ul>
+<li>普通模式<ul>
+<li>也称之为插入模式，就是输入的字符会插入到光标之后，而光标之后的位置会往右移动</li>
+</ul>
+</li>
+<li>改写模式<ul>
+<li>在改写模式之下光标后面的字符会被直接覆盖，而不会右移；进入的方式就是输入overwrite-mode，这个命令可以切换改写模式</li>
+</ul>
+</li>
+<li>自动换行模式(auto-fill-mode)</li>
+<li>貌似emacs每一次只可以开一个模式，剩下的模式比较的            </li>
+</ul>
+<h2 id="Emacs常见资源整理">Emacs常见资源整理</h2><ul>
+<li><a href="http://www.emacswiki.org/emacs/ElispArea" target="_blank" rel="external">插件社区</a></li>
+</ul>
+<h2 id="体会">体会</h2><ul>
+<li>感觉emacs就像是一个小型的操作系统</li>
+</ul>
+<h2 id="对Emacs进行个性化的配置">对Emacs进行个性化的配置</h2><ul>
+<li>第一种配置方式(初学者)<ul>
+<li>对.emacs文件进行修改，这是一个初始化文件</li>
+<li>该文件在主目录~下</li>
+<li>Error in initial file，问题是初始化上面，把配置好好修改便可</li>
+<li>配置文件当中使用的是lisp语言，可以利用这个机会好好的学习一下</li>
+</ul>
+</li>
+<li><p>第二种配置方式(结合自己最早的配置，网上给的简单入门配置以及大神Steve<br>Purcell的配置来进行调整，其实只要理清楚配置文件的功能，就可以结合各个<br>优秀的配置文件来进行调整)</p>
+<ul>
+<li>使用init.el文件，不使用.emcas文件</li>
+<li>主要以Purcell的init.el文件为主进行调整修改，根据自己的需求进行调整<br>一下，自己原来的配置一定要保存下来才行</li>
+<li><p>emacs配置文件的目录结构，这个要先理清楚才能够把自己自己自定义修改<br>的东西给加进去</p>
+<ul>
+<li>在.emacs.d目录下存放所有的配置文件</li>
+<li>在emacs启动的时候会自动加载.emacs.d/目录下的init.el文件，通<br>过这个文件来执行其他的函数</li>
+<li><p>这里介绍一下emacs的feature机制</p>
+<ul>
+<li><p>在emacs的lisp代码里面，你可以require一个可以提供某一个功能<br>的library，使用以下的代码</p>
+<pre><code><span class="list">(<span class="keyword"><span class="built_in">require</span></span> <span class="variable">'the-feature</span> <span class="string">"the-library-file"</span>
+&lt;soft-flag&gt;)</span>
+</code></pre></li>
+<li><p>在没有.emacs文件的情况下，这些配置就写在init.el文件里面</p>
+</li>
+<li><p>这个library通过如下代码表示自己提供的功能</p>
+<pre><code><span class="list">(<span class="keyword"><span class="built_in">provide</span></span> <span class="variable">'the-feature</span>)</span>
+</code></pre><p>v</p>
+</li>
+<li>snippets/ #yasnippet的自定义模板保存的位置</li>
+<li>elpa/ #通过ELPA下载的插件所保存的位置</li>
+<li>lisp/ #就是加载各个插件的初始化文件的位置，每一个插件都有<br>一个与自己对应init文件，用来定制一些自己的配置，也就是原来放<br>在.emacs下的对于常见插件的自定义，都可以拆分到各自的init文件<br>下面了</li>
+<li>editing-utils/ #文本编辑用的一些小工具</li>
+<li>custom-themes/ #自定义的主题</li>
+<li>custom-dicts/ #自定义的auto-complete词典，不重要</li>
+<li><p>init-utils.el</p>
+<blockquote>
+<p>最主要的作用是提供了一个宏 after-load ，供后续的各初始化函<br>数使用。这个函数来自 Purcell ，目的是把一些相互依赖的<br>feature的加载顺序理顺，例如feature A依赖于feature B，则可<br>以写成 (after-load ‘B ‘A) ，这样如果错误地在B之前require了<br>A也不会影响正常启动。</p>
+</blockquote>
+</li>
+<li><p>require-package函数的作用</p>
+<ul>
+<li>判断某一个包是否已经安装，如果没有就从elpa提供的插件源当<br>中去安装，如果是没有收录的就无能为力了</li>
+<li>通过这个函数就可以很方便的去安装各种各样的插件了，不用自<br>己再去特意的下载下来，然后在.emacs里面配置这么麻烦了</li>
+<li>只需要在每个插件对应的init文件里面做相应的配置便可</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="Emacs的插件放置目录">Emacs的插件放置目录</h2><ul>
+<li>~/.emacs.d</li>
+<li>为了管理自己的插件，借鉴了一下这篇博客的方法<blockquote>
+<p><a href="http://blog.csdn.net/aka_xingwenpeng/article/details/8747358" target="_blank" rel="external">emacs插件管<br>理</a></p>
+</blockquote>
+</li>
+</ul>
+<h2 id="-emacs配置记录">.emacs配置记录</h2><ul>
+<li>这个是放在github上面的，但是要等到集成了git之后，现在还不是时候</li>
+<li>目前的基本配置问题</li>
+</ul>
+<h2 id="读”一年成为Emacs高手”有感">读”一年成为Emacs高手”有感</h2><ul>
+<li>了解环境变量</li>
+<li>了解基本的快捷方式</li>
+<li><p>使用org-mode做个人管理</p>
+<ul>
+<li>我总觉得自己没有这方面的需求，但是作为个人项目管理还是比较不错的，<br>但是暂时还没有找到可以用起来的地方，作为一个gtd软件还是非常不错的，<br>接下来自己的开发都会需要用到这些东西，但是怎么查看比较好，只能用<br>emacs打开来查看吗？这就让我尴尬了</li>
+<li>刚好趁这个机会把自己对时间的利用来一次改革，彻底改变自己对时间的利<br>用，成为各个方面的神</li>
+<li>正好需要一个强大的gtd软件，看来我都不要专门做一个app，这个功能已经<br>足够强大了，足够有逼格了，不够可以自己去写脚本来实现</li>
+<li>如果能够进行时间统计的话，那就实在是太牛了，这个是自己现在最需要的</li>
+<li>再利用现成的图表软件来进行展示一下便可</li>
+<li>这样自己要学会很多脚本来辅助自己进行统计才可以，现在初学还不是很熟<br>练，要慢慢用起来才可以</li>
+<li><p>关键在于理性地考虑你最迫切需要解决的一个问题.</p>
+<blockquote>
+<p>关键在于理性地考虑你最迫切需要解决的一个问题.<br>以这个问题作为出发点,除此之外都可以妥协</p>
+</blockquote>
+</li>
+<li><p>我现在就是不够理性才会编程现在这副惨样，现在我要可以培养自己的理性<br>行动，而不再是感性的行动</p>
+</li>
+<li>我想到一个好的点子，所有的题目解法全部使用代码表示出来，使用matlab<br>的语言来进行表示便可，主要是使用一些数学函数，说不定还可以突发灵感想<br>出一些算法</li>
+<li>我需要把emcas打造成自己的全方位笔记记录平台，使用org-mode恰好可以<br>实现这一点，如果能够在buffer里面实时预览图片那就更加强大了</li>
+<li>作者在开始学习的时候已经有了十年的开发经验，使用起别人的配置还是得<br>心应手的，我现在要做的不是马上去copy别人的配置，而是先要把基础给打一<br>打，基础的lisp语言，基础配置的了解，过完了这些之后再去使用作者推荐的<br>配置开始入手，一点一点去学习，不要去重复造轮子这一点我还是比较的赞同<br>的</li>
+</ul>
+</li>
+<li>了解基本的Elisp语言</li>
+<li>高效的使用emcas命令的方式是直接输入命令，而不是使用大量的快捷键，使<br>用一个smex插件可以快速的输入命令</li>
+</ul>
+<h2 id="emacs的查找功能">emacs的查找功能</h2><ul>
+<li>递增查找<ul>
+<li>使用C-s命令来进行查找，当前高亮的如果不是自己想要的哪一个，就继续<br>使用C-s来进行查找，此时不需要再次输入要查找的字符串，会自动使用上次<br>要查找的字符串，与之对应的C-r是向上查找</li>
+<li>另外一些常见的命令<ul>
+<li>C-s C-w 开始递增查找操作，把光标处的单词用作查找字符串</li>
+<li>C-s C-y 开始递增查找操作，把光标到行尾之间的文本当做查找的内容</li>
+<li>C-s ESC-y 把删除环里面的内容当做查找的内</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>还有很多其他类型的查找与替换，自己需要的时候找时间去研究一下，平时不<br>太用的上的就不用去理会了；另外自己今后也要养成书写纯英文文献的方法，这<br>样才好，使用纯英文在各个方面都可以很大程度上提高自己的工作效率，这一点<br>一定要多注意才可以</li>
+<li>还存在有简写词汇的功能，这一点自己去多注意下</li>
+</ul>
+<h2 id="使用多个编辑器与缓冲区(这个是提高工作效率的一大关键)">使用多个编辑器与缓冲区(这个是提高工作效率的一大关键)</h2><ul>
+<li>使用C-x C-f命令来打开一个新的缓冲区，使用C-x b命令来进行切换(注意这<br>个命令是按下C-x之后要松开C再去按)</li>
+<li>注意，如果使用C-x C-f开错了文件，同样可以使用C-x C-v命令来进行修正</li>
+<li>支持开启多个标签，支持多个标签之间的切换，同样可以使用代码补全，非常<br>好用</li>
+<li>C-x b可以用来快速恢复刚才关闭掉的缓冲区</li>
+<li>C-x k可以关闭不想要的缓冲区，用法同C-x b一样；删除同样可以使用命令<br><code>kill-some-buffers</code>来进行，这个命令会一次对每一个buffer询问过去，问你<br>是否要进行删除，非常的方便</li>
+<li>遇到文件名非常奇葩时，不如是一些编号的时候，就非常不好辨认，这个时候<br>就可以使用重命名buffer的方式，对buffer的重命名并不会影响到真实的文件；<br>采用’rename-buffer’命令来重命名buffer</li>
+<li>buffer命令冲突问题<ul>
+<li>这个没有必要担心，因为会出现命名重复也是在不同的目录下，这个emacs<br>会通过不同目录来进行区分，并不用太担心</li>
+</ul>
+</li>
+</ul>
+<h2 id="在emacs下运行shell命令">在emacs下运行shell命令</h2><ul>
+<li>使用esc !便可进入shell模式开始执行命令</li>
+<li>可以使用C-x 1(数字)来关闭输出窗口</li>
+<li>但是问题在于只能够执行一条命令，这样局限太大了，一次性执行所有的命令<br>这实在是不科学</li>
+<li><p>当然会有解决的办法，emacs简直太厉害了，运行shell命令有好几个模式，而<br>不是只有一个模式</p>
+<blockquote>
+<p><a href="http://blog.csdn.net/ruglcc/article/details/7821728" target="_blank" rel="external">在emacs中运行shell命<br>令</a></p>
+</blockquote>
+</li>
+<li><p>这里面这个模式当中，我觉得M-x shell这种就足够用了，如果采用M-x term<br>这种完全模拟的形式，虽然可以得到最后的体验，但是就切不回去了，至少现<br>在我还没有找到可以切换回去的方法，但是完全就是没有必要，因为我根本就<br>不需要虚拟一个shell再去打开一个文件，我直接用emacs去打开就可以了</p>
+</li>
+<li>但是M-x shell也有一定局限性，目前用来执行git的命令没有问题，但是一旦<br>涉及到文件的编辑就不行，还有就是没有了历史命令的模式</li>
+<li>M-x eshell同样不可以文件的编辑，但是有命令历史可以选择，而且跑的还是bash不是zsh，这样还不如<br>shell模式，虽然可以设置但是并没有成功</li>
+<li><p>现在使用了multi-term解决了这个问题</p>
+<blockquote>
+<p><a href="http://blog.csdn.net/cofol1986/article/details/6972153" target="_blank" rel="external">在Emacs中使用多个shell<br>buffer</a></p>
+</blockquote>
+</li>
+<li><p>但是如何在这种情况下进入了编辑模式就会不知道怎么去退出了没感觉很麻烦</p>
+</li>
+</ul>
+<h2 id="multi-term命令收集">multi-term命令收集</h2><ul>
+<li>exit 退出命令模式</li>
+<li>常见快捷键去哪里看?</li>
+<li>C-x , == multi-term-dedicated-open</li>
+<li>进入了multi-term-dedicated-open模式之后如果非正常退出，想要重新进去<br>关闭终端，就可以使用C-x b切换进去，然后使用exit正常退出</li>
+</ul>
+<h2 id="关于emcas插件的整理">关于emcas插件的整理</h2><ul>
+<li><p>company-mdoe 自动补全，下</p>
+</li>
+<li><p>flymake-xxxx 语法检查</p>
+</li>
+<li>w3m 对比webkit，了解webkit安装</li>
+<li>smartparens</li>
+<li>web-mode</li>
+<li>网页浏览 Keysnail</li>
+</ul>
+<h2 id="smex插件的使用心得">smex插件的使用心得</h2><ul>
+<li>只要开头的几个字母然后进行左右选择便可，非常的方便</li>
+</ul>
+<h2 id="company-mode的使用心得">company-mode的使用心得</h2><ul>
+<li>这里的自动补全不是api代码补全，而是上文定义的变量在下文有提醒，不是<br>ide那样的提醒<blockquote>
+<p><a href="http://company-mode.github.io/" target="_blank" rel="external">官网</a></p>
+</blockquote>
+</li>
+</ul>
+<h2 id="tabbar_mode">tabbar mode</h2><ul>
+<li>标签之间会自动进行分组，这样自己打开的标签就不能自如的进行切换，配置<br>需要变更</li>
+</ul>
+<h2 id="简直是太厉害了，用到我是在爽的不行">简直是太厉害了，用到我是在爽的不行</h2><ul>
+<li>非常不错的配置文件，没有颜色主题的错误，非常的好用，而且配置很对我的胃口</li>
+<li>现在打算用这个配置作为蓝本进行修改与优化</li>
+<li>要加入的又auto-complete，auto-complete-clang，tabbar-mode，flycheck,multi-term等插件，这几个是一定要安装的，另外键盘的映射自己要根据最开始的配置进行调整一下才可以</li>
+<li>现在觉得tabbar-mode并不是必须的，发现自己在这一块的需求并不是很大，所以有没有都无所谓，反而是没有可以提高我的不少效率</li>
+<li>惊奇的发现居然有安装multi-term，看来在安装自己想要的插件之前，先看一下对应的命令有了没有，这才是最科学的检查方式<!-- - 突然觉得这个配置已经强大到了让我觉得再去修改就有点多余了，最多再添加几个自己需要自动补全的语言进去便可 -->
+<!-- - 先暂时不急着修改这个配置，让我先把这个配置安装的插件给研究清楚先，看一下是否有存在同类的插件，然后再来加上自己的自定义来个性化自己的emacs -->
+</li>
+</ul>
+<h2 id="优化的问题">优化的问题</h2><ul>
+<li>现在的问题是如何优化emacs的启动速度，现在emacs的加载项有点多，所以需要花一点时间来把这些东西来进行配置一下才可以，试一下网上的后台启动的方法</li>
+</ul>
+<h2 id="emacs死机的时候">emacs死机的时候</h2><ul>
+<li>等待一下便可，一般不会太久就会自动恢复过来，所以也不用太担心</li>
+</ul>
+<h2 id="对于redguardtoo配置的解读">对于redguardtoo配置的解读</h2><ul>
+<li>这个配置太强大了，有非常多厉害的功能，先让我结合官方文档来了解一下这些快捷键，是在使用的太舒服了</li>
+<li>关闭文件之后再打开，还会记忆上一次观看的位置，简直厉害</li>
+<li>常用快捷键的梳理(我已经被折服了，实在是太强大了，我已经深陷其中无法自拔了)<ul>
+<li>vim相关的快捷键<ul>
+<li>在map模式下，按下逗号，再按下m键或者是x键都会有相应的命令提示，想要执行什么命令都可以根据来执行，非常的方便</li>
+<li>在insert模式下，使用C-^是打开终端；在map模式，就是切换标签的功能，现在发现在打字的时候还可以进行自动补全，是在是厉害</li>
+<li>实际上还有很多的快捷键没有发现，在之后的学习当中会不断的学习与记录；很多快捷键直接去看对应插件的init文件就可以看到不少</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>插件一块<ul>
+<li>window-number.el：这个插件是指在同一个标签下，被分隔成不同的窗口，然后在写窗口界面进行切换，比如开启了终端机的窗口，然后就可以不用按下exit退出终端模式，而是直接就可以在map模式直接通过逗号加数字的形式来进行界面的跳转</li>
+<li>经过一番的折腾，我终于找到了在同一个窗口下进行终端切换的快捷键了；如果是在vim模式下，要切换到命令行窗口，直接在vim的map模式下逗号加数字就可以切换；在终端机模式下按esc加数字可以进行切换</li>
+<li>w3m：emacs内置的浏览器，非常的不错，可以用来做简单的网页浏览，如果可以在同一个屏幕下来搞定就太方便了；w3m也有一大堆的快捷键是需要进行学习的，学会在当前窗口打开w3m，并且进行浏览，在w3m下一个，vim下的快捷键还是很不习惯，还要花上不少的时间才能够适应；另外w3m的界面太蛋疼了，没有任何的样式，这样非常不方便进行浏览，而且默认的操作实在是太蛋疼了，简直不能用，研究一下怎么使用webkit，把自己的emacs再做一次强化</li>
+</ul>
+</li>
+</ul>
+<h2 id="webkit配置日志(by不折腾不舒服斯基)">webkit配置日志(by不折腾不舒服斯基)</h2><ul>
+<li>看到emacs上webkit令人惊艳的效果，于是我忍不住就去配置了一下，原以为按照官网上的wiki一步一步来会很轻松，结果没想到踩了不少坑，也是在这个期间让我产生了写配置日志的想法，今后方式按照教程不能够进行简单配置的东西，我都要写一下配置日志来记录自己配置的整个过程</li>
+<li>首先遇到的坑就是epc找不到，于是在这里得到了解决(链接)，把里面的几个文件配置清楚之后，epc找不到的问题就解决了</li>
+<li>第二个遇到的坑python的pyqt5库找不到，于是我在.zshrc文件里面添加了库文件的目录，因为是通过homebrew安装的，现在总感觉使用homebrew去安装一些系统环境总是会遇到一些目录链接出错的问题，让我甚是心烦</li>
+<li>第三个遇到的坑就是导入pqrt5的时候出现问题，我简直要疯了，但是在极大地好奇心的驱动下，我还是忍不住继续下去，在stackoverflow上找到的解决方案是删除python与pyqt，使用macports进行安装，于是我发现原来除了homebrew，还有一个包管理工具叫macports，搜索了一下macports与homebrew的比较，发现使用macport来安装包可以减少对系统的依赖，于是我决定尝试一下，但是要先删除系统自带的python，还是有不少风险的，所以我先备份了一下系统，但是又觉得实在是太麻烦了</li>
+<li>最后删除掉了用brew安装的pyqt以及pyqt5，选择了使用pip进行重装，重装之后问题变成了qtcore找不到了，这到底是为什么？我连python3都已经卸载了，还想要我怎么样</li>
+</ul>
+<h2 id="clojure-mode安装之后得到的提示">clojure-mode安装之后得到的提示</h2><ul>
+<li>在没有对应的模式匹配之前，文件打开是不会有vim模式的；在我安装clojure-mode之前打开clj文件并没有vim模式匹配，在安装了之后，就有了vim模式</li>
+<li>另外吐槽一下插件的安装，直接写配置文件安装太坑了，直接用package-install来安装才是最合适的，傻瓜安装，自己什么都不要去弄</li>
+</ul>
+<h2 id="关于emacs的分屏功能">关于emacs的分屏功能</h2><ul>
+<li>这个功能实在是太好用了，可以说就是开发利器，太重要了</li>
+<li>在当前光标所在的窗口使用<code>C-x 1</code>就会使得当前窗口最大化(关闭其他所有的窗口)，也就是变为全屏，如果想要退出分屏模式就可以考虑这个</li>
+<li>在当前光标所在的窗口使用<code>C-x 2</code>就会出现上下分屏；使用<code>C-x 3</code>就会出现左右分屏，一个窗口进行无限分隔，并没有说只能够分割为4个</li>
+<li>关闭当前的窗口可以使用<code>C-x 0</code></li>
+<li><a href="http://www.cnblogs.com/robertzml/archive/2010/03/24/1692737.html" target="_blank" rel="external">更多关于窗口的操作请看</a></li>
+<li><a href="">效果图</a></li>
+</ul>
+<h2 id="关于emacs下repl模式的讨论">关于emacs下repl模式的讨论</h2><ul>
+<li>能够开启repl模式一定都是在对应的编程模式下才会出现的，一般是python以及clojure</li>
+<li>开启repl一般就是与某一份正在编辑的代码连接在一起，那边编译运行，这边就会直接输出结果，所以就算隐藏了repl，再通过分屏的方式找回来也是没有关系的，因为一斤连接在一起了；但是并没有试过断开其中一个的连接会如何，比如我现在使用的是hello.clj，连接了一个repl，如果我再开一个say.clj，这个时候最好是使用同一个repl，因为不同的代码文件之间是会有关联的，如果一个编译通过了，然而另外一个没有编译过直接拿来使用就会出现很严重的问题，试一下</li>
+<li>尝试之后发现，只要打开了repl，就不需要自己再去连接了，直接编译运行就可以，全部都会在同一个repl进行输出，也就是会自动进行连接，并不需要自己操心连接问题，非常方便</li>
+<li>注意：repl如果在分屏当中使用，如果出现代码跑错的窗口，不要使用C-x k来把这个窗口关闭掉，而应该用C-x b来重开buffer，这样在一定程度上可以避免闪退的出现</li>
+</ul>
+<h2 id="emacs的状态栏">emacs的状态栏</h2><ul>
+<li>状态栏上面可以看日期以及现在的时间，原来自己都没有怎么注意到，应该是大神安装好的插件</li>
+</ul>
+<h2 id="在终端机下运行emacs优点">在终端机下运行emacs优点</h2><ul>
+<li>不会出现无限风火轮的情况，这一点非常的好，不会出现卡死掉的情况</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/04/26/Emacs/" data-id="cid95vz56003thbgzwcawxb7n" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-iOS-developing-skill" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/04/26/iOS-developing-skill/" class="article-date">
@@ -95,7 +618,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/04/26/iOS-developing-skill/" data-id="cid87a8b2001035gzk26s2fat" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/04/26/iOS-developing-skill/" data-id="cid95vz2s0014hbgz7vl2anf0" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -138,7 +661,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/04/24/Coding-Standards/" data-id="cid87a8e0003z35gzfy9a3vgd" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/04/24/Coding-Standards/" data-id="cid95vz5i0046hbgzsw91y0ib" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -203,7 +726,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/04/24/Application-architecture/" data-id="cid87a88r000035gz5auqcd7p" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/04/24/Application-architecture/" data-id="cid95vz0e0000hbgziaap2j0c" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -402,7 +925,7 @@ except IOError:
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/04/22/python/" data-id="cid87a8au000u35gzxliawb12" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/04/22/python/" data-id="cid95vz2c000vhbgzvrs2egye" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -452,7 +975,7 @@ except IOError:
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/04/22/python-twisted/" data-id="cid87a8aw000v35gz3o15x5q0" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/04/22/python-twisted/" data-id="cid95vz2l000whbgzmf1nlcs6" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -497,7 +1020,7 @@ except IOError:
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/04/21/Reading-list/" data-id="cid87a8cn002d35gzkf3mtn1e" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/04/21/Reading-list/" data-id="cid95vz48002khbgzsd3be8a9" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -552,774 +1075,7 @@ except IOError:
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/04/21/Design-Pattern/" data-id="cid87a8dt003p35gze5lwlvik" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Core-Animation" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/04/20/Core-Animation/" class="article-date">
-  <time datetime="2015-04-20T15:07:53.000Z" itemprop="datePublished">2015-04-20</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/04/20/Core-Animation/">Core Animation</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/04/20/Core-Animation/" data-id="cid87a8dz003y35gzx2z21ytx" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-UIKit" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/04/20/UIKit/" class="article-date">
-  <time datetime="2015-04-20T15:01:21.000Z" itemprop="datePublished">2015-04-20</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/04/20/UIKit/">UIKit</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="UIView">UIView</h2><h3 id="对UIView的一些基础认识">对UIView的一些基础认识</h3><ul>
-<li>UIView是UIResponder的子类，因此可以响应与用户之间的交互，比如触摸以及滑动之类的</li>
-<li>UIView有一个响应链，父视图的行为会影响到子视图，父视图的移动，移除，隐藏都会直接影响到子视图</li>
-<li>UIView可以使用nib文件或者纯代码的形式进行初始化，使用纯代码的方式我现在已经比较熟悉了，现在重点要研究的是如何使用StoryBoard来进行初始化，要把这两个方法的优势与劣势结合在一起才可以<h3 id="TranslatesAutoresizingMaskIntoConstraints属性">TranslatesAutoresizingMaskIntoConstraints属性</h3></li>
-<li>标示是否自动遵循视图布局约束，默认为YES</li>
-<li>如果要在代码层面使用<code>Auto layout</code>就要将translatesAutoresizingMaskIntoConstraints属性设置为NO才可以，否则View还是会按照以往的autoresizingMask进行计算</li>
-<li>而在Interface Builder中勾选了Ues Autolayout,IB生成的控件的 translatesAutoresizingMaskIntoConstraints 属性都会被默认设置NO<h3 id="frame属性">frame属性</h3></li>
-<li>这是一个描述当前视图在其父视图中的<strong>位置和大小</strong>的属性，这个睡了包含有两个属性，一个是坐标，可以用.frame.origin来访问，另一个是自身的尺寸size，可以用.frame.size来访问<ul>
-<li>其中origin还有x与y属性，分别进行x坐标与y坐标的访问；size还有width与height属性，分别对尺寸的宽度与高度进行访问，常见的访问形式就是<code>self.frame.size.width</code></li>
-</ul>
-</li>
-<li>frame属性是CGRect结构体，frame是相对于父视图坐标系的描述</li>
-<li><p>创建一个UIView，其默认的值是((0,0),(0,0))，另外输出的时候一定要注意，CGRect是不能直接输出的，这一类型的输出是需要经过转换的</p>
-<pre><code><span class="built_in">NSStringFromCGPoint</span>   
-<span class="built_in">NSStringFromCGSize</span>  
-<span class="built_in">NSStringFromCGRect</span>  
-<span class="built_in">NSStringFromCGAffineTransform</span>   
-<span class="built_in">NSStringFromUIEdgeInsets</span>
-<span class="built_in">NSLog</span>(<span class="string">@"rect1: %@"</span>, <span class="built_in">NSStringFromCGRect</span>(rect1));<span class="comment">//直接在输出的时候进行转换便可</span>
-</code></pre></li>
-<li><p>一个UIView忘记指配frame，这样整个视图就看不见了，但是有一个方法可以对frame进行快速设置，sizeToFit方法，找一个相关联的元素作为参照来进行适配调整</p>
-</li>
-</ul>
-<h2 id="UIView的继承链">UIView的继承链</h2><ul>
-<li>每一个UIView都有superview属性与subviews属性，允许你在继承链当中进行追踪</li>
-<li>方法<code>isDescendantOfView:</code>可以用来判断某一个view是否为另一个view的子视图</li>
-<li>如果想要获得某一个view的引用，那就要实现将其作为一个全局变量，或许是通过一个outet关键字；或者通过tag值，然后使用<code>viewWithTag:</code></li>
-<li>可以通过<code>addSubview:</code>可以让一个视图成为另一个视图的子视图；通过<code>removeFromeSuperview</code>可以移除一个view的子视图</li>
-<li><p>一旦移除一个子视图那么其就会被释放，但是如果之后还想要使用到这个，那就需要持有它，有一些事件可以响应这些动态变化，如果需要一些自定义的操作，那么就可以考虑继承一个UIView并且重写下列方法</p>
-<pre><code>didAddSubvie<span class="variable">w:</span> <span class="built_in">and</span> willRemoveSubvie<span class="variable">w:</span>
-didMoveToSuperview <span class="built_in">and</span> willMoveToSupervie<span class="variable">w:</span>
-didMoveToWindow <span class="built_in">and</span> willMoveToWindo<span class="variable">w:</span>
-</code></pre></li>
-<li><p>当<code>addSubview:</code>被调用的时候，这个刚加进来的view会被放在最前面，因为是最后一个被绘制的，每一个子视图都有一个索引，从0开始，用非常的方法可以操纵子视图的索引</p>
-<pre><code><span class="string">insertSubview:</span><span class="string">atIndex:</span><span class="comment">//将一个view插入到指定索引的位置</span>
-<span class="string">insertSubview:</span><span class="string">belowSubview:</span>
-<span class="string">insterSubview:</span><span class="string">aboveSubview:</span>
-<span class="string">exchangeSubviewAtIndex:</span><span class="string">withSubviewAtIndex:</span><span class="comment">//交换两个子视图的索引</span>
-<span class="string">bringSubviewToFront:</span>
-<span class="string">sendSubViewToBack:</span>
-</code></pre></li>
-<li><p>但是比较奇怪的是没有一个命令用来一次性移除所有的一个视图所有的子视图。然而，视图都是引用类型，所以可以通过一个for循环来把这些子视图全部移除</p>
-<pre><code><span class="keyword">for</span> (UIView* v <span class="keyword">in</span> views.subviews)
-    [v removeFromSuperview];
-<span class="comment">//还有一种方法</span>
-[view.subviews <span class="string">makeObjectsPerformSelector:</span><span class="annotation">@selector</span>(removeFromSuperview)];
-<span class="comment">//直接让每一个子视图都执行一遍removeFromSuperview:方法</span>
-</code></pre></li>
-</ul>
-<h2 id="能见度与透明度">能见度与透明度</h2><ul>
-<li>可以通过将一个视图的hidden属性设置为YES来让这个视图不可见，然后设置为NO来重新可见</li>
-<li>一个隐藏的视图是不能够收到触摸事件的，就好像这个视图不存在一样，但是这个视图时存在的，你仍然可以使用代码对其进行操纵</li>
-<li>一个view的默认背景颜色是透明的，在实际打码当中如果不对一个view的背景颜色进行设置，就会出现非常奇怪的现象</li>
-<li>可以通过设置一个view的alpha属性来调整透明度，1.0代表不透明，0.0代表完全透明；值得注意的是，如果子视图的alpha上限不能超过父视图，比如父视图的alpha是0.5，那么其子视图的alpha就只能在0.5之下，就算设置的值超过了0.5，也会被当成是0.5</li>
-<li>注意：如果一个view的alpha属性是0.0，那么这个view就相当于将hidden属性设置为YES，同样不可见以及不会响应触摸事件</li>
-<li>渗透性<ul>
-<li>如果以view里面展示了一个image，并且这个imageView的背景颜色透明度小于1，那么这个view的背景颜色就会渗透这个imageView</li>
-</ul>
-</li>
-<li>opaque属性，可以理解为是另一种颜色，不透明颜色，改变这个属性并不会影响视图的外观；然而，这个属性是对绘图系统的一个建议，如果一个视图使用不透明的材料来填充并且alpha是1.0，那么将opaque属性设置为YES可以让绘制更加的高效，其实就是考虑到性能的问题；否则，你应该将这个属性设置NO；能否正确的设置这个属性完全取决于自己，这个属性的默认值可能是YES</li>
-</ul>
-<h2 id="bounds与center(这一块文档的组织形式就是非常的糟糕)">bounds与center(这一块文档的组织形式就是非常的糟糕)</h2><ul>
-<li>关于frame、bounds与center这几个属性，还是有一点混淆，弄不清楚这个几个属性之间的关系，现在要一点一点的搞清楚才可以，毕竟这些是属于基础一块的东西</li>
-<li><p>CGRectInset方法可以很方便的得到一个嵌套在一个矩形内部的矩形，以一个矩形为参照</p>
-<pre><code><span class="comment">//使用CGRectInset的小demo</span>
-UIView* v1 = [[UIView alloc] initWithFrame:CGRectMake(<span class="number">113</span>, <span class="number">111</span>, <span class="number">132</span>, <span class="number">194</span>)];
-v1.backgroundColor = [UIColor colorWithRed:<span class="number">1</span> green:<span class="number">.4</span> blue:<span class="number">1</span> alpha:<span class="number">1</span>];
-UIView* v2 = [[UIView alloc] initWithFrame:CGRectInset(v1.bounds, <span class="number">10</span>, <span class="number">10</span>)];
-v2.backgroundColor = [UIColor colorWithRed:<span class="number">.5</span> green:<span class="number">1</span> blue:<span class="number">0</span> alpha:<span class="number">1</span>];
-[mainview addSubview: v1];
-[v1 addSubview: v2];
-</code></pre></li>
-<li><p>注意，这里使用CGRectInset来定位子视图，子视图的中心就是父视图的中心，这个是不会改变的，也就是定位之后，再去修改子视图的尺寸，将其变大的或者变小，子视图会根据这个不变的中心来把重新调整自己的位置</p>
-</li>
-<li><p>bounds也是一个CGRect结构体，但是描述的是UIView在自身坐标系的位置，而不是父视图的坐标系当中</p>
-<ul>
-<li>改变一个bounds的原点会影响其子视图的位置，因为子视图就是根据父视图的坐标进行定位的，但是并不会对自己的位置产生任何的影响<ul>
-<li>注意，IOS坐标系统的y轴是倒着的这里就不多赘述了，这里要提到的是改变了自身坐标系统原点的位置之后坐标系统是如何进行变化的，这里画一张图来说明是最好的<br><img src="https://dn-arthury.qbox.me/UIKit_boundsChange.jpg" class="full-image"></li>
-<li>不管原点如何改变，自身的左上角一定是原点的位置，只不过原点的坐标不一定总是(0,0)，当然默认是(0,0)，修改之后就不是了，比如上图就是被修改成了(10,10)</li>
-<li>这里比较困惑的会是子视图的定位，这里解释一下变化的过程，首先使用CGRectInset定位先是按照父视图的原点进行的，此时无论父视图的原点是否为(0,0)都没关系，就是以父视图中心作为自己的中心进行布局，之后再修改父视图的坐标原点，那么子视图的center将不会再与父视图的center相同，子视图会根据父视图原点的新的坐标来重新布局自己的位置，按照我的理解是子视图的frame并没有改变，重新布局就是根据自己的frame来进行的，也就是父视图的坐标发生了变化，原来说左上角的点是(0,0)，现在是(10,10)那么布局也就跟着一起动，这不废话吗？参照的点都变了，布局了能不变吗？</li>
-<li>进行了一个小demo的测试，发现父视图原点偏移前后，子视图的frame并没有发生改变</li>
-</ul>
-</li>
-<li><p>center就是一个View的中心，也就是长度除以2，宽度除以2，得出来的一个点</p>
-<pre><code>CGPoint c = CGPointMake<span class="list">(<span class="keyword">CGRectGetMidX</span><span class="list">(<span class="keyword">theView</span>.bounds)</span>,CGRectGetMidY<span class="list">(<span class="keyword">theView</span>.bounds)</span>)</span><span class="comment">;</span>
-</code></pre></li>
-<li><p>center的计算与bounds其实没有多大的关系，这两个属性被用来共同描述一个view在其父视图的位置，实际上frame属性是有点多余的，frame仅仅是一个对bounds于center属性的一种比较便利的表达方式</p>
-</li>
-<li>使用哪一个来进行定位其实无关紧要，大多数情况下使用到的都是frame，frame改变了，bounds与center也会进行相应的适配；改变bounds或者center，frame也会进行相应的适配</li>
-<li>但是视图最佳的定位方式还是是使用bounds与center比较合适，因为这个适用于所有的情况，而frame并不是适用于所有的情况</li>
-<li><p>关于坐标转换，在同一个windows下面的任意两个view的坐标关系是可以通过转换直接得到的，比如在一个UIView里面有一个UITableView，UITableView里面有一个cell，cell里面又有一个button，这样button的frame是在对应cell坐标系下的，想得到在button在UIView坐标下的frame，就可以使用以下方法自己得到</p>
-<pre><code><span class="string">convertPoint:</span><span class="string">fromView:</span>, <span class="string">convertPoint:</span><span class="string">toView:</span>
-<span class="string">convertRect:</span><span class="string">fromView:</span>, <span class="string">convertRect:</span><span class="string">toView:</span>
-<span class="comment">//如果第二个参数是nil，那么缺省值就是当前的window</span>
-<span class="comment">//目前还没有什么地方要特别使用到这些东西来进行坐标ed转换</span>
-</code></pre><blockquote>
-<p><a href="http://blog.csdn.net/xuhuan_wh/article/details/8486337" target="_blank" rel="external">UIView中的坐标转换</a></p>
-</blockquote>
-</li>
-<li><p>注意，如果通过center设置一个view的属性，那么就会出现的问题是如果view的宽和高不是整型而是浮点型，那么就会出现丢失像素的情况，这样会导致UIView的不正常显示，比如会变得模糊掉之类的</p>
-<ul>
-<li><p>解决的办法就是在定位之后重新设置View的frame，通过 CGRectIntegral方法来重新实现</p>
-<pre><code><span class="built_in">CGRect</span> <span class="built_in">CGRectIntegral</span>（<span class="built_in">CGRect</span> A）
- <span class="comment">//将矩形A的值转变成整数，得到一个最小的矩形</span>
-</code></pre><blockquote>
-<p><a href="http://www.cnblogs.com/xuling/archive/2012/02/09/2343427.html" target="_blank" rel="external">CGGeometry</a><br><a href="http://nshipster.cn/cggeometry/" target="_blank" rel="external">NSHipster</a></p>
-</blockquote>
-</li>
-</ul>
-</li>
-<li><p>关于Window的坐标系统</p>
-<ul>
-<li><p>设备的屏幕是没有screen的，但是拥有bounds，main window并没有父视图，但是其frame是根据屏幕的bounds进行设置的</p>
-<pre><code>self.window = <span class="comment">[<span class="comment">[UIWindow alloc]</span> initWithFrame:<span class="comment">[<span class="comment">[UIScreen mainScreen]</span> bounds]</span>]</span>;
-//通过设备屏幕的bounds来设置window的frame属性
-</code></pre></li>
-<li><p>根视图控制器视图的frame会自动调整来适配window，如果设备发生了旋转，那么界面也会同样发生旋转来进行适配，bounds同样也会自动调整来进行适应，这就是拥有一个根视图控制器的好处</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="Transform">Transform</h2><ul>
-<li>一个view的transform属性改变视图自身的绘制方式，可以做到不修改bounds与center属性就改变view的尺寸与位置</li>
-<li>一个进行了transform之后的view仍然可以正常的运作，里面的各个元素仍然会有正常的运转</li>
-<li>transform属性的数据是CGAffineTransform类型，这是一个结构体，是一个3x3的矩阵，其中有6个参数是要自己给的，剩余三个参数是固定的，dash文档里面可以看到<br><img src="https://dn-arthury.qbox.me/UIKit_matrix.png" alt="效果图"></li>
-<li>不要担心，这里涉及到的数学知识非常的简单，并且UIKit提供了几个便利的函数可以提供一些基本的转换类型：旋转(rotation)、缩放(scaling)、transformation(改变view的当前位置)</li>
-<li>第四种基本的转换类型，skewing or shearing，没有现成的函数可以直接创造</li>
-<li>transformation矩阵有一个默认常量，是CGAffineTransformIdentity，值如下图所示<br><img src="https://dn-arthury.qbox.me/UIKit_matrixDefault.png" alt="效果图"></li>
-<li>这个矩阵并不会起到任何可视化的效果，所以根本就不会意识到已经进行了transform</li>
-<li><p>任何进行的transform变化都是围绕着一个view的中心进行的，中心是不会变的，下面来一个demo演示一下</p>
-<pre><code>UIView* v1 = [[UIView alloc] initWithFrame:CGRectMake(<span class="number">113</span>, <span class="number">111</span>, <span class="number">132</span>, <span class="number">194</span>)];
-v1.backgroundColor = [UIColor colorWithRed:<span class="number">1</span> green:<span class="number">.4</span> blue:<span class="number">1</span> alpha:<span class="number">1</span>];
-UIView* v2 = [[UIView alloc] initWithFrame:CGRectInset(v1.bounds, <span class="number">10</span>, <span class="number">10</span>)];
-v2.backgroundColor = [UIColor colorWithRed:<span class="number">.5</span> green:<span class="number">1</span> blue:<span class="number">0</span> alpha:<span class="number">1</span>];
-[mainview addSubview: v1];
-[v1 addSubview: v2];
-v1.transform = CGAffineTransformMakeRotation(<span class="number">45</span> * M_PI/<span class="number">180.0</span>);
-</code></pre></li>
-<li><p>v1旋转了45度，但是其center与bounds都没有发生变化，但是frame此时已经发生了变化，接下去再使用frame属性不再合适，只要一个view的transform属性不是默认值，就不应该使用其frame属性；现在父视图的坐标系也跟着转了45度，所以子视图也会跟着旋转45度，效果图如下<br><img src="https://dn-arthury.qbox.me/UIKit_45.png" alt="效果图"></p>
-</li>
-<li><p>同样可以使用CGAffineTransformMakeScale</p>
-<pre><code>v1.transform = CGAffineTransformMakeScale(<span class="number">1.8</span>, <span class="number">1</span>);
-</code></pre></li>
-<li><p>同样父视图的bounds于center属性都没有发生变化，所以子视图也跟着发生了变化，因为坐标系发生了变化<br><img src="https://dn-arthury.qbox.me/UIKit_scal.png" alt="效果图"></p>
-</li>
-<li><p>一个transform的矩阵可以是一个链条，也就是执行一系列的变换矩阵，有一些函数可以做到从一个矩阵变换变到另一个矩阵变换，但是顺序是不能改变的，同样的矩阵，不同的顺序，会产生不同的效果，结合两个变换矩阵的是CGAffineTransformConcat</p>
-<pre><code><span class="built_in">CGAffineTransform</span> r = <span class="built_in">CGAffineTransformMakeRotation</span>(<span class="number">45</span> * M_PI/<span class="number">180.0</span>);
-<span class="built_in">CGAffineTransform</span> t = <span class="built_in">CGAffineTransformMakeTranslation</span>(<span class="number">100</span>, <span class="number">0</span>);
-v2<span class="variable">.transform</span> = <span class="built_in">CGAffineTransformConcat</span>(t,r); <span class="comment">// not r,t</span>
-</code></pre></li>
-<li><p>做一个矩阵的反转效果，可以做到移除某一个矩阵的效果，使用CGAffineTransformInvert</p>
-<pre><code><span class="built_in">CGAffineTransform</span> r = <span class="built_in">CGAffineTransformMakeRotation</span>(<span class="number">45</span> * M_PI/<span class="number">180.0</span>);
-<span class="built_in">CGAffineTransform</span> t = <span class="built_in">CGAffineTransformMakeTranslation</span>(<span class="number">100</span>, <span class="number">0</span>);
-v2<span class="variable">.transform</span> = <span class="built_in">CGAffineTransformConcat</span>(t,r);
-v2<span class="variable">.transform</span> =
-    <span class="built_in">CGAffineTransformConcat</span>(<span class="built_in">CGAffineTransformInvert</span>(r), v2<span class="variable">.transform</span>);<span class="comment">//首先视图先做r矩阵的反转效果，然后再接着做t变化与r变化，这样r变化的效果就会被抵消掉了</span>
-</code></pre></li>
-<li><p>一个view做transform变化是不会继承的，也就是总是从默认值开始变换的，并不会上一次进行了什么样的变化，这一次接着上一次的位置进行变化，而是重头开始变化，仔细想一下这样是比较合理的</p>
-</li>
-<li><p>对于创建一个skew(shear)效果的转换并没有便利的函数，只能通过自己的计算来获得</p>
-<pre><code>v1.transform = CGAffineTransformMake(<span class="number">1</span>, <span class="number">0</span>, -<span class="number">0.2</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>);
-</code></pre></li>
-</ul>
-<p><img src="https://dn-arthury.qbox.me/UIKit_skew.png" alt="效果图"></p>
-<blockquote>
-<p><a href="http://justsee.iteye.com/blog/1969933" target="_blank" rel="external">CGAffineTransformMake(a,b,c,d,tx,ty) 矩阵运算的原理</a></p>
-</blockquote>
-<h2 id="layout">layout</h2><ul>
-<li>当一个view的size发生变化的时候，对于子视图并不会有什么的影响，但是这并不是我们所想要的，我们希望子视图能够说着父视图尺寸的变化进行自动适配，这就是layout</li>
-<li>layout干的就是适配界面的事情，不同的而被可以使用一套规则来进行适配，而不需要对屏幕尺寸进行判断之后再去写一套对应的代码，这样就太麻烦了</li>
-<li>layout的工作主要在三个方面<ul>
-<li>Manual layout<ul>
-<li>当父视图的尺寸发生了变化之后就会发送layoutSubviews信息来重新布局子视图，通过重写layoutSubviews来制定自己想要的规则</li>
-</ul>
-</li>
-<li>Autoresizing<ul>
-<li>这个方法是IOS6之前采用的方法，子视图会响应父视图的尺寸变化，依照子视图自己的autoresizingMask属性值来适配</li>
-</ul>
-</li>
-<li>Autolayout<ul>
-<li>这个是在IOS6之后出现的，包括IOS6，取决于对视图的约束；一条约束就是NSLayoutConstraint的实例，这个更具有可读性，更加的精确，比起Autoresizing更加的强大</li>
-<li>一个view可以添加许多的约束，并且可以描述任意两个视图之间的关系，并不仅仅是子视图与父视图的关系</li>
-<li>Autolayout是通过layoutSubviews来实现的，约束可以让你写出更精确的layoutSubviews但是却不用去写代码</li>
-</ul>
-</li>
-<li>以上三种layout可以进行混合，对manual layout的需求很少；autoresizing会自动进行除非把父视图的autoresizesSubviews属性设置为NO，或者使用autolayout的时候经常将这个属性设置为NO</li>
-<li>Autolayout是一个默认的技术，可以在可视化界面的任何地方进行使用，一个使用了autolayout的view可以与使用了autoresizing的view共存(这一点要在实战的时候进行体会一下)</li>
-<li>autolayout默认使用的地方主要是nib文件，在stroyboard和xib文件同样是默认勾选了使用autolayout的选项；但是注意，自己使用纯代码构建的视图默认使用的是autoresizing，并不是autolayout</li>
-<li>注意：NSLayoutConstraint这个类是在IOS6之后引入的，如果在更早的系统中使用这个技术，那么app会crash(现在谁还会去管IOS7之前的系统)</li>
-</ul>
-</li>
-<li><p>这里只介绍autolayout来进行布局，其余的两个现在已经很少使用了</p>
-<ul>
-<li>以下三种情况下，view会使用autolayout<ul>
-<li>使用代码加了autolayout的约束规范</li>
-<li>app载入了一个使用了autolayout的nib文件，所有由这个nib文件实例化的view都会使用autolayout</li>
-<li>自定义了一个UIView，如果需要使用使用autolayout进行布局，那么就要重写requiresConstraintBasedLayout方法，返回YES(要在实战当中体会效果)</li>
-<li>默认情况下，View的autoresizing工作会根据当前位置自动设置约束。我们在使用代码写自己的约束布局代码时，必须设置当前View的translatesAutoresizingMaskIntoConstraints为NO，否则无法正常运作；使用IB进行布局默认是就是NO；但是上面有提到可以共存，所以这个观点现在还有待验证</li>
-</ul>
-</li>
-<li>两个同等级的视图一个可以使用autolayout，另一个不使用；父视图可以使用，但是其子视图可以不使用；然而，autolayout是由父视图链来实现的，所以一个视图使用了autolayout，那么其所有的父视图都会使用；如果这些视图中的某一个视图是一个视图控制器的主视图，那个视图控制器同样使用autolayout，并且接受相关的事件，并且不会通过其他的方式获得</li>
-<li>注意：一系列从某一个nib文件实例化来的view，不可能出现一部分使用autolayout一部分使用autoresizing的情况，一定是全部统一的，要达到不同布局方式混合的效果，就要使用不同的nib文件，或者stroyboard或者xib文件，然后再runtime的时候将这些联合在一起</li>
-<li><p>约束的制定(Constraints)</p>
-<ul>
-<li>一个autolayout的约束，是NSLayoutConstraint的实例；并且描述的要么是一个视图的绝对宽度与高度，要么是一个view与另一个view的属性的关系而且这里的属性不一定要是同样的属性，这个两个视图不一定要是同级饿视图，唯一的要求就是它们必须共享同一个父视图(祖先)</li>
-<li><p>NSLayoutConstraint的一些基本属性</p>
-<ul>
-<li>firstItem,firstAttribute,secondItem,secondAtribute</li>
-<li>两个view以及它们各自的attributes都包含在这个约束里面</li>
-<li><p>如果一个约束正在描述一个视图的绝对高度与宽度，那么第二个视图参数就要为nil，并且第二个属性将会是NSLayoutAttributeNotAnAttribute，你可能会写为0，当然还有一些可选的类型</p>
-<pre><code><span class="built_in">NSLayoutAttributeLeft</span>, <span class="built_in">NSLayoutAttributeRight</span>
-<span class="built_in">NSLayoutAttributeTop</span>, <span class="built_in">NSLayoutAttributeBottom</span>
-<span class="built_in">NSLayoutAttributeLeading</span>, <span class="built_in">NSLayoutAttributeTrailing</span>
-<span class="built_in">NSLayoutAttributeWidth</span>, <span class="built_in">NSLayoutAttributeHeight</span>
-<span class="built_in">NSLayoutAttributeCenterX</span>, <span class="built_in">NSLayoutAttributeCenterY</span>
-<span class="built_in">NSLayoutAttributeBaseline</span>
-</code></pre></li>
-<li><p>这些属性名一看就知道是什么意思了，除了”leading”与”trailing”，这两个就相当于”left”与”right”，字面上的意思是首部与尾部，具体还要实战当中进行学习</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="Interface_Builder">Interface Builder</h2><ul>
-<li>我本人是比较排斥IB的，原来初学的时候在这里吃了不少亏，觉得这东西没有纯代码开发那么可控，因此干脆就弃用了，但是现在发现最新的技术都在往IB上靠拢，苹果的强推挡都挡不住，看来不得不捡起来重新学习了</li>
-<li>想了解spring与struts的问题，看下面链接</li>
-<li>相关链接<blockquote>
-<p><a href="http://www.cocoachina.com/industry/20131203/7462.html" target="_blank" rel="external">开始iOS 7中自动布局教程(一)</a><br><a href="http://www.onevcat.com/2014/10/ib-customize-view/" target="_blank" rel="external">WWDC 2014 Session笔记 - 可视化开发，IB 的新时代</a><br><a href="http://www.cnblogs.com/zer0Black/p/3977288.html" target="_blank" rel="external">开始iOS 7中自动布局教程(二)</a></p>
-</blockquote>
-</li>
-<li>看了Ray Wenderlich的介绍之后发现，autoresizing用来布局非常不方便，好在Xcode5之后IB已经有了很大的改善，现在autolayout也已经比以前要强大很多了，所以不需要再担心蛋疼的布局问题了</li>
-<li>除了autolayout之外，IB还引入了一点是size class，使用这个来与autolayout进行搭配来适配不同的界面</li>
-<li>实际使用了之后，先试一下可否使用IB来自定义TextFiel或者Cell，如果可以做到这一点，那么对我来说减少的工作量就不是一般的大了</li>
-<li>现在autolayout这一块IB的表现还是不错的，但是我现在并不知道要如何去添加这些约束，学会之后布局将会变得非常的快，但是内部的代码实现原理也同样很重要</li>
-<li>pin选项中的命令介绍<ul>
-<li>widths equally–宽度相等，可以选中任意多的view，然后添加这个约束，就可以让这些view的宽度适中保持相等</li>
-<li>horizontal spacing–水平方向上的距离，默认是20点，要选中两个view</li>
-<li>heights equally–高度相等，用法同widths equally</li>
-<li>vertical spacing–垂直方向上的距离，同horizontal spacing，同样是要选中两个view</li>
-<li>Top Space to Superview/Leading Space to Superview/Trailing Space to Superview/Bottom Space to Superview–这些全部都是相对于父视图的约束，分别是距离屏幕边缘上左右下的距离，默认是20点</li>
-<li>当所有的约束都设置好了之后，自动布局会考虑到所有的约束，然后为你的视图计算出理想的位置和大小，也就是说今后都不用自己去手动设置frame了，这一点简直轻松，但是我知道如何使用代码进行布局，这一点对于今后驾驭自己的app来说是很有好处的</li>
-<li>在IB中设置约束，视图的大小与位置变得不再重要，当自己从仓库里面拖出一个控件的时候，这个控件会有一个初始的大小，但是这个大小无关紧要，但是这只是一个用来告诉IB如何放置约束的设计工具，不用去在意这个控件的具体大小</li>
-<li>全新的设计模式–designing by intent，根据自己的目的去设计，只要表达出自己想要什么，而不需要知道需要如何去实现，这个可以减少非常多的代码量</li>
-<li>没有给自己所拖出的控件添加约束，那么在编译时间Xcode就会提供默认的约束<ul>
-<li>自动约束的优点：<ul>
-<li>自动约束为你的视图提供一个固定尺寸和位置。换句话说，视图总是拥有跟你在storyboard中看到的一样的坐标。这是非常方便的，因为这就意味着你可以大量的忽视自动布局。你可以为那些拥有充分约束的控件不增加约束，只为那些需要特殊规则的视图创建约束。</li>
-</ul>
-</li>
-<li>添加约束的规则：<ul>
-<li>加上不加下，加左不加右，只需要添加一边的约束便可</li>
-</ul>
-</li>
-<li>错位视图<ul>
-<li>自己在IB中看到的视图不再与自动布局所希望的那样，也就是实际看到的效果与自己布局的时候放置的位置是不一样的效果</li>
-<li>在IB当中，有两个橙色方块，一个是虚线边框，另一个是实线边框，虚线是view实际显示的效果，实线是自己布局的时候看到的frame，这两个实际上应该要吻合才可以</li>
-<li>现在Xcode6自动布局给我的体验非常好，有非常智能的提醒，来让我完成布局，注意当约束的线条由橙色变成蓝色之后便代表虚线边框与实线边框重合了，这个时候可以说吻合了，如果橙色还没有改变则说明提供的约束还不够</li>
-<li>除了根据提示手动进行约束的调整之外，还可以通过Update Constraints来进行自动调整约束，非常的方便(Editor菜单上有一个Resolve Auto Layout Issues子菜单),，使用快捷键将会更加的方便</li>
-</ul>
-</li>
-<li>button会知道自己有多大吗？<ul>
-<li>没错，它知道，它是根据自己的title text加上一些padding就行了，如果有设置一个背景图片，它也会考虑进去</li>
-<li>大部分的视图都有这个的功能，UILable是一个例外，如果一个视图可以计算自己理想的大小，那么就不需要自己为其特别指定Width或者Height了，但是想要特别指定也是可以的，这样可以选择pin下的Width与Height的选项，来增加约束，这样就可以自己调整这些约束的具体数据</li>
-<li>如果自己给定了具体的数据之后，想要让button恢复到最佳的大小，那么首先就要移除Width的约束，然后选中button，并从Editor菜单中选择Size to Fit Content，这样就能够恢复button的固有的内容尺寸了。</li>
-<li>注意：一旦给定了固定的高度或者宽度，那么在视图进行旋转的时候，就会始终保持这个尺寸，不会自动进行缩放，这就会造成视图看起来非常的奇怪，所以尽量不要去固定一个View的尺寸</li>
-<li>一旦去掉固定的尺寸，那么view的大小将会有固定尺寸来决定，image的大小就决定了imageView的大小，title就决定了Lable的大小</li>
-<li>技巧：布局多个View的时候，光是指明这几个View的尺寸关系是远远不够的，还需要指明这个几个View之间的关系，当然不用每两个View之间的关系都去指明，只要给出足够的约束关系让IB去布局便可，这个需要在实战当中不断的总结才可以</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>现在比较疑惑的一点就是size classes的用处，之前貌似就是size classes让我吃了不少亏，让我对IB有点厌烦，现在就来好好的把这个问题给攻略掉；取消掉size classes之后就是只剩下iphone的界面了，没有包含ipad的布局一起进来</li>
-</ul>
-</li>
-<li>Align选项中的命令介绍<ul>
-<li>Horizontal Center in Container(水平居中)</li>
-<li>要进行居中对齐就是用上面这个，而不是去使用Vertical Center in Container，使用这个会出现莫名其妙的bug，总觉得用起来非常的不合适</li>
-</ul>
-</li>
-<li>自动布局出现了bug，Xcode会自动记录并且告诉你缺少了什么，简直是方便，可以在View Controller Scene小红箭头后面找到bug出现的原因</li>
-<li>布局的小技巧<ul>
-<li>可以按住control键选中想要布局的控件然后拖动，这样弹出的菜单就会有自己需要的约束，这是Xcode根据上下文给出的，非常的方便，也来越觉得使用IB非常的方便</li>
-<li>这个方法来添加约束可以非常的灵活，并且可以选着与先做的控件进行对齐的选项，Left或者Right</li>
-<li>我要把原来使用纯代码实现的UI全部用IB重新实现一边，原来一些比较复杂的UI现在使用IB看一下能否轻松实现，目测应该是没有太大的问题，开发了几个项目，现在是静下心来把自己手头上的资源好好整理一下的时候了</li>
-</ul>
-</li>
-<li>HIG(iOS Human Interface Guidelines)<blockquote>
-<p><a href="https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/MobileHIG/index.html" target="_blank" rel="external">苹果官方推荐的设计原则</a></p>
-</blockquote>
-</li>
-<li>设置了等宽之后<ul>
-<li>如果两个控件的宽度不同，IB会以较长的那个为准来进行适配</li>
-</ul>
-</li>
-<li>鹤立鸡群的UIView<ul>
-<li>UIView不像button或者lable那样，拥有固有内容，pin只要设置两个约束便可，上下左右分别选择一个；但是在UIView中这样是行不通的，因为UIView并没有固有内容，所有仅靠两个约束是无法完整的约束一个UIView，所以想要完整的约束一个UIView，就需要设满四个pin的约束才可以，只要设置了这四个约束UIView的尺寸自然就被确定下来了</li>
-</ul>
-</li>
-<li>IB的预览功能<ul>
-<li>这个功能太酷了，虽然没有模拟器那么强大，但是对于快速查看效果来说是非常方便的</li>
-<li>Assistant editor下有一个Preview的功能可以使用</li>
-</ul>
-</li>
-<li>在布局当中可能会出现的错误信息<ul>
-<li>Unable to simultaneously satisfy constraints</li>
-<li>要么是因为约束太多满足不了，要么是约束不够，无法进行正常的计算</li>
-<li>Content Priority Ambiguity(内容优先级歧视)</li>
-</ul>
-</li>
-<li>一旦出现新的技术，那么去看官方的文档是非常重要的，我现在必须要好好找个时间来把官方文档给过一遍才可以</li>
-<li>Resolve Auto Layout Issues选项说明(都有快捷键)<ul>
-<li>Upadate Frames：主要用于实现边框与虚线边框不重合的时候可以使用这个来让其重合，不用自己去手动调整</li>
-</ul>
-</li>
-<li>在stroyboard最下面的选项卡中选择pin<br><img src="https://dn-arthury.qbox.me/UIKit_pin.png" alt="效果图"><ul>
-<li>在里面填值的时候一定要注意一下，要先点击一下让里面的虚线编程实线，约束才会生效，否则是不会生效的，原来就是在这里吃亏的</li>
-<li>在添加完了约束之后，实线与虚线就会变得不重合，可以自己在pin里面选择Items of New Constraints来进行更新frame<br><img src="https://dn-arthury.qbox.me/UIKit_Item.png" alt="效果图"></li>
-<li>当然也可以在设置了约束之后再来调整，都一样的</li>
-</ul>
-</li>
-<li>自动布局并没有自己想的那么简单，仅靠Xcode来进行自动debug肯定是不可以的，如果自己不知道出现bug的原因就随便用，出现问题的几率会很高，而且会很难进行处理；所以一定要非凡清楚自己到底都加了哪些约束，哪些是多余的，哪些又是不够的，自己心里面要很清楚，这样在debug的时候才能够游刃有余的，而不是让Xcode自己去调试，这样是非常糟糕的</li>
-</ul>
-<h2 id="UIWindow">UIWindow</h2><ul>
-<li>概述：UIWindow是一种特殊的UIView，通常在一个程序中只会有一个UIWindow，但可以手动创建多个UIWindow，同时加到程序里面。UIWindow在程序中主要起到三个作用：<ul>
-<li>作为容器，包含app所要显示的所有视图</li>
-<li>传递触摸消息到程序中view和其他对象</li>
-<li>与UIViewController协同工作，方便完成设备方向旋转的支持</li>
-<li>UIWindow是UIView的继承链中位于最顶端的存在，每一个app都应该只拥有一个主要的window</li>
-<li>UIwindow是一个非常重要的控件，获得当前主要的window就可以实现一些非常好玩的效果，这一点我已经体会过了，一定要能够数量的使用UIWindow才可以</li>
-</ul>
-</li>
-<li><p>WindowLevel属性</p>
-<ul>
-<li><p>UIWindow在显示的时候会根据UIWindowLevel进行排序的，即Level高的将排在所有Level比他低的层级的前面。下面我们来看UIWindowLevel的定义：</p>
-<p>  const UIWindowLevel UIWindowLevelNormal;<br>  const UIWindowLevel UIWindowLevelAlert;<br>  const UIWindowLevel UIWindowLevelStatusBar;<br>  typedef CGFloat UIWindowLevel;</p>
-</li>
-</ul>
-</li>
-</ul>
-<pre><code><span class="bullet">+ </span>IOS系统中定义了三个window层级，其中每一个层级又可以分好多子层级，不过系统并没有把则个属性开出来。UIWindow的默认级别是UIWindowLevelNormal
-<span class="bullet">+ </span>高低顺序从小到大为Normal <span class="xml"><span class="tag">&lt; <span class="attribute">StatusBar</span> &lt; <span class="attribute">Alert</span></span></span>
-</code></pre><ul>
-<li><p>UIWindow的初始化</p>
-<ul>
-<li><p>UIWindow的初始化要在app一开始载入的时候就进行，所以就必须要在总代理当中进行才，初始化要把window的窗口放大到整个设备屏幕的那么大才可以</p>
-<pre><code>UIWindow* w = <span class="comment">[<span class="comment">[UIWindow alloc]</span> initWithFrame:<span class="comment">[<span class="comment">[UIScreen mainScreen]</span> bounds]</span>]</span>;
-</code></pre></li>
-</ul>
-</li>
-<li><p>UIWindow的生命周期</p>
-<ul>
-<li>UIWindow必须在整个应用程序的声明周期中持续存在才可以</li>
-<li>app的总代理已经给了window属性一个强指针指向</li>
-<li>一旦app载入，就会在主函数里面调用UIApplicationMain函数来实例化代理类并且持有这个实例</li>
-<li>app delegate实例是不会被释放的，直到app被kill为止，所以app delegate实例的生命周期就是整个app的声明周期，window实例是由app delegate实例持有的，所以也拥有同样的生命周期</li>
-</ul>
-</li>
-<li>根视图控制器(rootViewController)<ul>
-<li>UIWindow实例拥有一个根视图控制器，这个视图控制器里面管理的视图就是app载入之后看到的视图</li>
-<li>UIWindow通过根视图控制器来管理其中存在的视图，一般我会将这个根视图控制器设置为一个导航控制栈，用来管理其他的所有视图控制器，这样就可以将各个视图的关系理的很清楚，出栈进栈都非常的方便</li>
-<li>根视图控制器所持有的视图，就是根视图(root view)，这个视图是UIWindow唯一的子视图，其他所有的视图都是这个根视图的子视图</li>
-<li>window的属性一般如果没有特别的要求是不需要进行修改的</li>
-</ul>
-</li>
-<li><p>用户的可视化界面</p>
-<ul>
-<li><p>当一个window包含了这些可视化元素并且成为app的key window之后才可以看见</p>
-<pre><code><span class="attr_selector">[w makeKeyAndVisible]</span>;<span class="comment">//让这个window变成keywindow并且进行可视化</span>
-</code></pre></li>
-</ul>
-</li>
-<li><p>在storyboard当中</p>
-<ul>
-<li>如果在配置文件里面有storyboard的配置文件，那么UIApplicationMain函数就会直接通过当前设备的尺寸初始化一个UIWindow实例，将其指派给app delegate实例的window属性</li>
-<li>并且会将storyboard的第一个视图控制器指派给window的根视图控制器属性，一切都是在可视化界面下操作的不需要任何的代码操作，在我现在看来是非常高效的</li>
-<li>所有的这一切都会在app delegate实例的 application:didFinishLaunchingWithOptions:被调用之前完成</li>
-<li>UIApplicationMain函数会调用makeKeyAndVisible来展示app的可视化界面</li>
-</ul>
-</li>
-<li><p>纯代码可视化一个UIWindow</p>
-<pre><code>self.window =
-    <span class="comment">[<span class="comment">[UIWindow alloc]</span> initWithFrame:<span class="comment">[<span class="comment">[UIScreen mainScreen]</span> bounds]</span>]</span>;
-self.window.backgroundColor = <span class="comment">[UIColor whiteColor]</span>;
-<span class="comment">[self.window makeKeyAndVisible]</span>;
-</code></pre></li>
-<li><p>使用一个UIWindow的子类(自定义一个Window)</p>
-<ul>
-<li><p>使用stroyboard的情况</p>
-<ul>
-<li>一旦app载入，UIApplicationMain函数实例化了app delegate之后，就会访问app<br>delegate的window属性(通过getter方法，不管是用点还是方括号来访问，都是调用getter方法)，如果值为空，那么UIApplicationMain函数就是初始化一个UIWindow并且将其指派给app delegate的window属性；如果值不为空，那么就会直接采用这个值作为main window</li>
-<li><p>因此想要使用自己的UIWindow来初始化，可以选择重写app delegate的getter方法</p>
-<pre><code>- (<span class="built_in">UIWindow</span>*) window {
-    <span class="built_in">UIWindow</span>* w = <span class="keyword">self</span>-&gt;_window;
-    <span class="keyword">if</span> (!w) {
-    <span class="comment">//使用自己的UIWindow类来进行初始化</span>
-        w = [[MyWindow alloc] initWithFrame:
-                [[<span class="built_in">UIScreen</span> mainScreen] bounds]];
-        <span class="keyword">self</span>-&gt;_window = w;
-    }
-    <span class="keyword">return</span> w;
-}
-</code></pre></li>
-</ul>
-</li>
-<li><p>不使用stroyboard的情况</p>
-<ul>
-<li><p>就是直接通过在appdelegate的application: didFinishLaunchingWithOptions:方法里面直接通过如下代码进行实现</p>
-<pre><code>self.window = <span class="comment">[<span class="comment">[MyWindow alloc]</span> initWithFrame:
-                <span class="comment">[<span class="comment">[UIScreen mainScreen]</span> bounds]</span>]</span>;
-</code></pre></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>UIView与UIWindow的关联</p>
-<ul>
-<li>UIView自身也有一个window属性，会自动与当前的keywindow进行关联，可以通过判断一个UIView的这个属性是否有值来判断这个UIView是否有包含到当前的keywindow里面，如果一个UIView的window属性没有值，那么这个UIView是无法被看见的</li>
-</ul>
-</li>
-<li><p>获得当前的keywindow的引用</p>
-<ul>
-<li><p>app delegate实例的window属性与当前的keywindow关联，可以通过 shareAppliaction的delegte属性来获得当前app delegate的引用，通过app delegate再获得当前的mainwindow的引用</p>
-<pre><code>UIWindow* w = <span class="comment">[<span class="comment">[<span class="comment">[UIApplication sharedApplication]</span> delegate]</span> window]</span>;
-</code></pre></li>
-<li><p>shared application实例也有一个keywindow属性与当前的keywindow关联</p>
-<pre><code>UIWindow* w = <span class="comment">[<span class="comment">[UIApplication sharedApplication]</span> keyWindow]</span>;
-</code></pre></li>
-<li><p>但是要注意，这样的关联是非常不稳定的，因为系统可以创建一个临时的window然后将其插入作为当前app的keywindow，比如一个UIAlertView，这个见得多了</p>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="UIScreen">UIScreen</h2><ul>
-<li>UIScreen代表了屏幕，通过这个类可以获得有关于设备的一些信息</li>
-</ul>
-<pre><code><span class="built_in">CGrect</span> screenBounds = [ [<span class="built_in">UIScreen</span> mainScreen]bounds];<span class="comment">//返回的是带有状态栏的Rect    </span>
-<span class="built_in">CGRect</span> viewBounds = [ [<span class="built_in">UIScreen</span> mainScreen]applicationFrame];<span class="comment">//不包含状态栏的Rect    </span>
-<span class="comment">//screenBounds 与 viewBounds 均是相对于设备屏幕来说的    </span>
-<span class="comment">//所以 screenBounds.origin.x== 0.0 ;   screenBounds.oringin.y = 0.0;       </span>
-screenBounds<span class="variable">.size</span><span class="variable">.width</span> == <span class="number">320</span>;  screenBounds<span class="variable">.size</span><span class="variable">.height</span> == <span class="number">480</span>(或者其他分辨率有所差异)    
-<span class="comment">//所以 screenBounds.origin.x== 0.0 ;   screenBounds.oringin.y = 20.0;(因为状态栏的高度是20像素)   screenBounds.size.width == 320;  screenBounds.size.height == 480    </span>
-</code></pre><h2 id="UIButton基础">UIButton基础</h2><ul>
-<li>点击button，如何触发多个事件？<ul>
-<li>使用嵌套调用的方式，触发一个方法之后，在这个方法里面再调用一个方法，利用这种层层嵌套的调用方式便可以实现触发多个方法</li>
-</ul>
-</li>
-</ul>
-<pre><code>-(<span class="keyword">void</span>)buttonShaker{
-    [<span class="keyword">self</span> test];<span class="comment">//在这里调用下一个方法</span>
-    [viewShaker shakeWithDuration:<span class="number">0.6</span> completion:^{
-        <span class="keyword">if</span> (<span class="keyword">self</span><span class="variable">.lableActive</span> == <span class="literal">NO</span>) {
-            [<span class="keyword">self</span> lableAnimateStart];
-        }<span class="keyword">else</span>{
-            <span class="comment">//do nothing</span>
-        }
-    }];
-}
--(<span class="keyword">void</span>)test{
-    <span class="built_in">NSLog</span>(<span class="string">@"Hey"</span>);
-}
-</code></pre><h2 id="UIImage与UIImageView">UIImage与UIImageView</h2><ul>
-<li>UIKit中图像最基本的类就是UIImage，UIImage可以从磁盘读取一个文件，所以如果一张图片不需要被动态的创造，但是在你的app运行之前被创造好了，那么drawing将会像提供一张来自bundle资源包里面的图片一样简单。</li>
-<li>系统知道如何大多数标准的图片文件工作，例如：TIFF, JPEG, GIF, and PNG；iOS对于png格式的图片偏爱有加，所以你加入的图片应该尽可能是png格式的</li>
-<li>你可以使用其他方法来包含图像的数据，比如下载转换为UIImage格式；相反的，你可以画你自己的图像用来展示在自己的界面上，或者保存到磁盘当中</li>
-<li>包含在boundle资源包的里面的图片可以用UIImage的类方法<code>imageNamed:</code>来读取<ul>
-<li>介绍一下这个方法的寻找地点<ul>
-<li>app资源包的最高等级<ul>
-<li>首先是从app的资源包的最高等级开始查看，寻找与所提供名字相符的图片，这里图像名应该提供扩展名，如果没有提供扩展名，那么系统就会假定.png作为扩展名</li>
-</ul>
-</li>
-<li>Asset catalog<ul>
-<li>在asset catalog寻找图片，如果所提供的名字有一个扩展名，那么这个扩展名就会被除去；这个允许老的代码正常工作当图片文件被移动到了catalog里面之后</li>
-</ul>
-</li>
-<li>这两个地方的支援存在一个优先级的问题，如果图片先在asset catalog中找到，那么就不会在app资源包里面再寻找</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>关于<code>imageNamed:</code>方法比较好的一个方面是自动内存管理：图像数据会在内存当中缓存，如果使用同样的方法<code>imageNamed:</code>访问同一张图片之后，缓存的图像就会被立刻提供；或者你可以直接从app资源包里面直接读取图像而不访问缓存，通过类方法<code>imageWithContentsOfFile:</code>来实现，或者可以使用实例方法<code>initWithContentsOfFile:</code>来实现；<ul>
-<li>这两个方法都需要一个app资源包里面图像的路径，可以通过<code>[NSBundle mainBundle]</code>来获得当前资源包的引用，NSBundle提供实例方法来获取bundle里面某一个文件的路径，比如<code>pathForResource:ofType:</code></li>
-</ul>
-</li>
-<li>在一个拥有双倍分辨率屏幕的设备中，当一个图片包含在app资源包里面，一个拥有相同名字但是末尾以@2x结尾的，如果拥有，那么就会被自动使用，会被支配给一个UIImage，这个UIImage的scale属性为2，供应给双倍分辨率的屏幕。<ul>
-<li>这样，你的app就可以同时包含支持单分辨率与双分辨率的图像，在不同分辨率的设备上就会使用不同的图像，但是现在设备更新换代，单分辨率的设备差不多要被淘汰了，未来或许会出现更高分辨率的设备</li>
-<li>相似的，如果文件的末尾是”~iPad”，那么当设备是iPad的时候就会被使用，你可以在universal app里面使用，根据app跑在不同的平台上，比如iPhone或者iPod touch等等一系列(这个规则不仅仅适用于图片，包括包含在bundle里面的任意的资源，具体可以参见:Apple’s Resource Programming Guide)</li>
-</ul>
-</li>
-<li>asset catalog有一个非常大的优点，所以，就是你可以忘记所有的文件名后缀；asset catalog知道在图片集合里面选出合适的图片来进行展示，不是根据它的名字，而是根据它在catalog里面的位置。把单倍与双倍分辨率的图片放到”1x”与”2x”的孔槽里面<br><img src="https://dn-arthury.qbox.me/UIKit_catalog.png" alt="效果图"></li>
-<li>注意，项目文件里面有一个Images.xcassets的文件，里面就是放图片集合的，原来做开发的时候都没怎么去用，现在好好研究一下这里面的东西要怎么用，看样子要比bundle要高效一点，话说现在都已经出现x3的分辨率了</li>
-<li>许多的基于Cocoa的可视化对象都会接受一个UIImage作为它们绘制自己的一部分，举个栗子：一个UIButton可以展示一张图片，然后一个UINavigationBar或者一个UITabBar可以有一张背景图片(UINavigationBar给我的体验并不好，无论是改颜色或者是上背景图片效果都很差，让我不得不去自己用UIView来进行自定义，现在突然觉得如果用IB去重写效率一定会很高)</li>
-<li>但是你如果只是想要在界面上展示一张图片，那么UIImageView将会是最好的选择<ul>
-<li>介绍一些nib文件的工作原理<ul>
-<li>当你在nib编辑器里面为一个可视化对象配置一张图片的时候，其实你是在让这个可视化对象调用<code>imageNamed:</code>来获取这张图片，并且<code>imageNamed:</code>方法如何搜索这张图片就是这个可视化对象如何在runtime的时候如何找到这张图片。</li>
-<li>nib编辑器提供了一些便利的特性，每一个可视化对象Attributes inspector对会有一个图片选择的菜单<br><img src="https://dn-arthury.qbox.me/UIKit_imagelist.png" alt="效果图"></li>
-<li>或者在右下角的Media library里面直接拖动出来使用，如果你将一个image拖动到一个空白的view里面的，那么这个view就会被转换为UIImageView来展示这个image</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>一个UIImageView可以拥有两张图片，一张是正常情况下，一张是高亮状态下，UIImageView被高亮的情况很多，可以是被点击，或者通过一个button来切换状态，或者放到一个cell里面当cell被点击之后会被高亮等等一系列的情况，也可以自己去设计</li>
-<li>UIImageView继承于UIView，所以也可以拥有一个背景颜色，可以拥有一个透明度等等的属性。如果一个UIImageView如果没有背景颜色是不可见得的，除了自己展示的图片之外，所以就只有一张孤零零的图片出现，用户看不到装着这张图片的UIImageView的边框。</li>
-<li>一张图片可以拥有一块透明度区域，UIImageView会尊重这一点；因此可以展示一张任意形状的图片，既然可以有一块透明的区域。如果一张UIImageView既没有一张图片有没有背景颜色那么就是不可见的，所以你可以在一块区域是之后需要图片的地方放置一个不可见的UIImageView，你可以用代码在适当的时候把图片放上去，当然也可以将一张图片替换成另外一张图片</li>
-<li>一个UIImageView如何绘制它的图片取决于它的<code>contentMode</code>属性的设置(这个属性是从UIView那里继承来的)，举个栗子：如果这个属性设置是UIViewContentModeScaleToFill(这个在学习动画效果的时候有看到)意味着让这个图片长和宽来自动调整适配这个View，这样填充UIView会改变图片的部分比例；而设置为UIViewContentModeCenter就意味着这张图片会被绘制在图片的中央而不用改变自己的尺寸。<ul>
-<li>最好的方法来得到对各种ContentModeCenter的感觉就是在nib编辑器里面指配一张小图片给UIImageView然后在Attributes inspector里面变换各种模式来进行比较(实战的时候可以试一试)</li>
-<li>同样应该要注意 UIImageView的clipsToBounds属性；如果属性是NO，它的图片，甚至比imageView还要大，就算没有被contentMode缩小比例，，也可以完全展示自己的全部，扩展会超出imageView的范围</li>
-</ul>
-</li>
-<li>当使用代码创建一个UIImageView，可以使用一个非常便利的初始化函数<code>initWithImage:highlightedImage:</code>。默认的contentMode是UIViewContentModeScaleToFill模式，但是这样图像不是最原始的样子，是被缩放过的，而不是视图自己调整大小来适配这张图片。你仍然可能需要正确的在父视图当中放置UIImageView。</li>
-<li>当一个UIImageView被指派给一个图片之后尺寸会怎么变化取决于这个ImageView是否使用了autolayout，如果没有，或者图片的尺寸被绝对限制住了，那么这个图片的尺寸是不会变化的。但是如果使用了autolayout，那么新的图片的尺寸就会成为imageView的新的 intrinsicContentSize，那么这个image view就会适应新图片的尺寸，除非有其他约束的限制(如果一个UIImageView被指派了一个正常状态的图片与一个高亮状态的图片，并且它们的尺寸是不同的，这个视图的intrinsicContentSize会适应图片的尺寸)</li>
-<li><p>Resizable Image(可拉伸的图片，这可以用来解决图片被拉伸之后走形的问题)</p>
-<blockquote>
-<p><a href="http://blog.csdn.net/q199109106q/article/details/8615661/" target="_blank" rel="external">iOS图片拉伸技巧</a></p>
-<ul>
-<li>一个UIImage可以被转换为一个resizable image，通过调用resizableImageWithCapInsets:resizingMode:函数来进行实现</li>
-<li>The capInsets:参数是UIEdgeInsets，这是由四个浮点数组成的结构体<ul>
-<li>这里介绍一下端盖的概念，这个端盖是用来指定图片中的哪一个部分不用拉伸。以下面的图片来讲解</li>
-<li><img src="https://dn-arthury.qbox.me/UIKit_cap.png" alt="效果图"></li>
-<li>这里最后限制之后得出来的黑色矩形就是需要拉伸的部分，至于具体如何进行拉伸看下面的模式</li>
-</ul>
-</li>
-<li>在一个尺寸比图像大的容器里面，一个resizable image可以在两种方式中选择其中一个来进行表现，取决于第二个参数resizingMode:(拉伸的模式)<ul>
-<li>UIImageResizingModeTile<ul>
-<li>平铺模式，通过重复显示UIEdgeInsets指定的矩形区域来填充图片</li>
-</ul>
-</li>
-<li>UIImageResizingModeStretch<ul>
-<li>拉伸模式，通过拉伸UIEdgeInsets指定的矩形区域来填充图片</li>
-</ul>
-</li>
-<li>具体的效果要在实战当中体会，上面的链接里面就是很好的例子</li>
-</ul>
-</li>
-<li>在许多地方都会有需要用到可拉伸图片的需求，举个栗子：将自定义图片作为一个滑块或者进度条的时候，就必须要是可拉伸的，这样这个图片就可以填充任意长度的空白；当然不仅仅是这些情况你会需要使用到可拉伸的图片，还有许多其他的情况，自己在实战当中进行体会</li>
-<li>来几个实战的demo来体会一下</li>
-</ul>
-</blockquote>
-<pre><code><span class="code">    UIImage* mars = [UIImage imageNamed:@"Mars"];</span>
-<span class="code">    UIImage* marsTiled =</span>
-<span class="code">        [mars resizableImageWithCapInsets: UIEdgeInsetsZero</span>
-<span class="code">                             resizingMode: UIImageResizingModeTile];</span>
-<span class="code">    self.iv.image = marsTiled;</span>
-
-<span class="bullet">+ </span>这个demo当中，图片内部的可拉伸矩形区域接近于整张图片，所以效果如下
-![<span class="link_label">效果图</span>](<span class="link_url">https://dn-arthury.qbox.me/UIKit_edgzero.png</span>)
-<span class="bullet">+ </span>使用平铺的模式来拉伸，拉伸对象就相当于是图像自身
-</code></pre><ul>
-<li><p>接着修改一下端盖的参数</p>
-<pre><code>UIImage* marsTiled = [mars resizableImageWithCapInsets:
-              UIEdgeInsetsMake(mars.<span class="built_in">size</span>.<span class="variable">height</span>/<span class="number">4.0</span>,
-                               mars.<span class="built_in">size</span>.<span class="variable">width</span>/<span class="number">4.0</span>,
-                               mars.<span class="built_in">size</span>.<span class="variable">height</span>/<span class="number">4.0</span>,
-                               mars.<span class="built_in">size</span>.<span class="variable">width</span>/<span class="number">4.0</span>)
-              resizingMode: UIImageResizingModeTile];
-</code></pre><ul>
-<li>在这个demo当中修改了内部拉伸小矩形的大小<br><img src="https://dn-arthury.qbox.me/UIKit_edg3.png" alt="效果图"></li>
-<li>以为是内部的一块被拿出来平铺，所以就是这种效果</li>
-</ul>
-</li>
-<li>如果改成拉伸模式，就会使下面这样<br><img src="https://dn-arthury.qbox.me/UIKit_sketch.png" alt="效果图"></li>
-<li>这里就是拉伸模式的效果</li>
-<li><p>再把矩形限制到边长只有一个像素，1pixel</p>
-<pre><code>UIImage* marsTiled = [mars resizableImageWithCapInsets:
-              UIEdgeInsetsMake(mars.size.height/<span class="number">2.0</span> - <span class="number">1</span>,
-                               mars.size.width/<span class="number">2.0</span> - <span class="number">1</span>,
-                               mars.size.height/<span class="number">2.0</span> - <span class="number">1</span>,
-                               mars.size.width/<span class="number">2.0</span> - <span class="number">1</span>)
-              resizingMode: UIImageResizingModeStretch];
-</code></pre><p><img src="https://dn-arthury.qbox.me/UIKit_1pix.png" alt="效果图"></p>
-</li>
-<li>当然，除了改变拉伸模式与内部矩形大小之外，还可以通过改变contentMode来体验不同的效果</li>
-<li>举个栗子：如果contentMode模式是UIViewContentModeScaleAspectFill并且image View的clipsToBounds属性是YES，那么就会出现以下这种情况<br><img src="https://dn-arthury.qbox.me/UIKIt_clip.png" alt="效果图"></li>
-<li>因为这里的用例图尺寸超过了image View的范围</li>
-</ul>
-</li>
-<li>注意现在Xcode5之后可以在IB下直接配置可以拉伸的图片(总感觉IB变的好强大)，现在可以不需要使用代码就配置可拉伸的图片；这是asset catalogs的一个功能，同时又是另外一个使用它的理由。<ul>
-<li>一般会很经常使用到可拉伸的图片，并且总是使用了<code>capInsets:</code>和<code>resizingMode:</code>，这样代码的重用性并不高，并不是很好的方法</li>
-<li>如果一张图片放置在asset catalog里面的是可以拉伸的，那么这张图片也可以正常的显示在你的界面里；举个栗子：就比如你使用这张图片初始化一个image view或者将其指派给一个使用了autolayout的image view或者如果这个image view没有缩放它的图片(也就是这个image view的contentMode是UIViewContentModeCenter)<ul>
-<li>这里介绍一下Images.xcassets<ul>
-<li>这是Xcode5引入的新特性，为了能够在开发app的时候方便的支持多种分辨率的设备</li>
-<li>关于新建的选项：有AppIcon、LaunchImage、Image Set，分别对应不同的需求</li>
-<li>首先是AppIcon，这里提供的就是app在iOS系统中各个位置的图标<br>  <img src="https://dn-arthury.qbox.me/UIKit_appIcon.png" alt="效果图"><ul>
-<li>如图所示，里面已经提供好了各个位置图标的标本，只要按照要求把对应尺寸的图片拖进去便可</li>
-</ul>
-</li>
-<li>LaunchImage：这个是app在启动载入的时候出现的图片，也就是载入之后看到的第一张图片，同样已经提供好了相应的槽位，拖动进去便可；至于图片需要多大的尺寸，选中之后在Attributes inspector里面会有提醒(注意只有AppIcon和LaunchImage有提醒)<br>  <img src="https://dn-arthury.qbox.me/UIKit_LaunchImage.png" alt="效果图"><br>  <img src="https://dn-arthury.qbox.me/UIKit_imageSection.png" alt="提醒的区域"></li>
-<li>最常用的Image Set，这里放置的图片集合是app内部会使用的到的资源，在这里配置图片比把图片放在bundle要更好，无论是从效率上还是功能上<br>  <img src="https://dn-arthury.qbox.me/UIKit_imageSet.png" alt="效果图"><ul>
-<li>上图是最完整的集合，当然也可以在Attributes inspector里面进行调整，不需要的可以取消勾选<br><img src="https://dn-arthury.qbox.me/UIKit_imageSetA.png" alt="效果图"></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>那么，要在asset catalog配置一张可拉伸的图片，就新建一个Image Set，然后选中拖动到里面的图片，在Attributes inspector里面的底部有一个Slices菜单里面有三个选项，分别是Horizontal、Vertical、Horizontal和Vertical；你同样可以地点击底部的Show Slicing来在图形化界面下进行详细的配置<br><img src="https://dn-arthury.qbox.me/UIKit_slicing.png" alt="效果图"></li>
-<li>这个图形化界面的编辑器是可变焦的，所以使用变焦来更好的工作</li>
-<li>为什么这个功能叫做Slicing而不是叫做Resizing是因为它可以做的比<code>resizableImageWithCapInsets:resizingMode:</code>更多，你可以在可视化界面下调整内部矩形区域的大小，非常的方便，你将会非常直观的看到自己的配置，具体那几条线怎么调会有什么样的效果，这个还要在实战当中进行不断的学习<blockquote>
-<p><a href="http://blog.csdn.net/chengwuli125/article/details/12710447" target="_blank" rel="external">IOS学习笔记58–IOS7新特性之XCODE</a></p>
-</blockquote>
-</li>
-<li>这个功能只能在iOS7之后使用</li>
-</ul>
-</li>
-<li>image Rendering Mode(UIImage的渲染模式)<blockquote>
-<p><a href="http://blog.csdn.net/djxiaoyu_haha/article/details/40949083" target="_blank" rel="external"> 设置UIImage的渲染模式：UIImage.renderingMode</a></p>
-<ul>
-<li>在一个app的可视化界面都会自动将一张图片当做一个透明的罩，同样被当做是一个模板。这个意味着这张图片的颜色数据将会被无视，并且只有当每一个像素的透明度数值都很重要的时候。</li>
-<li>展示在界面上的图片是通过把这张图片的透明度数据与一个简单的着色(Tint Color)混合在一起来实现的。举个栗子：这是tab bar item图片的行为</li>
-<li>在iOS7当中，一张图片会被当做图片的一个属性，这个属性就是renderingMode；这个属性是只读的，要改变这个属性，要从一个已经存在的图片中得到一张新的图片有着不同的rendering mode，通过调用<code>imageWithRenderingMode:</code>来生成一张拥有你想要的renderingMode的图片，这里可以选择的模式有：<ul>
-<li>UIImageRenderingModeAutomatic(默认的模式)// 根据图片的使用环境和所处的绘图上下文自动调整渲染模式</li>
-<li>UIImageRenderingModeAlwaysOriginal// 始终绘制图片原始状态，不使用Tint Color</li>
-<li>UIImageRenderingModeAlwaysTemplate// 始终根据Tint Color绘制图片，忽略图片的颜色信息</li>
-</ul>
-</li>
-<li>通过不同的模式来渲染图片，在实战中进行体会不同的效果</li>
-<li>默认的模式UIImageRenderingModeAutomatic，这个模式可以在大部分的情况下都是可以正常的工作除非只有很少的上下文，那么就会被作为一个透明罩使用</li>
-<li>拥有renderingMode属性，你可以无视上下文环境来强迫图片使用你想要的模式来进行渲染，可以是与上下文完全违背的模式；苹果想要iOS7的app接受这种透明的遮罩层，在setting里面的一些图标也是透明的</li>
-<li>为了完成这个功能，iOS7给了每一个UIView一个tintColor，这个属性会为UIView包含的任意模板图像进行着色。此外，这个tintColor是从继承链当中向下继承的，并且贯穿了整个app，从UIWindow(UIWindow继承自UIView)。因此，给你的app的main window指派一个tint Color可能是你会对window所做少数操作之一；其他时候，你的app适配系统的blue tint color。(或者，如果你使用的是storyboard，那么就在File inspector里面进行设置)单独的视图可以被分配给自己专属的tint color，这将会被它们自己的子视图给合并，</li>
-</ul>
-</blockquote>
-</li>
-</ul>
-<h2 id="UIApplicationMain">UIApplicationMain</h2><ul>
-<li><p>UIApplicationMain函数是初始化程序的关键点，由主函数进行调用</p>
-<pre><code><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">char</span> * argv[]) {
-    <span class="keyword">@autoreleasepool</span> {
-        <span class="keyword">return</span> <span class="built_in">UIApplicationMain</span>(argc, argv, <span class="literal">nil</span>, <span class="built_in">NSStringFromClass</span>([AppDelegate class]));
-    }
-}
-</code></pre></li>
-</ul>
-<ul>
-<li>4个参数<ul>
-<li>argc与argv来自与main接收的两个参数</li>
-<li>第三个参数：主要类(principal class)，必须是UIApplication或其子类的名字，它代表着当前iPhone程序本身，这个程序会去读info.plist文件获取配置信息，其中包括主nib文件的值，一般为MainWindow(.xib)；如果该参数为nil，则默认为@”UIApplication”。缺省值就是@”UIApplication”</li>
-<li>第四个参数：代理类(delegate class)，MainWindow.xib文件中遵循UIApplicationDelegate的类的类名，因为UIApplication定义了一个delegte变量，这个变量应该遵循UIApplicationDelegate，负责控制程序的运行，如果主nib文件没有这个类，你应该自定义一个这样的类，并将第四个参数改为这个类的类名，否则这个程序不知道如何进行运作，因为前三个参数代表应用程序本身，它除了把应用的事件循环启动起来，并读取info.plist里的配置信息，不做其它任何事情。如果该参数为nil，则程序假设程序的代理来自Main nib文件。缺省值就是Main.nib中的类文件，如果没有就要自己去写这个类文件，现在这个类文件都是由自己去写的，也就是AppDelegate类，如上代码块所示</li>
-</ul>
-</li>
-</ul>
-<h2 id="UITableViewCell自定义">UITableViewCell自定义</h2><blockquote>
-<p><a href="http://zhidao.baidu.com/link?url=E-U68VfcNWaVt1CQ-5TQsruDkusomDsSeDxJc0og_Jzs7BcorrgkGD0BOfYAvK2CtcvCvF9C6YeLaY69VjXjxnvh6fhWwdNWTSmOy7DxGUO" target="_blank" rel="external">百度知道</a><br><a href="http://www.cnblogs.com/PleaseInputEnglish/p/3481228.html" target="_blank" rel="external">IOS开发—菜鸟学习之路–（七）-自定义UITableViewCell</a></p>
-</blockquote>
-<ul>
-<li>常用属性记录<ul>
-<li><code>cell.separatorInset = UIEdgeInsetsMake(0, 80, 0, 80);</code>//此属性用来设置cell分割线的端距，上下左右的距离问题</li>
-<li><code>tableView.separatorColor = [UIColor redColor];</code>//分割线的颜色问题</li>
-<li><code>tableView.separatorInset = UIEdgeInsetsMake(0,80, 0, 80);</code>//设置端距，与cell属性不同的是，cell的属性只对正在被使用的cell起作用，而tableView的属性对全体都起作用，无论是否有被使用<ul>
-<li><code>tableView.separatorStyle=UITableViewCellSeparatorStyleSingleLine;</code><blockquote>
-<p><a href="http://www.cnblogs.com/daguo/archive/2012/08/07/2626552.html" target="_blank" rel="external">自定义UITableViewCell：Cell高度、分割线、间距等</a></p>
-</blockquote>
-</li>
-<li>自定义tableViewCell的高度</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<pre><code>-(<span class="built_in">UITableViewCell</span> *)tableView:(<span class="built_in">UITableView</span> *)tableView cellForRowAtIndexPath:(<span class="built_in">NSIndexPath</span> *)indexPath{
-    <span class="keyword">static</span> <span class="built_in">NSString</span> *cellIdentifier = <span class="string">@"cellIdentifier"</span>;
-    <span class="built_in">UITableViewCell</span> *cell = [[<span class="built_in">UITableViewCell</span> alloc] initWithStyle:<span class="built_in">UITableViewCellStyleDefault</span> reuseIdentifier:cellIdentifier];
-    <span class="built_in">CGRect</span> cellFrame = cell<span class="variable">.frame</span>;
-    cellFrame<span class="variable">.size</span><span class="variable">.height</span> = <span class="number">100.</span>f;
-    [cell setFrame:cellFrame];
-    cell<span class="variable">.textLabel</span><span class="variable">.text</span> = <span class="string">@"Hey man"</span>;
-    <span class="keyword">return</span> cell;
-}
--(<span class="built_in">CGFloat</span>)tableView:(<span class="built_in">UITableView</span>*)tableView heightForRowAtIndexPath:(<span class="built_in">NSIndexPath</span>*)indexPath
-{
-    <span class="built_in">UITableViewCell</span>*cell =[<span class="keyword">self</span> tableView:tableView cellForRowAtIndexPath:indexPath];
-    <span class="keyword">return</span> cell<span class="variable">.frame</span><span class="variable">.size</span><span class="variable">.height</span>;
-}
-</code></pre><ul>
-<li>重写所有的初始化方法需要注意的事情<ul>
-<li>就是先初始化super，然后再if(self){}，不要再犯下这种愚蠢的错误</li>
-</ul>
-</li>
-<li>出现的问题收集<blockquote>
-<p><a href="http://stackoverflow.com/questions/6745919/uitableviewcell-subview-disappears-when-cell-is-selected" target="_blank" rel="external">UITableViewCell subview disappears when cell is selected</a></p>
-</blockquote>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/04/20/UIKit/" data-id="cid87a8c9001x35gzlj5by72f" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/04/21/Design-Pattern/" data-id="cid95vz5a003whbgzyc9myrym" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -1336,7 +1092,7 @@ screenBounds<span class="variable">.size</span><span class="variable">.width</sp
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/6/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span>
+      <a class="extend prev" rel="prev" href="/page/6/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/8/">Next &raquo;</a>
     </nav>
   
 </section>
@@ -1349,7 +1105,7 @@ screenBounds<span class="variable">.size</span><span class="variable">.width</sp
   <div class="widget-wrap">
     <h3 class="widget-title">標簽</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -1358,7 +1114,7 @@ screenBounds<span class="variable">.size</span><span class="variable">.width</sp
   <div class="widget-wrap">
     <h3 class="widget-title">標簽雲</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 10px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 10px;">tips</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
+      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 10px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 10px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 10px;">tips</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
     </div>
   </div>
 
@@ -1367,7 +1123,7 @@ screenBounds<span class="variable">.size</span><span class="variable">.width</sp
   <div class="widget-wrap">
     <h3 class="widget-title">歸檔</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">28</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">31</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
     </div>
   </div>
 
@@ -1379,23 +1135,23 @@ screenBounds<span class="variable">.size</span><span class="variable">.width</sp
       <ul>
         
           <li>
+            <a href="/2015/08/12/iOS网络编程01/">iOS网络编程01</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/12/UI动效设计01/">UI动效设计01</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/12/的/">的</a>
+          </li>
+        
+          <li>
             <a href="/2015/08/12/emacs-技巧01/">emacs 技巧01</a>
           </li>
         
           <li>
             <a href="/2015/08/12/快速提升开发能力的方法/">快速提升开发能力的方法</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/12/git使用技巧01/">git使用技巧01</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/12/CocoaPods01/">CocoaPods01</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/11/关于github的多账号管理/">关于github的多账号管理</a>
           </li>
         
       </ul>

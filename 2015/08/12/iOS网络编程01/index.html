@@ -1,0 +1,416 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>iOS网络编程01 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言
+原来自己关于网络请求这一块用的都是第三方框架，其中最常用的是AFNetworking，现在我需要自己尝试自己去写这样的网络请求，然后去学习别人是如何去封装这些框架的
+
+关于网络编程的架构设计
+需要能够应对不同情况下的网络环境
+可伸缩以及可维护
+
+iOS提供的网络api
+NSURL
+GameKit
+Bonjour
+NSStream
+CFNetwork
+BSDSocket(网络框架最底层)
+
+N">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS网络编程01">
+<meta property="og:url" content="http://yoursite.com/2015/08/12/iOS网络编程01/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言
+原来自己关于网络请求这一块用的都是第三方框架，其中最常用的是AFNetworking，现在我需要自己尝试自己去写这样的网络请求，然后去学习别人是如何去封装这些框架的
+
+关于网络编程的架构设计
+需要能够应对不同情况下的网络环境
+可伸缩以及可维护
+
+iOS提供的网络api
+NSURL
+GameKit
+Bonjour
+NSStream
+CFNetwork
+BSDSocket(网络框架最底层)
+
+N">
+<meta property="og:updated_time" content="2015-08-12T19:20:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS网络编程01">
+<meta name="twitter:description" content="前言
+原来自己关于网络请求这一块用的都是第三方框架，其中最常用的是AFNetworking，现在我需要自己尝试自己去写这样的网络请求，然后去学习别人是如何去封装这些框架的
+
+关于网络编程的架构设计
+需要能够应对不同情况下的网络环境
+可伸缩以及可维护
+
+iOS提供的网络api
+NSURL
+GameKit
+Bonjour
+NSStream
+CFNetwork
+BSDSocket(网络框架最底层)
+
+N">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
+  
+</head>
+<body>
+<div id="container">
+  <div id="wrap">
+    <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="http://www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+          <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="Search">
+          <input type="submit" value="" class="search-form-submit">
+          <input name=tn type=hidden value="bds">
+          <input name=cl type=hidden value="3">
+          <input name=ct type=hidden value="2097152">
+          <input type="hidden" name="si" value="yoursite.com">
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+    <div class="outer">
+      <section id="main"><article id="post-iOS网络编程01" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/12/iOS网络编程01/" class="article-date">
+  <time datetime="2015-08-12T10:57:16.000Z" itemprop="datePublished">2015-08-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS网络编程01
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言">前言</h2><ul>
+<li>原来自己关于网络请求这一块用的都是第三方框架，其中最常用的是AFNetworking，现在我需要自己尝试自己去写这样的网络请求，然后去学习别人是如何去封装这些框架的</li>
+</ul>
+<h2 id="关于网络编程的架构设计">关于网络编程的架构设计</h2><ul>
+<li>需要能够应对不同情况下的网络环境</li>
+<li>可伸缩以及可维护</li>
+</ul>
+<h2 id="iOS提供的网络api">iOS提供的网络api</h2><ul>
+<li>NSURL</li>
+<li>GameKit</li>
+<li>Bonjour</li>
+<li>NSStream</li>
+<li>CFNetwork</li>
+<li>BSDSocket(网络框架最底层)</li>
+</ul>
+<h2 id="NSURL">NSURL</h2><ul>
+<li>NSURLConnection</li>
+<li>NSURLSession(NSURLConnection升级版)，今后要使用的主要版本</li>
+</ul>
+<h2 id="Http简介">Http简介</h2><ul>
+<li>客户端与服务器的一种数据传输协议</li>
+<li>包含的请求有：GET、POST、PUT、DELETE等等</li>
+<li>GET请求主要用于向服务器获取数据，POST请求主要用于向服务器传输数据，虽然GET请求也可以做到传输数据，但是这样如果传输一些大文件，那么URL就会变得非常长，这样并不合适</li>
+</ul>
+<h2 id="NSURLSession">NSURLSession</h2><ul>
+<li>iOS7之后出现</li>
+<li>提供的几个核心功能：<ul>
+<li>1.通过url将数据下载到内存中</li>
+<li>2.通过url将数据下载到文件系统中</li>
+<li>3.将数据上传到指定的url</li>
+<li>4.在后台完成上述功能</li>
+</ul>
+</li>
+<li>优势<ul>
+<li>能够在后台上传和下载</li>
+<li>能够进行暂停和恢复操作</li>
+<li>可配置性高</li>
+<li>可继承，拥有独立的私有存储</li>
+<li>改进的认证处理</li>
+<li>丰富的委托模式</li>
+<li>通过文件系统进行上传和下载</li>
+</ul>
+</li>
+<li>工作流<ul>
+<li>创建Session</li>
+<li>创建Task</li>
+<li>启动Task</li>
+<li>使用回调处理结果</li>
+</ul>
+</li>
+</ul>
+<h2 id="NSURLSession操作实例">NSURLSession操作实例</h2><ul>
+<li>获取指定api的数据</li>
+<li>下载远程资源<ul>
+<li>创建资源的url</li>
+<li>创建configuration<ul>
+<li>一般模式(default)：可以使用缓存，cookie，鉴权</li>
+<li>即时模式(ephemeral)：不使用缓存，不使用cookie，不使用鉴权</li>
+<li>后台模式(background)：在后台完成上传和下载</li>
+</ul>
+</li>
+<li>创建DownloadTask</li>
+<li>启动task</li>
+<li>使用回调处理数据</li>
+<li>这里涉及到的代理有：下载完成时，以及下载进行中，对应的delegate是NSURLSessionDownloadDelegat</li>
+</ul>
+</li>
+</ul>
+<h2 id="NSURLSessionConfiguration">NSURLSessionConfiguration</h2><ul>
+<li>三种模式：default、background、ephemeral</li>
+<li>当一个session对象要执行上传或者下载任务的时候，就需要一个NSURLSessionConfiguration来定义上传下载的策略</li>
+<li>可以具体进行的配置：<ul>
+<li>通用属性</li>
+<li>Cookie策略</li>
+<li>缓存策略</li>
+<li>支持后台传输</li>
+<li>支持自定义协议</li>
+<li>设置http策略</li>
+<li>设置代理属性</li>
+</ul>
+</li>
+</ul>
+<h2 id="NSURL的坑爹之处">NSURL的坑爹之处</h2><ul>
+<li>如果使用<code>NSURL(string:_)</code>的方式对URL进行初始化，就会导致初始化失败，从而返回nil，这样在解包的时候就会crash，实在是坑爹</li>
+<li>解决方案：使用String的<code>StringstringByAddingPercentEscapesUsingEncoding:_</code>方法进行编码，编码方式使用<code>NSUTF8StringEncoding</code>便可</li>
+<li>既然有编码那么对应的就有解码操作，<code>stringByReplacingPercentEscapesUsingEncoding:_</code>这个方法可以用来进行解码操作</li>
+<li><p>下面有一个非常好的例子</p>
+<pre><code>NSString* string1 = @<span class="string">"https://www.cloudsafe.com/文件夹"</span>;  
+
+NSString* string2 = [string1 stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];  
+NSString* string3 = [string2 stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];  
+
+NSString* string4 = [string2 stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];  
+NSString* string5 = [string3 stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];  
+
+NSString* string6 = [string4 stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];  
+NSString* string7 = [string5 stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];  
+
+输出结果: string5 &amp; <span class="number">6</span> 重复编码encode  
+
+string1:https://www.cloudsafe.com/文件夹  
+
+string2:https://www.cloudsafe.com/<span class="decorator">%E6</span><span class="decorator">%96</span><span class="decorator">%87</span><span class="decorator">%E4</span><span class="decorator">%BB</span><span class="decorator">%B6</span><span class="decorator">%E5</span><span class="decorator">%A4</span><span class="decorator">%B9</span>  
+string3:https://www.cloudsafe.com/<span class="decorator">%25E6</span><span class="decorator">%2596</span><span class="decorator">%2587</span><span class="decorator">%25E4</span><span class="decorator">%25BB</span><span class="decorator">%25B6</span><span class="decorator">%25E5</span><span class="decorator">%25A4</span><span class="decorator">%25B9</span>  
+
+string4:https://www.cloudsafe.com/文件夹  
+string5:https://www.cloudsafe.com/<span class="decorator">%E6</span><span class="decorator">%96</span><span class="decorator">%87</span><span class="decorator">%E4</span><span class="decorator">%BB</span><span class="decorator">%B6</span><span class="decorator">%E5</span><span class="decorator">%A4</span><span class="decorator">%B9</span>  
+
+string6:https://www.cloudsafe.com/文件夹  
+string7:https://www.cloudsafe.com/文件夹  
+</code></pre></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/08/12/iOS网络编程01/" data-id="cid95vz2q0010hbgzjwdg7wxe" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NetWork/">NetWork</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/08/12/UI动效设计01/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">UI动效设计01</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+      
+      <aside id="sidebar">
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">標簽</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">標簽雲</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 10px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 10px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 10px;">tips</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">歸檔</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">31</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">近期文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2015/08/12/iOS网络编程01/">iOS网络编程01</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/12/UI动效设计01/">UI动效设计01</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/12/的/">的</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/12/emacs-技巧01/">emacs 技巧01</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/12/快速提升开发能力的方法/">快速提升开发能力的方法</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">友情鏈接</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="http://arthury.cn" target="_blank">博客</a>
+          </li>
+        
+          <li>
+            <a href="http://www.jianshu.com/users/b3b9816e50f6/latest_articles" target="_blank">简书</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+      
+    </div>
+    <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2015 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      .
+      Theme by <a href="https://github.com/xiangming/landscape-plus" target="_blank">Landscape-plus</a>
+    </div>
+  </div>
+</footer>
+  </div>
+  <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+  <!-- totop start -->
+<div id="totop">
+<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+</div>
+
+<!-- totop end -->
+
+
+<!-- 百度分享 start -->
+
+<div id="article-share-box" class="article-share-box">
+  <div id="bdshare" class="bdsharebuttonbox article-share-links">
+    <a class="article-share-weibo" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a class="article-share-weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a class="article-share-qq" data-cmd="sqq" title="分享到QQ"></a>
+    <a class="article-share-renren" data-cmd="renren" title="分享到人人网"></a>
+    <a class="article-share-more" data-cmd="more" title="更多"></a>
+  </div>
+</div>
+<script>window._bd_share_config={"common":{},"share":{"bdCustomStyle":"/css/bdshare.css"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];</script>
+
+<!-- 百度分享 end -->
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+
+
+<script src="/js/script.js" type="text/javascript"></script>
+
+</div>
+</body>
+</html>

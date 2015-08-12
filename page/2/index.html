@@ -68,6 +68,251 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-TableView01" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/11/TableView01/" class="article-date">
+  <time datetime="2015-08-11T08:12:37.000Z" itemprop="datePublished">2015-08-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/11/TableView01/">TableView01</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="初始化UITaleView的一些坑">初始化UITaleView的一些坑</h2><ul>
+<li>UITableView的使用有两种方法，一种是直接继承UITableViewController来控制，另一种是继承UIViewController来控制</li>
+<li>使用UIViewController来实现的时候一定要记得设置delegate与datasource不要只设置一个而忘记了设置第二个，太久没开发连一些一本的设置都忘了，真是惭愧</li>
+</ul>
+<h2 id="如何避免顶部的导航栏遮住tableview">如何避免顶部的导航栏遮住tableview</h2><ul>
+<li>要明确一点就是屏幕高度的组成等于状态栏高度(status bar height)加顶部导航栏高度(nav bar height)加底部导航栏高度(bottom bar height)</li>
+<li>知道原理之后就会变得很简单了，想要不被遮住，只要设置y为状态栏高度加导航栏高度便可，获得状态栏高度的代码为<code>let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height</code>，通过代码设置很简单，当然还可以通过SB来设置，这样就可以省略掉很多代码了</li>
+<li>具体就是去掉VC当中的Under Top Bars与Under Bottom Bars的勾选，这样上下导航栏就会被考虑到布局当中去，另外在设置顶部约束的时候，不要去掉<code>Constrain to margins</code>的选项，否则状态栏的高度就会被忽略掉</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/08/11/TableView01/" data-id="cid95vz3u0027hbgzmesrc8le" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UITableView/">UITableView</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-如何制作一个app？01" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/11/如何制作一个app？01/" class="article-date">
+  <time datetime="2015-08-11T07:02:30.000Z" itemprop="datePublished">2015-08-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/11/如何制作一个app？01/">如何制作一个app？01</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="制作app的流程">制作app的流程</h2><ul>
+<li>需求分析阶段，总共有几个功能点，几个视图</li>
+<li>demo实现阶段，这个时候没有设计图，也没有交互设计，就是把提到的需求全部实现出来，设计使用最基本的几个元素就可以了，完全没有自定义UI，就是使用原生控件，动画也全部没有，全部使用最简单的方式来实现</li>
+<li>设计优化阶段，这个阶段开始根据功能点以及视图去美化设计，并且加入各种友好的交互动画</li>
+<li>性能优化阶段，把原来在demo阶段做的不够好的地方进行重构优化，包括分层优化之类的</li>
+<li>公测上线</li>
+</ul>
+<h2 id="关于app的架构">关于app的架构</h2><ul>
+<li>我不知道app的架构是怎么一回事？像我在上面提到的流程里，并没有涉及架构的问题，或许架构应该是最开始考虑进去的东西，但是现在我的开发经验很少，哪些架构合适，对我来说能够起到什么作用我也无法判断，所以我先按照自己的直觉去实现一遍，回头重构的时候再来评估自己的架构以及别人的架构，通过这些来吸收好的架构</li>
+<li>我现在对代码文件的组织分类非常的随便，完全就是按照直觉来做，并没有什么特定的规范，包括开发以及命名的规范，这次开发AwesomeFM之后会采用各种被人推崇的规范进行重构，然后评价这些规范的优劣，最早版本的代码我不会删除掉，我会保留着，放到后面用来重构分析的时候进行评价，现在我要整理自己手上的资源，有关于这一块的资料我要拿来好好的研究分析</li>
+</ul>
+<h2 id="自己身上存在的问题">自己身上存在的问题</h2><ul>
+<li>太久没有开发导致自己各方面的熟练度都降低了不少</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/08/11/如何制作一个app？01/" data-id="cid95vz24000mhbgza55p2qe9" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/app/">app</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Web02" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/10/Web02/" class="article-date">
+  <time datetime="2015-08-10T12:04:56.000Z" itemprop="datePublished">2015-08-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/10/Web02/">Web02 -- React入门</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="使用Rect语法方式">使用Rect语法方式</h2><ul>
+<li><p>方式一：直接在html文件中嵌入</p>
+<pre><code><span class="doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;<span class="title">html</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">head</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">charset</span>=<span class="value">"UTF-8"</span> /&gt;</span>
+    <span class="tag">&lt;<span class="title">title</span>&gt;</span>Hello React!<span class="tag">&lt;/<span class="title">title</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"build/react.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="comment">&lt;!--JSXTransformer.js的作用是将JSX语法转为JavaScript 语法，如果这里有使用JSX语法，就需要使用JSXTransformer.js来做转换，否则就无法使用；当然，如果没有用到JSX语法，就不需要加载这个文件--&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"build/JSXTransformer.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">head</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">body</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"example"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/jsx"</span>&gt;</span><span class="handlebars"><span class="xml">
+    <span class="comment">&lt;!--在这里直接嵌入react的语法--&gt;</span>
+      React.render(
+        <span class="tag">&lt;<span class="title">h1</span>&gt;</span>Hello, world!<span class="tag">&lt;/<span class="title">h1</span>&gt;</span>,
+        document.getElementById('example')
+      );
+    </span></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">body</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">html</span>&gt;</span>
+</code></pre></li>
+<li><p>方式二：分离到js文件当中</p>
+<ul>
+<li><p>仍然使用上面的例子，创建一个helloworld.js文件，输入以下代码：</p>
+<pre><code>React.<span class="built_in">render</span><span class="params">(
+    &lt;h1&gt;Hello, world!&lt;/h1&gt;,
+    document.getElementById<span class="params">('example')</span>
+)</span>;
+</code></pre></li>
+<li><p>然后在helloworld.html文件当中进行关联便可</p>
+<pre><code><span class="doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;<span class="title">html</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">head</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">charset</span>=<span class="value">"UTF-8"</span> /&gt;</span>
+    <span class="tag">&lt;<span class="title">title</span>&gt;</span>Hello React!<span class="tag">&lt;/<span class="title">title</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"build/react.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="comment">&lt;!--下面使用的是关联jsx的js文件的形式，不知道是否需要加载JSXTransformer.js文件，有待测试--&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"build/JSXTransformer.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">head</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">body</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"example"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+    <span class="comment">&lt;!--在这里关联jsx的js文件--&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/jsx"</span> <span class="attribute">src</span>=<span class="value">"src/helloworld.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">body</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">html</span>&gt;</span>
+</code></pre></li>
+</ul>
+</li>
+<li><p>方法三：将写好的jsx的js文件转换成标准的js文件再进行关联</p>
+<ul>
+<li><p>比如刚才上面的helloworld.js文件放在了src目录下，然后想要将转换之后的标准js文件放到build目录下，就可以使用这样的命令</p>
+<pre><code>jsx <span class="comment">--watch src/ build/</span>
+</code></pre></li>
+<li><p>这样在build目录下，就会生成一个标准的helloworld.js文件，可以直接在helloworld.html文件中进行关联，这个时候就不用再加载JSXTransformer.js文件了</p>
+<pre><code><span class="doctype">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;<span class="title">html</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">head</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">charset</span>=<span class="value">"UTF-8"</span> /&gt;</span>
+    <span class="tag">&lt;<span class="title">title</span>&gt;</span>Hello React!<span class="tag">&lt;/<span class="title">title</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"build/react.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+    <span class="comment">&lt;!-- No need for JSXTransformer! --&gt;</span>
+  <span class="tag">&lt;/<span class="title">head</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">body</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"example"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"build/helloworld.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">body</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">html</span>&gt;</span>
+</code></pre></li>
+</ul>
+</li>
+<li><p>三种方式可以任意选择一种自己喜欢的方式</p>
+</li>
+</ul>
+<h2 id="React语法">React语法</h2><ul>
+<li>JSX语法支持html与javascript混合编写</li>
+<li>原则是遇到html标签&lt;&gt;就使用html规则解析，遇到代码块{}就用javascript解析</li>
+<li>JSX允许直接在模板插入javascript变量，不需要用代码块包起来</li>
+</ul>
+<h2 id="在Node中配置React时候遇到的一些坑">在Node中配置React时候遇到的一些坑</h2><ul>
+<li>一定要把所有的依赖也一起放到public里面去，不然node不回去加载的<ul>
+<li>那开发使用bower下载依赖的时候直接下载到public里面就可以了，所有静态文件配置全部放到这里</li>
+</ul>
+</li>
+<li>Node服务器一旦启动，里面的静态文件就不会重新加载了，除非重启服务器，这样就很坑爹了，我不可以一直开着服务器调试了</li>
+<li>最佳的书写路径的方式：<ul>
+<li><code>../</code>代表上一级目录</li>
+<li><code>./</code>代表当前目录</li>
+<li>使用这两个把目录给写清楚就可以了，记住就算是在当前目录<code>./</code>也是不可以省略的</li>
+</ul>
+</li>
+</ul>
+<h2 id="自己身上一些比较坑爹的地方">自己身上一些比较坑爹的地方</h2><ul>
+<li>create老是会少掉一个e，导致函数没有找到，简直坑爹</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/08/10/Web02/" data-id="cid95vz31001ehbgzodxjxlaj" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/">web</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-BigData01" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/08/10/BigData01/" class="article-date">
@@ -108,7 +353,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/10/BigData01/" data-id="cid87a8e5004435gzijsnixit" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/10/BigData01/" data-id="cid95vz5m004bhbgz30cqkvp8" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -153,7 +398,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/10/Web01/" data-id="cid87a8bd001d35gz8zlw62o1" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/10/Web01/" data-id="cid95vz33001hhbgzam797onx" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -205,7 +450,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/10/Nodejs02/" data-id="cid87a8d6002x35gz2i6advjn" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/10/Nodejs02/" data-id="cid95vz4m0034hbgzrvb1433n" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -258,7 +503,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/10/Nodejs01/" data-id="cid87a8d8003035gz7x24rz1l" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/10/Nodejs01/" data-id="cid95vz4o0037hbgzohilm0tr" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -355,7 +600,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/09/QuartzCode02/" data-id="cid87a8cp002e35gzl6edhwg7" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/09/QuartzCode02/" data-id="cid95vz49002lhbgz3g9knufz" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -418,7 +663,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/09/QuartzCode01/" data-id="cid87a8cs002h35gzdocmn51s" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/09/QuartzCode01/" data-id="cid95vz4b002ohbgzdqvmp3yk" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -465,7 +710,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/09/PaintCode01/" data-id="cid87a8cx002o35gzjwwwqbtk" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/09/PaintCode01/" data-id="cid95vz4h002vhbgz071y25ht" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -480,212 +725,9 @@
 
 
   
-    <article id="post-Sketch01" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/08/08/Sketch01/" class="article-date">
-  <time datetime="2015-08-08T11:01:13.000Z" itemprop="datePublished">2015-08-08</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/08/Sketch01/">Sketch01</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Layer介绍">Layer介绍</h2><ul>
-<li>handler<br><img src="https://dn-arthury.qbox.me/sketch-handle.png" alt="效果图"><ul>
-<li>图中白色的八个小方块就是handler</li>
-<li>可以利用这8个小方块来控制layer的形状</li>
-</ul>
-</li>
-<li>移动layer<ul>
-<li>可以选择layer不放开进行拖动    </li>
-<li>可以选中之后使用上下左右按键来进行移动，使用这种方法可以每次只移动1个单位</li>
-<li>如果按住shift再使用上下左右按键来移动，每次就可以移动10个单位</li>
-</ul>
-</li>
-<li>duplicate<ul>
-<li>选中layer然后右键菜单，点击duplicate就可以复制出一个一模一样的layer出来</li>
-<li>按住option键然后选中layer，这样就可以直接拖出当前layer的副本了，这是一个快捷方式</li>
-</ul>
-</li>
-<li>隐藏layer<ul>
-<li>如果不需要当前的layer，又不想删除它，就可以选择隐藏layer；在左边的layerlist中选中想要隐藏的layer，然后点击眼睛图标，就可以隐藏当前的layer了</li>
-</ul>
-</li>
-<li>锁定layer<ul>
-<li>当想要当前layer锁定在画布当中不被选中时，比如作为背景的时候，就可以考虑锁定layer，选中想要锁定的layer，然后右键选择lock layer便可，这样这个layer就不能够在画布当中被选中了，但是仍然可以在左边的layerlist中进行选择</li>
-</ul>
-</li>
-<li>group layer<ul>
-<li>可以将选中的layer全部合成一组，这个操作很常见，这里就不详细介绍了</li>
-<li>想要操作一组layer里面的单个layer，可以在画布当中双击这个layer，这样就可以单独操作这个被选中的layer了</li>
-</ul>
-</li>
-<li>显示layer之间的距离<ul>
-<li>如果想知道选中layer与其他layer之间的距离，那么就可以按住option键然后将鼠标移到其他的layer上面，这样就可以看到距离提示了</li>
-</ul>
-</li>
-<li>颜色的填充<ul>
-<li>颜色的填充有很多的样式，具体的效果可以自己在fill选项卡当中进行选择，有纯颜色填充，有渐变，各种各样都有，具体效果的设计自己在实战当中去把握<br><img src="https://dn-arthury.qbox.me/sketch-fill.png" alt="效果图"></li>
-<li>有一个很强大的功能要注意，就是点击上图中的试管可以对屏幕中任意位置进行取色，非常强大的功能，如果看到网上有什么好的颜色自己调不出来的，就可以覅用这个功能来取色，非常的方便</li>
-</ul>
-</li>
-<li>border属性<ul>
-<li>这个属性是边框的样式，可以调整边框的颜色，宽度，颜色等等；点击齿轮按钮还可以设置更加细节的东西，比如说边框是否是虚线，是否为圆角等等都是可以设置的</li>
-</ul>
-</li>
-<li>shadow属性<ul>
-<li>这个是layer的阴影属性</li>
-</ul>
-</li>
-<li>拷贝CSS样式<ul>
-<li>选中layer，右键可以拷贝当前layer的CSS样式，不过生成的代码貌似很糟糕，大多数是否都是自己去写比较合适</li>
-</ul>
-</li>
-<li>Blending<ul>
-<li>通过这个属性可以查看颜色混合之后的效果，虽然不知道有什么卵用<br><img src="https://dn-arthury.qbox.me/sketch-blending.png" alt="效果图"></li>
-<li>将一个layer的blending属性修改成非Normal之后就可以将这个layer覆盖到其他的layer上面查看混合的效果了<br><img src="https://dn-arthury.qbox.me/sketch-blendreslut.png" alt="效果图"><h2 id="画布">画布</h2></li>
-</ul>
-</li>
-<li>移动画布<ul>
-<li>按住空格键在点击画布的任意区域，就可以拖动画布了</li>
-</ul>
-</li>
-<li>show rulers<ul>
-<li>可以通过tool bar中的views按钮选择这个功能，这样会在画布周围配上尺子来辅助布局</li>
-</ul>
-</li>
-<li>放大与缩小画布<ul>
-<li>除了可以使用tool bar上面的放大镜来进行缩放之外，还可以按住z键，然后点击任意你想要放大的区域；按住option+z，然后点击任意你想要缩小的区域</li>
-<li>还可以使用command +/-来放大与缩小；使用command 0来回到100%的比例</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/08/08/Sketch01/" data-id="cid87a8ch002635gzbfhfhpb4" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Sketch/">Sketch</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-正则表达式02" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/08/08/正则表达式02/" class="article-date">
-  <time datetime="2015-08-08T06:32:52.000Z" itemprop="datePublished">2015-08-08</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/08/正则表达式02/">正则表达式02</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/08/08/正则表达式02/" data-id="cid87a8a6000435gzflkiiz2o" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/08/08/hello-world/" class="article-date">
-  <time datetime="2015-08-08T05:50:25.000Z" itemprop="datePublished">2015-08-08</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/08/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/08/08/hello-world/" data-id="cid87a8b4001135gzijoorbk3" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
   
 </section>
@@ -698,7 +740,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">標簽</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -707,7 +749,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">標簽雲</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 10px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 10px;">tips</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
+      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 10px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 10px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 10px;">tips</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
     </div>
   </div>
 
@@ -716,7 +758,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">歸檔</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">28</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">31</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
     </div>
   </div>
 
@@ -728,23 +770,23 @@
       <ul>
         
           <li>
+            <a href="/2015/08/12/iOS网络编程01/">iOS网络编程01</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/12/UI动效设计01/">UI动效设计01</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/12/的/">的</a>
+          </li>
+        
+          <li>
             <a href="/2015/08/12/emacs-技巧01/">emacs 技巧01</a>
           </li>
         
           <li>
             <a href="/2015/08/12/快速提升开发能力的方法/">快速提升开发能力的方法</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/12/git使用技巧01/">git使用技巧01</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/12/CocoaPods01/">CocoaPods01</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/11/关于github的多账号管理/">关于github的多账号管理</a>
           </li>
         
       </ul>
