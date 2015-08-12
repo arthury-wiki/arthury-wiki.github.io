@@ -4,39 +4,33 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Web02 -- React入门 | Hexo</title>
+  <title>emacs 技巧01 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="使用Rect语法方式
-方式一：直接在html文件中嵌入
-&amp;lt;!DOCTYPE html&amp;gt;
-&amp;lt;html&amp;gt;
-  &amp;lt;head&amp;gt;
-    &amp;lt;meta charset=&quot;UTF-8&quot; /&amp;gt;
-    &amp;lt;title&amp;gt;Hello React!&amp;lt;/title&amp;gt;
-    &amp;lt;script src=&quot;build/react.js&quot;&amp;gt;&amp;lt;">
+  <meta name="description" content="emacs瞬开
+随着加载的配置文件的增加，emacs的启动速度越变越慢，已经慢到了让人无法忍耐的地步了，于是我去寻找了加速启动emacs的方法，于是让我在segmentfault上面找到了让emacs瞬开的技巧，下面贴上shell配置
+# alias emacs
+alias emacsd=&apos;emacs --daemon&apos;
+alias e=&apos;emacsclient -t&apos;
+alias ec=&apos;ema">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Web02 -- React入门">
-<meta property="og:url" content="http://yoursite.com/2015/08/10/Web02/index.html">
+<meta property="og:title" content="emacs 技巧01">
+<meta property="og:url" content="http://yoursite.com/2015/08/12/emacs-技巧01/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="使用Rect语法方式
-方式一：直接在html文件中嵌入
-&amp;lt;!DOCTYPE html&amp;gt;
-&amp;lt;html&amp;gt;
-  &amp;lt;head&amp;gt;
-    &amp;lt;meta charset=&quot;UTF-8&quot; /&amp;gt;
-    &amp;lt;title&amp;gt;Hello React!&amp;lt;/title&amp;gt;
-    &amp;lt;script src=&quot;build/react.js&quot;&amp;gt;&amp;lt;">
-<meta property="og:updated_time" content="2015-08-10T13:49:37.000Z">
+<meta property="og:description" content="emacs瞬开
+随着加载的配置文件的增加，emacs的启动速度越变越慢，已经慢到了让人无法忍耐的地步了，于是我去寻找了加速启动emacs的方法，于是让我在segmentfault上面找到了让emacs瞬开的技巧，下面贴上shell配置
+# alias emacs
+alias emacsd=&apos;emacs --daemon&apos;
+alias e=&apos;emacsclient -t&apos;
+alias ec=&apos;ema">
+<meta property="og:updated_time" content="2015-08-12T03:11:16.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Web02 -- React入门">
-<meta name="twitter:description" content="使用Rect语法方式
-方式一：直接在html文件中嵌入
-&amp;lt;!DOCTYPE html&amp;gt;
-&amp;lt;html&amp;gt;
-  &amp;lt;head&amp;gt;
-    &amp;lt;meta charset=&quot;UTF-8&quot; /&amp;gt;
-    &amp;lt;title&amp;gt;Hello React!&amp;lt;/title&amp;gt;
-    &amp;lt;script src=&quot;build/react.js&quot;&amp;gt;&amp;lt;">
+<meta name="twitter:title" content="emacs 技巧01">
+<meta name="twitter:description" content="emacs瞬开
+随着加载的配置文件的增加，emacs的启动速度越变越慢，已经慢到了让人无法忍耐的地步了，于是我去寻找了加速启动emacs的方法，于是让我在segmentfault上面找到了让emacs瞬开的技巧，下面贴上shell配置
+# alias emacs
+alias emacsd=&apos;emacs --daemon&apos;
+alias e=&apos;emacsclient -t&apos;
+alias ec=&apos;ema">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -88,10 +82,10 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main"><article id="post-Web02" class="article article-type-post" itemscope itemprop="blogPost">
+      <section id="main"><article id="post-emacs-技巧01" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2015/08/10/Web02/" class="article-date">
-  <time datetime="2015-08-10T12:04:56.000Z" itemprop="datePublished">2015-08-10</time>
+    <a href="/2015/08/12/emacs-技巧01/" class="article-date">
+  <time datetime="2015-08-12T03:06:34.000Z" itemprop="datePublished">2015-08-12</time>
 </a>
     
   </div>
@@ -102,7 +96,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Web02 -- React入门
+      emacs 技巧01
     </h1>
   
 
@@ -110,114 +104,40 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="使用Rect语法方式">使用Rect语法方式</h2><ul>
-<li><p>方式一：直接在html文件中嵌入</p>
-<pre><code><span class="doctype">&lt;!DOCTYPE html&gt;</span>
-<span class="tag">&lt;<span class="title">html</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">head</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">charset</span>=<span class="value">"UTF-8"</span> /&gt;</span>
-    <span class="tag">&lt;<span class="title">title</span>&gt;</span>Hello React!<span class="tag">&lt;/<span class="title">title</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"build/react.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-    <span class="comment">&lt;!--JSXTransformer.js的作用是将JSX语法转为JavaScript 语法，如果这里有使用JSX语法，就需要使用JSXTransformer.js来做转换，否则就无法使用；当然，如果没有用到JSX语法，就不需要加载这个文件--&gt;</span>
-    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"build/JSXTransformer.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-  <span class="tag">&lt;/<span class="title">head</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">body</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"example"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/jsx"</span>&gt;</span><span class="handlebars"><span class="xml">
-    <span class="comment">&lt;!--在这里直接嵌入react的语法--&gt;</span>
-      React.render(
-        <span class="tag">&lt;<span class="title">h1</span>&gt;</span>Hello, world!<span class="tag">&lt;/<span class="title">h1</span>&gt;</span>,
-        document.getElementById('example')
-      );
-    </span></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-  <span class="tag">&lt;/<span class="title">body</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">html</span>&gt;</span>
+        <h2 id="emacs瞬开">emacs瞬开</h2><ul>
+<li><p>随着加载的配置文件的增加，emacs的启动速度越变越慢，已经慢到了让人无法忍耐的地步了，于是我去寻找了加速启动emacs的方法，于是让我在segmentfault上面找到了让emacs瞬开的技巧，下面贴上shell配置</p>
+<pre><code><span class="comment"># alias emacs</span>
+<span class="built_in">alias</span> emacsd=<span class="string">'emacs --daemon'</span>
+<span class="built_in">alias</span> e=<span class="string">'emacsclient -t'</span>
+<span class="built_in">alias</span> ec=<span class="string">'emacsclient -c'</span>
+
+<span class="comment"># run emacs daemon</span>
+[[ -z $(ps -C <span class="string">'emacs --daemon'</span> -o pid=) ]] &amp;&amp; emacsd
+
+<span class="comment"># add kill emacs function</span>
+<span class="keyword">function</span> <span class="built_in">kill</span>-<span class="function"><span class="title">emacs</span></span>(){
+    emacsclient <span class="operator">-e</span> <span class="string">"(kill-emacs)"</span>
+    emacs_pid=$( ps -C <span class="string">'emacs --daemon'</span> -o pid= )
+    <span class="keyword">if</span> [[ -n <span class="string">"<span class="variable">${emacs_pid}</span>"</span> ]];<span class="keyword">then</span>
+        <span class="built_in">kill</span> -<span class="number">9</span> <span class="string">"<span class="variable">${emacs_pid}</span>"</span>
+    <span class="keyword">fi</span>
+}
 </code></pre></li>
-<li><p>方式二：分离到js文件当中</p>
-<ul>
-<li><p>仍然使用上面的例子，创建一个helloworld.js文件，输入以下代码：</p>
-<pre><code>React.<span class="built_in">render</span><span class="params">(
-    &lt;h1&gt;Hello, world!&lt;/h1&gt;,
-    document.getElementById<span class="params">('example')</span>
-)</span>;
-</code></pre></li>
-<li><p>然后在helloworld.html文件当中进行关联便可</p>
-<pre><code><span class="doctype">&lt;!DOCTYPE html&gt;</span>
-<span class="tag">&lt;<span class="title">html</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">head</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">charset</span>=<span class="value">"UTF-8"</span> /&gt;</span>
-    <span class="tag">&lt;<span class="title">title</span>&gt;</span>Hello React!<span class="tag">&lt;/<span class="title">title</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"build/react.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-    <span class="comment">&lt;!--下面使用的是关联jsx的js文件的形式，不知道是否需要加载JSXTransformer.js文件，有待测试--&gt;</span>
-    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"build/JSXTransformer.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-  <span class="tag">&lt;/<span class="title">head</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">body</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"example"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-    <span class="comment">&lt;!--在这里关联jsx的js文件--&gt;</span>
-    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/jsx"</span> <span class="attribute">src</span>=<span class="value">"src/helloworld.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-  <span class="tag">&lt;/<span class="title">body</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">html</span>&gt;</span>
-</code></pre></li>
-</ul>
+<li><p><a href="http://segmentfault.com/q/1010000000349257" target="_blank" rel="external">原文地址</a></p>
 </li>
-<li><p>方法三：将写好的jsx的js文件转换成标准的js文件再进行关联</p>
-<ul>
-<li><p>比如刚才上面的helloworld.js文件放在了src目录下，然后想要将转换之后的标准js文件放到build目录下，就可以使用这样的命令</p>
-<pre><code>jsx <span class="comment">--watch src/ build/</span>
-</code></pre></li>
-<li><p>这样在build目录下，就会生成一个标准的helloworld.js文件，可以直接在helloworld.html文件中进行关联，这个时候就不用再加载JSXTransformer.js文件了</p>
-<pre><code><span class="doctype">&lt;!DOCTYPE html&gt;</span>
-<span class="tag">&lt;<span class="title">html</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">head</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">meta</span> <span class="attribute">charset</span>=<span class="value">"UTF-8"</span> /&gt;</span>
-    <span class="tag">&lt;<span class="title">title</span>&gt;</span>Hello React!<span class="tag">&lt;/<span class="title">title</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"build/react.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-    <span class="comment">&lt;!-- No need for JSXTransformer! --&gt;</span>
-  <span class="tag">&lt;/<span class="title">head</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">body</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"example"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"build/helloworld.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
-  <span class="tag">&lt;/<span class="title">body</span>&gt;</span>
-  <span class="tag">&lt;/<span class="title">html</span>&gt;</span>
-</code></pre></li>
-</ul>
-</li>
-<li><p>三种方式可以任意选择一种自己喜欢的方式</p>
-</li>
-</ul>
-<h2 id="React语法">React语法</h2><ul>
-<li>JSX语法支持html与javascript混合编写</li>
-<li>原则是遇到html标签&lt;&gt;就使用html规则解析，遇到代码块{}就用javascript解析</li>
-<li>JSX允许直接在模板插入javascript变量，不需要用代码块包起来</li>
-</ul>
-<h2 id="在Node中配置React时候遇到的一些坑">在Node中配置React时候遇到的一些坑</h2><ul>
-<li>一定要把所有的依赖也一起放到public里面去，不然node不回去加载的<ul>
-<li>那开发使用bower下载依赖的时候直接下载到public里面就可以了，所有静态文件配置全部放到这里</li>
-</ul>
-</li>
-<li>Node服务器一旦启动，里面的静态文件就不会重新加载了，除非重启服务器，这样就很坑爹了，我不可以一直开着服务器调试了</li>
-<li>最佳的书写路径的方式：<ul>
-<li><code>../</code>代表上一级目录</li>
-<li><code>./</code>代表当前目录</li>
-<li>使用这两个把目录给写清楚就可以了，记住就算是在当前目录<code>./</code>也是不可以省略的</li>
-</ul>
-</li>
-</ul>
-<h2 id="自己身上一些比较坑爹的地方">自己身上一些比较坑爹的地方</h2><ul>
-<li>create老是会少掉一个e，导致函数没有找到，简直坑爹</li>
 </ul>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/10/Web02/" data-id="cid87a8bb001a35gzfi6nlrss" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/12/emacs-技巧01/" data-id="cid87a8b7001435gzoz7dpfar" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
 
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web/">web</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/emacs/">emacs</a></li></ul>
 
     </footer>
   </div>
@@ -225,19 +145,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2015/08/11/如何制作一个app？01/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">
-        
-          如何制作一个app？01
-        
-      </div>
-    </a>
   
-  
-    <a href="/2015/08/10/BigData01/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2015/08/12/快速提升开发能力的方法/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">BigData01</div>
+      <div class="article-nav-title">快速提升开发能力的方法</div>
     </a>
   
 </nav>
