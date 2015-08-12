@@ -22,7 +22,7 @@ alias ec=&apos;ema">
 alias emacsd=&apos;emacs --daemon&apos;
 alias e=&apos;emacsclient -t&apos;
 alias ec=&apos;ema">
-<meta property="og:updated_time" content="2015-08-12T03:11:16.000Z">
+<meta property="og:updated_time" content="2015-08-12T04:19:39.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="emacs 技巧01">
 <meta name="twitter:description" content="emacs瞬开
@@ -111,9 +111,6 @@ alias ec=&apos;ema">
 <span class="built_in">alias</span> e=<span class="string">'emacsclient -t'</span>
 <span class="built_in">alias</span> ec=<span class="string">'emacsclient -c'</span>
 
-<span class="comment"># run emacs daemon</span>
-[[ -z $(ps -C <span class="string">'emacs --daemon'</span> -o pid=) ]] &amp;&amp; emacsd
-
 <span class="comment"># add kill emacs function</span>
 <span class="keyword">function</span> <span class="built_in">kill</span>-<span class="function"><span class="title">emacs</span></span>(){
     emacsclient <span class="operator">-e</span> <span class="string">"(kill-emacs)"</span>
@@ -125,6 +122,7 @@ alias ec=&apos;ema">
 </code></pre></li>
 <li><p><a href="http://segmentfault.com/q/1010000000349257" target="_blank" rel="external">原文地址</a></p>
 </li>
+<li>如果配置打开终端自动启动到时候每次打开都会启动一次，输出一大串之后再显示启动失败，很麻烦，本来想加一个判断，但是试了很多方法都没有搞定，于是就移除打开终端就自动启动的设置</li>
 </ul>
 
       

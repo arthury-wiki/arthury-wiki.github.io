@@ -7,18 +7,24 @@
   <title>git使用技巧01 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="git本地保存git提交的正确姿势
-针对各个功能点进行管理式的提交">
+针对各个功能点进行管理式的提交，而不是像以前一样的，每次提交都重开一行描述，这样的做法不够好，不方便查看和管理
+比如我正在做的功能是让顶部导航栏不覆盖tableview，那我第一次提交的信息应该是git commit -m &amp;quot;添加顶部导航栏不覆盖tableview&amp;quot;
+下一次我通过StroyBoard实现了另外一个版本时，就要使用git com">
 <meta property="og:type" content="article">
 <meta property="og:title" content="git使用技巧01">
 <meta property="og:url" content="http://yoursite.com/2015/08/12/git使用技巧01/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="git本地保存git提交的正确姿势
-针对各个功能点进行管理式的提交">
-<meta property="og:updated_time" content="2015-08-12T03:04:54.000Z">
+针对各个功能点进行管理式的提交，而不是像以前一样的，每次提交都重开一行描述，这样的做法不够好，不方便查看和管理
+比如我正在做的功能是让顶部导航栏不覆盖tableview，那我第一次提交的信息应该是git commit -m &amp;quot;添加顶部导航栏不覆盖tableview&amp;quot;
+下一次我通过StroyBoard实现了另外一个版本时，就要使用git com">
+<meta property="og:updated_time" content="2015-08-12T05:25:05.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="git使用技巧01">
 <meta name="twitter:description" content="git本地保存git提交的正确姿势
-针对各个功能点进行管理式的提交">
+针对各个功能点进行管理式的提交，而不是像以前一样的，每次提交都重开一行描述，这样的做法不够好，不方便查看和管理
+比如我正在做的功能是让顶部导航栏不覆盖tableview，那我第一次提交的信息应该是git commit -m &amp;quot;添加顶部导航栏不覆盖tableview&amp;quot;
+下一次我通过StroyBoard实现了另外一个版本时，就要使用git com">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -93,7 +99,10 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="git本地保存">git本地保存</h2><h2 id="git提交的正确姿势">git提交的正确姿势</h2><ul>
-<li>针对各个功能点进行管理式的提交</li>
+<li>针对各个功能点进行管理式的提交，而不是像以前一样的，每次提交都重开一行描述，这样的做法不够好，不方便查看和管理</li>
+<li>比如我正在做的功能是让顶部导航栏不覆盖tableview，那我第一次提交的信息应该是<code>git commit -m &quot;添加顶部导航栏不覆盖tableview&quot;</code></li>
+<li>下一次我通过StroyBoard实现了另外一个版本时，就要使用<code>git commit --amend</code>，这样会打开上一次修改的编辑界面，然后修改为”使用SB实现”</li>
+<li>git真正发挥作用的时候还要看多人协作的时候，关于这里的经验可以多多请教一下学长，看一下它们是如果使用git来做多人项目管理的，多吸收一点经验，另外抽时间把git的详细教程过一遍，现在去看会收获很多原来没有发现的东西</li>
 </ul>
 
       

@@ -97,9 +97,6 @@
 <span class="built_in">alias</span> e=<span class="string">'emacsclient -t'</span>
 <span class="built_in">alias</span> ec=<span class="string">'emacsclient -c'</span>
 
-<span class="comment"># run emacs daemon</span>
-[[ -z $(ps -C <span class="string">'emacs --daemon'</span> -o pid=) ]] &amp;&amp; emacsd
-
 <span class="comment"># add kill emacs function</span>
 <span class="keyword">function</span> <span class="built_in">kill</span>-<span class="function"><span class="title">emacs</span></span>(){
     emacsclient <span class="operator">-e</span> <span class="string">"(kill-emacs)"</span>
@@ -111,6 +108,7 @@
 </code></pre></li>
 <li><p><a href="http://segmentfault.com/q/1010000000349257" target="_blank" rel="external">原文地址</a></p>
 </li>
+<li>如果配置打开终端自动启动到时候每次打开都会启动一次，输出一大串之后再显示启动失败，很麻烦，本来想加一个判断，但是试了很多方法都没有搞定，于是就移除打开终端就自动启动的设置</li>
 </ul>
 
       
@@ -200,7 +198,10 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h2 id="git本地保存">git本地保存</h2><h2 id="git提交的正确姿势">git提交的正确姿势</h2><ul>
-<li>针对各个功能点进行管理式的提交</li>
+<li>针对各个功能点进行管理式的提交，而不是像以前一样的，每次提交都重开一行描述，这样的做法不够好，不方便查看和管理</li>
+<li>比如我正在做的功能是让顶部导航栏不覆盖tableview，那我第一次提交的信息应该是<code>git commit -m &quot;添加顶部导航栏不覆盖tableview&quot;</code></li>
+<li>下一次我通过StroyBoard实现了另外一个版本时，就要使用<code>git commit --amend</code>，这样会打开上一次修改的编辑界面，然后修改为”使用SB实现”</li>
+<li>git真正发挥作用的时候还要看多人协作的时候，关于这里的经验可以多多请教一下学长，看一下它们是如果使用git来做多人项目管理的，多吸收一点经验，另外抽时间把git的详细教程过一遍，现在去看会收获很多原来没有发现的东西</li>
 </ul>
 
       
