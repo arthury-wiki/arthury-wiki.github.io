@@ -68,6 +68,137 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-iOS的安全相关01" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/15/iOS的安全相关01/" class="article-date">
+  <time datetime="2015-08-14T16:13:19.000Z" itemprop="datePublished">2015-08-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/15/iOS的安全相关01/">iOS的安全相关01</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="关于移动端数据传输接口的设计">关于移动端数据传输接口的设计</h2><ul>
+<li>比如在移动端传输的用户名和密码是通过明文传输的，那么就会有很大的问题，我记得原来做云印的时候就是传输用户名和明码就是通过明文传输的，这样只要设置一个wifi热点，就可以直接看到app传输的数据，明码账号全部都将会一目了然，是在是非常的危险，现在想想当时的做法真是令人汗颜</li>
+<li>虽然第一次登陆之后用的是token，但是第一次登陆的时候却是很危险，这样开来基本上所有app的接口都可以使用一些代理工具来获取，比如Charles之类的</li>
+</ul>
+<h2 id="应用类支付">应用类支付</h2><ul>
+<li>Apple的应用内支付框架设计上为了保护用户的隐私，所以购买成功之后会生成一个凭证，这个凭证只能代表你购买成功了，但是无法在里面获取到关于用户的任何信息，所以如果这个购买凭证被截取了，那么完全可以用来进行二次销售或者是其他的事情，因为服务器只能判断这个凭证是真还是假的，但是无法判断是谁买的，因此在这一点上是比较危险的</li>
+</ul>
+<h2 id="如何防范网络攻击？">如何防范网络攻击？</h2><ul>
+<li>密码可以加密之后再传输，服务器在加密(客户端配一个公钥加密，服务器有一个私钥来解密)，加密算法最好是去采用一些业内的标准，比如MD5加密之类的，这个一般要比自己想出来的要强</li>
+<li>使用一些二进制协议，而不是使用json</li>
+<li>对于登陆账号密码这样的敏感数据，一定要加入一些一次性的数据进去，也就是Nonce<ul>
+<li>比如在登陆之前，先从服务端请求一些一次性的数据，然后客户端加上密码在进行MD5运算，然后再进行传输，这样服务端在接收到数据的时候可以进行解密，然后把一次性数据给分离出来，然后与自己本地存储的已经发出的一次性数据进行比对，如果请求是重复的，那么这个请求就将会失效，简直nice；这样的处理后台的负担会增加，所以要根据相应的场景去选择需要这样去处理的请求</li>
+</ul>
+</li>
+<li>客户点一定要有相应的安全机制，一定要在服务器做一些安全的控制机制</li>
+</ul>
+<h2 id="本地数据的安全">本地数据的安全</h2><ul>
+<li>ipa解压之后的文件关注</li>
+<li>SQLite的本地数据可以通过一些工具来查看，这就需要保证能够被看到的数据尽量安全</li>
+<li>CoreData</li>
+<li>app内部的插件更要注意</li>
+<li>游戏就更加严重，可能会被轻易的修改游戏的数据，比如简单的作弊，或者是其他更糟糕的操作</li>
+<li>有一个利用漏掉形成的黑色产业链</li>
+<li>写出优秀的原创博客也是可以吸引猎头的</li>
+<li>如何防备？<ul>
+<li>加密本地数据</li>
+<li>checksum</li>
+<li>利用keychain(如果越狱，那么keychain也是不安全的，可以加密之后再存进去)</li>
+<li>看来我原来使用NSUserDefault实在是太蠢了</li>
+</ul>
+</li>
+</ul>
+<h2 id="代码安全">代码安全</h2><ul>
+<li>IDA的反汇编代码其实可以非常的容易的阅读，这一点要记下来，今后看到好的app想要去处理的时候可以好好学习一下</li>
+<li>怎么防反汇编？<ul>
+<li>使用宏替换</li>
+<li>最关键的底层全部用纯C来写，做成框架来用</li>
+</ul>
+</li>
+</ul>
+<h2 id="关于Server端应该要做的事情">关于Server端应该要做的事情</h2><ul>
+<li>要有一个安全机制，可以去区分到底目前访问api的设备是合法的，还是非法的，也就是攻击者的活着是其他的访问</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/08/15/iOS的安全相关01/" data-id="cidbz0xjg001314gzhlsb96q2" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Security/">Security</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Mac使用小技巧" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/14/Mac使用小技巧/" class="article-date">
+  <time datetime="2015-08-14T14:10:55.000Z" itemprop="datePublished">2015-08-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/14/Mac使用小技巧/">Mac使用小技巧</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="CpuLimit">CpuLimit</h2><ul>
+<li>想要限制某一个程序Cpu使用率的时候，可以利用这个小工具</li>
+<li>先用活动监测器查看想要限制的应用程序的pid，然后在使用命令</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/08/14/Mac使用小技巧/" data-id="cidbz0xm4003q14gzuyejo8r8" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-iOS-RunLoop" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/08/13/iOS-RunLoop/" class="article-date">
@@ -191,6 +322,7 @@ __<span class="built_in">CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE1_PERFORM_FUNCTION_
 <li><p>从代码中可以看出，线程刚刚创建的时候并没有RunLoop，如果你不去主动获取，那它一直都不会有；RunLoop的创建是在第一次获取时，RunLoop的销毁是发生在线程结束时；除了主线程之外，你只能在一个线程的内部获取其RunLoop，因为提供的函数<code>CFRunLoopGetCurrent</code>中调用<code>CFRunLoopGet()</code>函数传入的参数是pthread_self</p>
 </li>
 <li>注意，并不是一个线程只能有一个RunLoop，可以有很多个，但必须是嵌套结构，比如在根线程的RunLoop中的某一个事件里有开了一个新的线程，然后绑定了一个RunLoop，类似这样的形式</li>
+<li></li>
 </ul>
 <h2 id="RunLoop的对外接口">RunLoop的对外接口</h2><ul>
 <li>CF中与RunLoop有关的类有五个：<ul>
@@ -209,7 +341,7 @@ __<span class="built_in">CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE1_PERFORM_FUNCTION_
 <li>Source是RunLoop的数据源抽象类(protocol)(我的理解是接受事件，然后指定这个事件运行的模式)</li>
 <li>RunLoop定义了两个Version的Source：<ul>
 <li>Source0：处理App内部的事件、App自己负责管理(触发)，比如UIEvent(各种各样的事件，比如触控事件之类的)、CFSocket</li>
-<li>Source1：由RunLoop和内核管理，Mach port驱动，如CFMachPort、CFMessagePort<ul>
+<li>Source1：由RunLoop和内核管理，Mach port驱动，如CFMachPort、CFMessagePort，RunLoop进入睡眠状态之后被唤醒有一种情况就是通过这里的Mach port来发送事件过来的<ul>
 <li>Mach port主要负责进程之间的通讯问题</li>
 </ul>
 </li>
@@ -292,6 +424,13 @@ __<span class="built_in">CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE1_PERFORM_FUNCTION_
 <li>其他情况下GCD与RunLoop没有太大的关系，两个的主线程是一样的，但是其他的线程就不好说了</li>
 <li>GCD的Timer是由自己维护的，与RunLoop没有太大的关系，比如GCD执行一个3秒的Timer，时间到了之后，它就会把要做的事情丢给RunLoop，然后由RunLoop去找时间把这些事给处理掉(猜测)</li>
 </ul>
+<h2 id="RunLoop的挂起与唤醒">RunLoop的挂起与唤醒</h2><ul>
+<li>当程序处在空闲的时候被暂停时，就会收到如图说所示的信息：<br><img src="https://dn-arthury.qbox.me/freestate.png" alt="效果图"></li>
+<li>其中0 mach_msg_trap表示当前app正处在休眠状态，等在着接受事件，等待着被激活</li>
+<li>指定用于唤醒的mach_port端口</li>
+<li>调用mach_msg监听唤醒端口，被唤醒前，系统内核将这个线程挂起，停留在mach_msg_trap状态</li>
+<li>由另一个线程(或另一个进程中的某个线程)向内核发送这个端口的msg后，trap状态被唤醒，RunLoop继续进行干活</li>
+</ul>
 <h2 id="RunLoop的内部逻辑">RunLoop的内部逻辑</h2><ul>
 <li>内部逻辑实现大致如下<br><img src="https://dn-arthury.qbox.me/runloop-in.png" alt="效果图"></li>
 <li>图中展示了一个Mode，以及其中每一个item的运行情况，很好理解</li>
@@ -345,7 +484,7 @@ __<span class="built_in">CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE1_PERFORM_FUNCTION_
                 Boolean hasMsg = __<span class="built_in">CFRunLoopServiceMachPort</span>(dispatchPort, &amp;msg)
                 <span class="keyword">if</span> (hasMsg) <span class="keyword">goto</span> handle_msg;
             }
-
+            CheckIfExistMessagesInMainDispathQueue(); <span class="comment">//这里会询问GCD是否有分到主线程的事件需要处理的，这里就体现了与GCD的协同工作</span>
             <span class="comment">/// 通知 Observers: RunLoop 的线程即将进入休眠(sleep)。</span>
             <span class="keyword">if</span> (!sourceHandledThisLoop) {
                 __<span class="built_in">CFRunLoopDoObservers</span>(runloop, currentMode, k<span class="built_in">CFRunLoopBeforeWaiting</span>);
@@ -413,12 +552,66 @@ __<span class="built_in">CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE1_PERFORM_FUNCTION_
 </code></pre><h2 id="RunLoop的底层实现">RunLoop的底层实现</h2><ul>
 <li>从上面的代码可以看出，RunLoop 的核心是基于mach port的(通过这个来接受传入传出的消息)，其进入休眠时调用的函数是 mach_msg()。为了解释这个逻辑</li>
 </ul>
+<h2 id="RunLoop实践">RunLoop实践</h2><ul>
+<li><p>AFNetworking中RunLoop的创建</p>
+<pre><code>+ (<span class="keyword">void</span>)networkRequestThreadEntryPoint:(<span class="keyword">id</span>)__unused object {
+    <span class="keyword">@autoreleasepool</span> {
+        <span class="comment">// 获取当前的线程，并且命名，看这个方法一般不是主线程</span>
+        [[<span class="built_in">NSThread</span> currentThread] setName:<span class="string">@"AFNetworking"</span>];
+        <span class="comment">// 这里创建了一个runLoop，但是这个runloop里面没有item，如果这个时候什么都不做，那么这个runloop就会直接退出</span>
+        <span class="built_in">NSRunLoop</span> *runloop = [<span class="built_in">NSRunLoop</span> currentRunLoop];
+        <span class="comment">// 在这里加一个端口让runloop去等待消息，这样它就不会退出了</span>
+        [runLoop addPort: [<span class="built_in">NSMachPort</span> port] forMode:<span class="built_in">NSDefaultRunLoopMode</span>];
+        [runloop run];
+    }
+    <span class="comment">//这样之后就会创建出一个常驻的线程来服务网络请求，因为这个runloop并不会退出，会一直在等待消息</span>
+    <span class="comment">//这其实是一个创建常驻线程的好方法</span>
+}
+
++ (<span class="built_in">NSThread</span> *)networkRequestThread {
+    <span class="keyword">static</span> <span class="built_in">NSThread</span> *_networkRequestThread = <span class="literal">nil</span>;
+    <span class="keyword">static</span> <span class="built_in">dispatch_once_t</span> oncePredicate;
+    <span class="built_in">dispatch_once</span>(&amp;oncePredicate, ^{
+        _networkRequestThread =
+        [[<span class="built_in">NSThread</span> alloc] initWithTarget:<span class="keyword">self</span>
+                                selector:<span class="keyword">@selector</span>(networkRequestThreadEntryPoint:)
+                                object:<span class="literal">nil</span>];
+        [_networkRequestThread start];
+    });
+    <span class="keyword">return</span> _networkRequestThread;
+}
+</code></pre></li>
+<li><p>一个TableView延迟加载图片的新思路</p>
+<pre><code><span class="built_in">UIImage</span> *downloadedImage = ...;
+<span class="comment">//在defaultMode中设置图片，这样在滑动的时候是在trackingMode模式下，就不会执行这段代码，当停止滑动的时候，就又会执行这段代码了，非常棒；注意这个runloop在跑在下一轮当中的，不是当前轮</span>
+[<span class="keyword">self</span><span class="variable">.avatarImageView</span> performSelector:<span class="keyword">@selector</span>(setImage:)
+                            withObject:downloadedImage
+                            afterDelay:<span class="number">0</span>
+                                inModes:@[<span class="built_in">NSDefaultRunLoopMode</span>]];
+</code></pre><ul>
+<li>如果tableView的Cell里面有加载一些图片的时候，这样一边滑动一边设置可能会造成主线程的卡顿；一个解决方案是通过代理判断当前是否正在滚动tableview，如果正在滚动，那就不设置图片，等到停止滚动的时候再去设置图片，但是这样的办法并不够好；上面给出的方案是一个更好的解决方案</li>
+</ul>
+</li>
+<li><p>让Crash的App回光返照</p>
+<pre><code><span class="comment">//只能用于Signal类型的Crash，但是这种启动方式并不好，如果处理不善可能会造成很严重的后果，比如Crash退出之后自己启动然后又马上Crash又在启动，无限循环，会让用户疯掉的</span>
+<span class="built_in">CFRunLoopRef</span> runLoop = <span class="built_in">CFRunLoopGetCurrent</span>();
+<span class="built_in">NSArray</span> *allModes = <span class="built_in">CFBridgingRelease</span>(<span class="built_in">CFRunLoopCopyAllModes</span>(runLoop));
+<span class="keyword">while</span> (i) {
+    <span class="comment">//遍历所有的Mode，全部启动一遍</span>
+    <span class="keyword">for</span> (<span class="built_in">NSString</span> *mode <span class="keyword">in</span> allModes) {
+        <span class="built_in">CFRunLoopRunInMode</span>((<span class="built_in">CFStringRef</span>)mode, <span class="number">0.001</span>, <span class="literal">false</span>);
+    }
+}
+</code></pre></li>
+<li><p>Async Test Case</p>
+</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/13/iOS-RunLoop/" data-id="cidb8c20g0018w2gzvte8umv1" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/13/iOS-RunLoop/" data-id="cidbz0xjo001b14gzo5d9ofak" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -492,7 +685,7 @@ __<span class="built_in">CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE1_PERFORM_FUNCTION_
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/13/iOS多线程编程01/" data-id="cidb8c2040013w2gz60pnvv84" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/13/iOS多线程编程01/" data-id="cidbz0xji001614gzycl4duha" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -646,7 +839,7 @@ string7:https://www.cloudsafe.com/文件夹
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/12/iOS网络编程01/" data-id="cidb8c2020010w2gzbpbkeu33" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/12/iOS网络编程01/" data-id="cidbz0xje001014gzyezjmmqf" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -700,7 +893,7 @@ string7:https://www.cloudsafe.com/文件夹
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/12/UI动效设计01/" data-id="cidb8c211001sw2gzyxoaowcm" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/12/UI动效设计01/" data-id="cidbz0xka001v14gzz68u0nco" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -742,7 +935,7 @@ string7:https://www.cloudsafe.com/文件夹
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/12/的/" data-id="cidb8c1z40004w2gz4nw0n1ad" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/12/的/" data-id="cidbz0xih000414gzh8l0fr8t" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -802,7 +995,7 @@ string7:https://www.cloudsafe.com/文件夹
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/12/emacs-技巧01/" data-id="cidb8c20m001ew2gzefilf7ky" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/12/emacs-技巧01/" data-id="cidbz0xjy001h14gzx1ilprcv" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -847,7 +1040,7 @@ string7:https://www.cloudsafe.com/文件夹
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/12/快速提升开发能力的方法/" data-id="cidb8c1zb000aw2gz22j2umo5" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/12/快速提升开发能力的方法/" data-id="cidbz0xio000a14gzrbv9u5ax" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -895,133 +1088,7 @@ string7:https://www.cloudsafe.com/文件夹
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/12/git使用技巧01/" data-id="cidb8c20k001cw2gzaoaoixqj" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-CocoaPods01" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/08/12/CocoaPods01/" class="article-date">
-  <time datetime="2015-08-11T16:09:46.000Z" itemprop="datePublished">2015-08-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/12/CocoaPods01/">CocoaPods01</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="配置CocoaPods">配置CocoaPods</h2><ul>
-<li><code>touch Podfile</code></li>
-<li><code>platform :ios, &#39;7.0&#39;</code></li>
-<li>之后的内容使用<code>pod search xxx</code>之后得到的信息直接拷贝便可</li>
-<li>有必要维护一个常用的第三方库配置文件</li>
-<li>好好整理一下自己star项目</li>
-</ul>
-<h2 id="移除已经安装好的库">移除已经安装好的库</h2><ul>
-<li>直接删除Podfile中相关配置，然后再执行pod install便可</li>
-</ul>
-<h2 id="加速CocoaPods类库的安装">加速CocoaPods类库的安装</h2><ul>
-<li><code>pod install --verbose --no-repo-update</code></li>
-<li><code>pod update --verbose --no-repo-update</code></li>
-<li>带了这些参数在执行命令的时候就不会去升级spec仓库了，这样速度会提升不少</li>
-</ul>
-<h2 id="CocoaPods更新">CocoaPods更新</h2><ul>
-<li>先更新gem，<code>sudo gem update --system</code></li>
-<li>再更新CocoaPods， <code>sudo gem install cocoapods</code></li>
-<li>配置CocoaPods，<code>pod setup</code></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/08/12/CocoaPods01/" data-id="cidb8c23b004dw2gzna3dn8bl" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CocoaPods/">CocoaPods</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-关于github的多账号管理" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/08/11/关于github的多账号管理/" class="article-date">
-  <time datetime="2015-08-11T14:27:51.000Z" itemprop="datePublished">2015-08-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/11/关于github的多账号管理/">关于github的多账号管理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前言">前言</h2><ul>
-<li>由于工作学习的原因需要使用多个github账号，于是如何管理这些账号就变得很重要，刚开始的时候在这里吃了不少亏，现在让我来分享一下我管理的经验</li>
-</ul>
-<h2 id="生成多个ssh公钥">生成多个ssh公钥</h2><ul>
-<li><code>ssh-keygen -t rsa -C &quot;your_email@youremail.com&quot;</code></li>
-<li>之后按照提示输入相关的信息便可，密码随意</li>
-</ul>
-<h2 id="添加生成的公钥">添加生成的公钥</h2><ul>
-<li>这一步非常重要，千万不要忘记这一步，否则后面会很坑爹</li>
-<li><code>ssh-add 公钥的地址(~/.ssh/xxx)</code></li>
-<li>可以使用<code>ssh-add -l</code>看已经添加的公钥，密码填写生成公钥时候填写的密码</li>
-<li>出现问题多看看这一步是不是出现了问题，也就是先把添加的公钥列出来看一下</li>
-</ul>
-<h2 id="修改配置文件config">修改配置文件config</h2><pre><code><span class="comment"># github</span>
-Host arthury_wiki(执行git <span class="built_in">clone</span>等命令时候的区分)
-    HostName github.com
-    PreferredAuthentications publickey
-    IdentityFile ~/.ssh/xxx
-</code></pre><h2 id="配置远程仓库地址">配置远程仓库地址</h2><ul>
-<li>正常是<code>git@github.com:YourAcccountName/YourRepoName.git</code></li>
-<li>为了区分各个账号，就需要使用配置文件中的Host来进行区分，改为<code>git@arthury_wiki:YourAcccountName/YourRepoName.git</code></li>
-</ul>
-<h2 id="Ok">Ok</h2>
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/08/11/关于github的多账号管理/" data-id="cidb8c1zq000pw2gzx97tsfph" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/12/git使用技巧01/" data-id="cidbz0xju001f14gzcqp6gkuw" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -1049,27 +1116,27 @@ Host arthury_wiki(执行git <span class="built_in">clone</span>等命令时候�
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">标签</h3>
+    <h3 class="widget-title">標簽</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunLoop/">RunLoop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS多线程/">iOS多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunLoop/">RunLoop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Security/">Security</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS多线程/">iOS多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">标签云</h3>
+    <h3 class="widget-title">標簽雲</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 10px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 10px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/iOS多线程/" style="font-size: 10px;">iOS多线程</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 10px;">tips</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
+      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 13.33px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 10px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/Security/" style="font-size: 10px;">Security</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/iOS多线程/" style="font-size: 10px;">iOS多线程</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 10px;">tips</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
     </div>
   </div>
 
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">归档</h3>
+    <h3 class="widget-title">歸檔</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">33</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">35</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
     </div>
   </div>
 
@@ -1079,6 +1146,14 @@ Host arthury_wiki(执行git <span class="built_in">clone</span>等命令时候�
     <h3 class="widget-title">近期文章</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2015/08/15/iOS的安全相关01/">iOS的安全相关01</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/14/Mac使用小技巧/">Mac使用小技巧</a>
+          </li>
         
           <li>
             <a href="/2015/08/13/iOS-RunLoop/">iOS RunLoop</a>
@@ -1092,14 +1167,6 @@ Host arthury_wiki(执行git <span class="built_in">clone</span>等命令时候�
             <a href="/2015/08/12/iOS网络编程01/">iOS网络编程01</a>
           </li>
         
-          <li>
-            <a href="/2015/08/12/UI动效设计01/">UI动效设计01</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/12/的/">的</a>
-          </li>
-        
       </ul>
     </div>
   </div>
@@ -1107,7 +1174,7 @@ Host arthury_wiki(执行git <span class="built_in">clone</span>等命令时候�
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">友情链接</h3>
+    <h3 class="widget-title">友情鏈接</h3>
     <div class="widget">
       <ul>
         
@@ -1148,7 +1215,7 @@ Host arthury_wiki(执行git <span class="built_in">clone</span>等命令时候�
 </nav>
   <!-- totop start -->
 <div id="totop">
-<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+<a title="返回頂部"><img src="/img/scrollup.png"/></a>
 </div>
 
 <!-- totop end -->
