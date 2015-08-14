@@ -68,6 +68,170 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-Vim" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/04/29/Vim/" class="article-date">
+  <time datetime="2015-04-29T15:02:21.000Z" itemprop="datePublished">2015-04-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/04/29/Vim/">Vim</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="现在切换到vim模式下不适应的地方">现在切换到vim模式下不适应的地方</h2><ul>
+<li>不支持tab的缩进</li>
+<li>不能进入M-x模式，这一点可以通过修改map模式的键盘映射来搞定</li>
+<li>误区<ul>
+<li>leader模式是要配合自己定义的,来使用的，而不是按下esc之后就可以调用<br>的，这一点要注意，不要再犯傻</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/04/29/Vim/" data-id="cidb8c20x001rw2gzofs8iijh" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Linux" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/04/28/Linux/" class="article-date">
+  <time datetime="2015-04-28T15:54:26.000Z" itemprop="datePublished">2015-04-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/04/28/Linux/">Linux</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="环境变量">环境变量</h2><ul>
+<li>linux允许多用户的存在，每一个用户都有自己的专用运行环境，这个环境是<br>由一组变量所定义的，注意这里是通过变量定义的，这些变量就是环境变量</li>
+<li>用户可以通过对环境变量的修改来达到对环境的要求</li>
+<li>环境变量是通过shell命令来设置的，可以被当前运行的程序所使用</li>
+<li>对于bash来说，可以通过变量来访问相应的环境变量</li>
+<li><p>对环境变量的基本操作</p>
+<ul>
+<li><p>环境变量其实就像是普通的变量，定义之后对其进行正常的赋值</p>
+<p>$ export NAME = “Example”</p>
+</li>
+<li><p>显示：可以使用env或者printenv命令来查看所有的环境变量，使用一个<br>echo命令来输出一个特定的环境变量</p>
+<p>$ echo $HOME</p>
+</li>
+<li><p>使用unset来清除特定的环境变量</p>
+<p>$ unset NAME</p>
+</li>
+<li><p>可以使用readonly命令来设置只读变量(设置只读属性后，其值将不可变，<br>直到进程结束)</p>
+<p>$ export NAME=”example”<br>$ readonly NAME</p>
+</li>
+<li><p>在C语言当中也可以访问与设置环境变量</p>
+<ul>
+<li><a href="http://www.cnblogs.com/cxz2009/archive/2010/11/04/1868987.html" target="_blank" rel="external">传送门</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>修改系统配置文件</p>
+<blockquote>
+<p>通过修改一些相关的环境定义文件来修改环境变量，与环境相关的文件有<br>/etc/profile（root用户）和~/.bash_profile（普通用户，在自己的目录下，<br>隐藏文件，如果没有可以新建）等。修改完毕后重新登录一次或运行命令source<br>xxx就生效了。</p>
+</blockquote>
+</li>
+<li><p>常见的环境变量</p>
+<ul>
+<li>PATH 决定了shell将到哪些目录中寻找命令或程序</li>
+<li>HOME 当前用户主目录</li>
+<li>TERM 终端的类型</li>
+<li>UID 当前用户的识别字，取值是由数字构成的字符</li>
+<li>PWD 当前工作目录的绝对路径名，这个取值会随着当前路径的变化而变化</li>
+<li>HISTIZE 历史记录数</li>
+<li>LOGNAME 当前用户的登录名</li>
+<li>HOSTNAME 当前主机的名称</li>
+<li>SHELL 当前用户的Shell类型</li>
+<li>LANGUGE 语言相关的环境变量，多语言可以修改此环境变量</li>
+<li>MAIL 当前用户的邮件存放目录</li>
+<li>PS1 shell命令行基本提示符，对于root用户是#，对于普通用户是$</li>
+<li>PS2 附属提示符，默认是”&gt;”</li>
+</ul>
+</li>
+<li><p>标准输入与输出</p>
+<ul>
+<li><a href="http://blog.chinaunix.net/uid-20671208-id-3588619.html" target="_blank" rel="external">Linux Shell 文件描述符 及 stdin stdout stderr 重定向</a></li>
+</ul>
+</li>
+<li><p>screen的使用</p>
+<ul>
+<li>介绍：可以使用screen来在服务器上跑多个任务，因为服务器上面并没有多窗口这种东西，另外多窗口其实并不好管理，然而使用screen就可以非常方便的解决这个问题了，screen可以非常方便的解决这个问题</li>
+<li>具体的实现原理：类似于开启多个终端一样，然后可以通过快捷键进入或者退出一个终端</li>
+<li><p>具体的操作命令</p>
+<pre><code>screen -S <span class="string">"服务名"</span> <span class="comment">//开启一个新的服务</span>
+screen -r <span class="comment">//进入上一次开启的服务的进程</span>
+screen -r -<span class="keyword">d</span> id号 <span class="comment">//恢复指定id号的服务进程，在开启多个服务进程的时候使用</span>
+<span class="keyword">exit</span> <span class="comment">//退出当前的进程，注意就算服务崩了，也要进去正常退出，对应的screen才会正常的关闭</span>
+control + a + <span class="keyword">d</span> <span class="comment">//离开当前screen进程</span>
+</code></pre></li>
+<li><p>出现的错误汇总</p>
+<ul>
+<li>使用screen -r 的时候出现 inside a screen? 这说明目前就在一个screen进程里面了，可以选择exit退出，也可以选择在这个进程里面自己把服务给跑起来</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="chmod命令">chmod命令</h2><ul>
+<li>自己写的一些脚本直接可以使用这个命令来变成可执行文件，放到\bin文件夹下，执行<code>chmod +x 文件名</code>，这样就可以在任意位置执行命令了，在配合alias就可以给命令写缩写了</li>
+<li>不仅支持linux的shell脚本，还支持python写的py脚本，非常的方便</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/04/28/Linux/" data-id="cidb8c22p003tw2gzt9nkpgbi" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Elisp" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/04/28/Elisp/" class="article-date">
@@ -108,7 +272,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/04/28/Elisp/" data-id="cid95vz58003uhbgzjymkoz0t" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/04/28/Elisp/" data-id="cidb8c22x0040w2gzt4smtzo2" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -157,7 +321,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/04/28/WatchKit/" data-id="cid95vz35001khbgzj1ynyz32" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/04/28/WatchKit/" data-id="cidb8c20v001qw2gz28pbkb0g" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -578,7 +742,7 @@ RETURN</code>(这里是数字1)来强制自动保存</li>
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/04/26/Emacs/" data-id="cid95vz56003thbgzwcawxb7n" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/04/26/Emacs/" data-id="cidb8c22w003zw2gzespr7k6x" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -618,7 +782,7 @@ RETURN</code>(这里是数字1)来强制自动保存</li>
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/04/26/iOS-developing-skill/" data-id="cid95vz2s0014hbgz7vl2anf0" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/04/26/iOS-developing-skill/" data-id="cidb8c20f0017w2gza2w0hk3q" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -661,7 +825,7 @@ RETURN</code>(这里是数字1)来强制自动保存</li>
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/04/24/Coding-Standards/" data-id="cid95vz5i0046hbgzsw91y0ib" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/04/24/Coding-Standards/" data-id="cidb8c239004cw2gzth0lu6ii" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -726,7 +890,7 @@ RETURN</code>(这里是数字1)来强制自动保存</li>
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/04/24/Application-architecture/" data-id="cid95vz0e0000hbgziaap2j0c" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/04/24/Application-architecture/" data-id="cidb8c1xg0000w2gzxo6attaj" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -925,7 +1089,7 @@ except IOError:
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/04/22/python/" data-id="cid95vz2c000vhbgzvrs2egye" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/04/22/python/" data-id="cidb8c1zv000vw2gzb1xoyczg" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -975,113 +1139,13 @@ except IOError:
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/04/22/python-twisted/" data-id="cid95vz2l000whbgzmf1nlcs6" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/04/22/python-twisted/" data-id="cidb8c1zw000ww2gzv2tzhy8b" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
 
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Reading-list" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/04/21/Reading-list/" class="article-date">
-  <time datetime="2015-04-21T10:18:31.000Z" itemprop="datePublished">2015-04-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/04/21/Reading-list/">Reading list</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="需要去看的书">需要去看的书</h2><ul>
-<li>决策相关</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/04/21/Reading-list/" data-id="cid95vz48002khbgzsd3be8a9" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Design-Pattern" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/04/21/Design-Pattern/" class="article-date">
-  <time datetime="2015-04-20T16:01:11.000Z" itemprop="datePublished">2015-04-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/04/21/Design-Pattern/">设计模式</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="委托模式(我发现这一块内容不适合放到自己的博客上面去)">委托模式(我发现这一块内容不适合放到自己的博客上面去)</h2><pre><code>+ 委托就是<span class="keyword">*</span><span class="keyword">*</span>自己调用自己定义的方法<span class="keyword">*</span><span class="keyword">*</span>，但是自己没有实现，而是由别的类来实现
-+ 委托只是一种设计模式，不是具体的语法，这一点要弄明白
-</code></pre><h2 id="Protocol协议">Protocol协议</h2><ul>
-<li>首先什么是协议，有几点要说明一下<ul>
-<li>协议声明了可以被其他类实现的方法</li>
-<li>协议不是类，它是定义了一个其他对象可以实现的接口</li>
-<li>如果在某一个类中实现了系诶中的某一个方法，也就是这个类<strong>实现或者说遵循了</strong>那个协议</li>
-<li>协议经常被用来实现委托对象(可以用来实现委托对象的方法不止一种)</li>
-</ul>
-</li>
-<li>什么是委托对象？<ul>
-<li>一个委托对象是一种用来<strong>协同委托方对象或者代表委托方对象</strong>的特殊功能</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/04/21/Design-Pattern/" data-id="cid95vz5a003whbgzyc9myrym" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
 
     </footer>
   </div>
@@ -1105,7 +1169,7 @@ except IOError:
   <div class="widget-wrap">
     <h3 class="widget-title">標簽</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunLoop/">RunLoop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS多线程/">iOS多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -1114,7 +1178,7 @@ except IOError:
   <div class="widget-wrap">
     <h3 class="widget-title">標簽雲</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 10px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 10px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 10px;">tips</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
+      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 10px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 10px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/iOS多线程/" style="font-size: 10px;">iOS多线程</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 10px;">tips</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
     </div>
   </div>
 
@@ -1123,7 +1187,7 @@ except IOError:
   <div class="widget-wrap">
     <h3 class="widget-title">歸檔</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">31</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">33</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
     </div>
   </div>
 
@@ -1135,6 +1199,14 @@ except IOError:
       <ul>
         
           <li>
+            <a href="/2015/08/13/iOS-RunLoop/">iOS RunLoop</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/13/iOS多线程编程01/">iOS多线程编程01</a>
+          </li>
+        
+          <li>
             <a href="/2015/08/12/iOS网络编程01/">iOS网络编程01</a>
           </li>
         
@@ -1144,14 +1216,6 @@ except IOError:
         
           <li>
             <a href="/2015/08/12/的/">的</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/12/emacs-技巧01/">emacs 技巧01</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/12/快速提升开发能力的方法/">快速提升开发能力的方法</a>
           </li>
         
       </ul>

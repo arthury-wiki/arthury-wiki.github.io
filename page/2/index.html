@@ -68,6 +68,131 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-api获取" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/11/api获取/" class="article-date">
+  <time datetime="2015-08-11T10:44:50.000Z" itemprop="datePublished">2015-08-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/11/api获取/">api获取</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="去网站自己抓取">去网站自己抓取</h2><ul>
+<li>比如想要知道网易云音乐的搜索api，只需要去网易云音乐官网随便搜索一个关键词，然后查看url便可得到搜索的api；比如搜索月亮就会得到<code>http://music.163.com/#/search/m/?s=月亮&amp;type=1</code>，这样自己就可以根据这个使用具体的工具比如Paw来测试各种参数的效果，从而得到详细信息</li>
+<li>其他一些不能够通过直接是使用功能来得到的，可以去看网页的源码，从中寻找api的线索</li>
+<li>这样得到的api自己用来玩一玩是可以，但是拿去上架不太合适，一方面是不合法，另一方面是api的变更得不到通知，如果上线隐患太大。</li>
+<li>不管怎么样，使用这种不公开的api都是一件非常坑爹的事情</li>
+</ul>
+<h2 id="Paw使用指南">Paw使用指南</h2>
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/08/11/api获取/" data-id="cidb8c20p001hw2gzco7ora56" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/api/">api</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Mac优化清理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/11/Mac优化清理/" class="article-date">
+  <time datetime="2015-08-11T10:15:51.000Z" itemprop="datePublished">2015-08-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/11/Mac优化清理/">Mac优化清理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言">前言</h2><ul>
+<li>作为低配版Mac的使用者，128g的空间感觉越来越不够用了，然而新版的Mac已经无法再自行更换硬盘，实在是心累；既然这样，对于越来越小的硬盘空间，就不得不采取一系列的优化方案了</li>
+</ul>
+<h2 id="关闭Mac休眠模式">关闭Mac休眠模式</h2><ul>
+<li>打开Termal，输入<code>sudo pmset hibernatemode 0</code>(默认是3)</li>
+<li>然后再输入<code>sudo rm /var/vm/sleepimage</code></li>
+<li>再创建一个空白的sleepimage文件<code>sudo touch /private/var/vm/sleepimage</code></li>
+<li>将这个空白的文件设为只读<code>sudo chflags uchg /private/var/vm/sleepimage</code></li>
+<li>ok</li>
+<li>使用命令<code>pmset -g</code>可以参看各个属性的设置情况</li>
+</ul>
+<h2 id="禁用Mac虚拟内存"><del>禁用Mac虚拟内存</del></h2><ul>
+<li><del>禁用虚拟内存的前提是Mac的内存大小在4GB以上，否则不要轻易尝试</del></li>
+<li><del>具体原理参见<a href="https://support.apple.com/zh-cn/HT201464" target="_blank" rel="external">在 Mac 上使用“活动监视器”</a></del></li>
+<li><del>在Termal中中输入<code>sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist</code></del></li>
+<li><del>禁用虚拟内存之后，再输入<code>sudo rm /private/var/vm/swapfile*</code>删除交换文件</del></li>
+<li><del>如果之后想要重启虚拟内存可以输入<code>sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist</code></del></li>
+<li>现在已经不推荐这个做法了，禁用虚拟内存带来的坏处比它带来的好处更多</li>
+<li>想要临时释放不活跃的内存可以执行<code>purg</code>，需要Xcode支持</li>
+</ul>
+<h2 id="Xcode文件清理">Xcode文件清理</h2><ul>
+<li>移除对旧设备的支持<ul>
+<li>在终端输入<code>open ~/Library/Developer/Xcode/iOS\ DeviceSupport</code></li>
+<li>在打开的文件夹当中删除对低版本系统的支持文件</li>
+</ul>
+</li>
+<li>移除旧的Docsets文档<ul>
+<li>在终端输入<code>open ~/Library/Developer/Shared/Documentation/DocSets</code></li>
+<li>在打开的文件夹当中删除旧的Docsets文档</li>
+</ul>
+</li>
+</ul>
+<h2 id="DaisyDisk">DaisyDisk</h2><ul>
+<li>这个简直神器，可以帮你快速分析出磁盘中各个文件夹的大小，帮你迅速锁定占据大空间的文件夹，排查那些被浪费的空间，而且软件的界面非常的优雅，实在是难能可贵</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/08/11/Mac优化清理/" data-id="cidb8c22l003nw2gzuty3kuig" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-TableView01" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/08/11/TableView01/" class="article-date">
@@ -104,7 +229,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/11/TableView01/" data-id="cid95vz3u0027hbgzmesrc8le" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/11/TableView01/" data-id="cidb8c21n002dw2gzy37tynn5" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -160,7 +285,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/11/如何制作一个app？01/" data-id="cid95vz24000mhbgza55p2qe9" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/11/如何制作一个app？01/" data-id="cidb8c1zm000mw2gzokai48m1" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -298,7 +423,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/10/Web02/" data-id="cid95vz31001ehbgzodxjxlaj" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/10/Web02/" data-id="cidb8c20s001kw2gz5g3y3dck" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -353,7 +478,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/10/BigData01/" data-id="cid95vz5m004bhbgz30cqkvp8" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/10/BigData01/" data-id="cidb8c23e004hw2gzb61f5pzu" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -398,7 +523,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/10/Web01/" data-id="cid95vz33001hhbgzam797onx" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/10/Web01/" data-id="cidb8c20t001nw2gz1jhayiyo" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -450,7 +575,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/10/Nodejs02/" data-id="cid95vz4m0034hbgzrvb1433n" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/10/Nodejs02/" data-id="cidb8c22a003aw2gzfxzudxag" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -503,7 +628,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/10/Nodejs01/" data-id="cid95vz4o0037hbgzohilm0tr" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/10/Nodejs01/" data-id="cidb8c22c003dw2gzn4vx3sat" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -600,123 +725,13 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/09/QuartzCode02/" data-id="cid95vz49002lhbgz3g9knufz" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/09/QuartzCode02/" data-id="cidb8c21x002rw2gzp61rwip4" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
 
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/QuartzCode/">QuartzCode</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-QuartzCode01" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/08/09/QuartzCode01/" class="article-date">
-  <time datetime="2015-08-08T17:13:19.000Z" itemprop="datePublished">2015-08-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/09/QuartzCode01/">QuartzCode01</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="概述">概述</h2><ul>
-<li>QuartzCode是一个矢量绘图和动画app，可以帮助你绘制图形和制作动画，并且转换成Objective-C代码或者是Swift代码，QuartzCode对于开发iOS以及OSX开发者来说非常的重要</li>
-<li><img src="https://dn-arthury.qbox.me/QuartzCodeOverView.png" alt="效果图"></li>
-</ul>
-<h2 id="Layer_List">Layer List</h2><ul>
-<li>Layerlist展示了所有的layer。这些layer是根据layer的继承等级展示出来的并且通过着色的缩略图的形式展示出来。你可以通过在Layerlist中改变layer的顺序来改变layer的继承等级</li>
-<li>所有的layer都向CALayer一样运作或者它们是QuartzCore的子类。取决于它们在QuartzCode中的layer类型，这些layer的行为可能不太一样</li>
-<li>你可以通过Layerlist选择layer或者高亮它们，你同样可以通过Layerlist隐藏或者锁定它们</li>
-</ul>
-<h2 id="Animation_List">Animation List</h2><ul>
-<li>AnimationList是管理各种动画的地方，可以在这里添加或者是删除动画</li>
-</ul>
-<h2 id="Layer_Inspector">Layer Inspector</h2><ul>
-<li>Layer Inspector可以让你改变layer的属性设置，不同的layer类型有着不同的属性设置</li>
-</ul>
-<h2 id="Animation_TimeLine">Animation TimeLine</h2><ul>
-<li>Animation TimeLine控制板展示了为layer准备的动画，它可以为所有的layer展示动画，为layer准备的动画只包含动画以及被选中的layer的动画，这些设置可以通过F1，F2以及F3来进行修改</li>
-</ul>
-<h2 id="Keyframe_Inspector">Keyframe Inspector</h2><ul>
-<li>Keyframe Inspector被用来改变动画以及它的keyframe设置</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/08/09/QuartzCode01/" data-id="cid95vz4b002ohbgzdqvmp3yk" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/QuartzCode/">QuartzCode</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-PaintCode01" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/08/09/PaintCode01/" class="article-date">
-  <time datetime="2015-08-08T16:26:33.000Z" itemprop="datePublished">2015-08-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/09/PaintCode01/">PaintCode01</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前言">前言</h2><ul>
-<li>PaintCode是Mac上面一个梦幻般的程序，可以让你的矢量图形设计直接变成CoreGraphics代码，非常的强大</li>
-<li>它不仅仅可以创建你喜欢的矢量图形的代码，并且这些代码还可以是动态的，这就意味着你可以改变它们的颜色，尺寸，布局甚至更多</li>
-<li>在这篇教程当中，你将会学习到</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/08/09/PaintCode01/" data-id="cid95vz4h002vhbgz071y25ht" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PaintCode/">PaintCode</a></li></ul>
 
     </footer>
   </div>
@@ -740,7 +755,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">標簽</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunLoop/">RunLoop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS多线程/">iOS多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -749,7 +764,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">標簽雲</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 10px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 10px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 10px;">tips</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
+      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 10px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 10px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/iOS多线程/" style="font-size: 10px;">iOS多线程</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 10px;">tips</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
     </div>
   </div>
 
@@ -758,7 +773,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">歸檔</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">31</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">33</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
     </div>
   </div>
 
@@ -770,6 +785,14 @@
       <ul>
         
           <li>
+            <a href="/2015/08/13/iOS-RunLoop/">iOS RunLoop</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/13/iOS多线程编程01/">iOS多线程编程01</a>
+          </li>
+        
+          <li>
             <a href="/2015/08/12/iOS网络编程01/">iOS网络编程01</a>
           </li>
         
@@ -779,14 +802,6 @@
         
           <li>
             <a href="/2015/08/12/的/">的</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/12/emacs-技巧01/">emacs 技巧01</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/12/快速提升开发能力的方法/">快速提升开发能力的方法</a>
           </li>
         
       </ul>

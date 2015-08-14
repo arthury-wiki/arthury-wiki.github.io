@@ -68,6 +68,412 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-iOS-RunLoop" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/13/iOS-RunLoop/" class="article-date">
+  <time datetime="2015-08-13T14:14:36.000Z" itemprop="datePublished">2015-08-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/13/iOS-RunLoop/">iOS RunLoop</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="参考资料">参考资料</h2><ul>
+<li><a href="http://www.cocoachina.com/ios/20150601/11970.html" target="_blank" rel="external">深入理解RunLoop</a></li>
+<li><a href="http://www.zhuatieba.com/video/XODgxODkzODI0" target="_blank" rel="external">iOS线下分享《RunLoop》by 孙源@sunnyxx</a></li>
+</ul>
+<h2 id="EventLoop模型">EventLoop模型</h2><pre><code><span class="function"><span class="keyword">function</span> <span class="title">loop</span><span class="params">()</span> {</span>
+    initialize<span class="params">()</span>;
+    do {
+        var message = get_next_message<span class="params">()</span>;
+        process_message<span class="params">(message)</span>;
+    } while <span class="params">(message != quit)</span>;
+}
+</code></pre><ul>
+<li>就是只要发送的处理消息(事件)不是退出，那么这个循环就会一直继续下去，这就是EventLoop，以事件为主导的循环</li>
+<li>这种模型在现在很多的系统和框架当中都有实现，比如Node.js的事件处理、Windows程序的消息循环以及OSX/iOS里的RunLoop</li>
+<li>这种模型的关键就是如何让线程在没有处理消息时休眠以避免资源占用，在有事件到来的时候被立刻唤醒，而在没有处理事件的时候以休眠的心事避免占用资源</li>
+<li>RunLoop是一个对象，这个对象管理了对需要处理的事件以及消息，并且带有一个函数来执行EventLoop的逻辑，每当线程执行这个函数，就会一直处于这个函数内部，“接受消息-&gt;等待-&gt;处理”的循环当中，指导传入退出的消息，那么函数就会返回</li>
+<li>在OSX/iOS系统中，有两个这样的对象：NSRunLoop和CFRunLoopRef</li>
+<li>CFRunLoopRef 是在 CoreFoundation 框架内的，它提供了纯 C 函数的 API，所有这些 API 都是线程安全的</li>
+<li>NSRunLoop 是基于 CFRunLoopRef 的封装，提供了面向对象的 API，但是这些 API 不是线程安全的</li>
+</ul>
+<h2 id="为什么需要RunLoop？">为什么需要RunLoop？</h2><ul>
+<li>手机app在启动之后就要处于一直能够响应事件的状态，没事件处理就休眠，有事件处理就起来处理，处理完之后接着休眠，就是这样，不可能处理一个事件之后就自动退出，这可不科学</li>
+<li>总结几点就是：<ul>
+<li>使程序一直运行并接受用户输入</li>
+<li>决定程序在何时应该处理那些Event</li>
+<li>调用解耦(Message Queue)<ul>
+<li>主调方与被调方解耦，通过消息队列来实现，主调方把要处理的事件都扔到消息队列里面，让被调方去处理，这样主调方就不用等待被调方响应之后才能够发送新的事件，不会被卡住</li>
+</ul>
+</li>
+<li>节省CPU时间=</li>
+</ul>
+</li>
+</ul>
+<h2 id="Foundation与Core_Foundation是不一样的">Foundation与Core Foundation是不一样的</h2><h2 id="依赖于RunLoop实现的一些类">依赖于RunLoop实现的一些类</h2><p><img src="https://dn-arthury.qbox.me/runloopRelatedClass.png" alt="效果图"></p>
+<h2 id="RunLoop_Callouts">RunLoop Callouts</h2><ul>
+<li><p>拥有RunLoop线程的几乎所有函数都是从以下六个之一的函数调起(说不定可以在这里面找到debug的线索)</p>
+<pre><code>__<span class="built_in">CFRUNLOOP_IS_CALLING_OUT_AN_OBSERVER_CALLBACK_FUNCTION__</span>
+__<span class="built_in">CFRUNLOOP_IS_CALLING_OUT_TO_A_BLOCK__</span>
+__<span class="built_in">CFRUNLOOP_IS_SERVICING_THE_MAIN_DISPATCH_QUEUE</span>
+__<span class="built_in">CFRUNLOOP_IS_CALLING_OUT_TO_A_TIMER_CALLBACK_FUNCTION__</span>
+__<span class="built_in">CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE0_PERFORM_FUNCTION__</span>
+__<span class="built_in">CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE1_PERFORM_FUNCTION__</span>
+</code></pre></li>
+<li><p>现在可以去看Xcode断点之后出现的函数调用栈，通过这个调用栈我可以直接看到这些函数都是被哪一个线程调用，以及是在哪一个RunLoop里面处理的等等的信息，接下去我可以找时间去研究一下这一块的东西</p>
+</li>
+</ul>
+<h2 id="RunLoop与线程的关系">RunLoop与线程的关系</h2><ul>
+<li>iOS中有两个线程对象：pthread_t与NSThread，它们可能都是队底层线程的封装</li>
+<li>CFRunLoopRef是基于pthread进行管理的，也就是线程是用来管理EventLoop的，也就是RunLoop对象是通过线程对象来进行管理的</li>
+<li><p>苹果并不允许直接创建RunLoop对象，而是提供了两个自动获取的函数来获取已经存在的RunLoop对象，分别为：<code>CFRunLoopGetMain()</code>和<code>CFRunLoopGetCurrent()</code>，实现原理大致如下</p>
+<pre><code><span class="comment">/// 全局的Dictionary，key 是 pthread_t， value 是 CFRunLoopRef</span>
+<span class="comment">/// 这就表明线程与RunLoop是绑定在一起的，一个是键，一个是值，并且作为一个全局可访问的字典</span>
+<span class="keyword">static</span> <span class="built_in">CFMutableDictionaryRef</span> loopsDic;
+<span class="comment">/// 访问 loopsDic 时的锁</span>
+<span class="keyword">static</span> <span class="built_in">CFSpinLock_t</span> loopsLock;
+
+<span class="comment">/// 获取一个 pthread 对应的 RunLoop。</span>
+<span class="comment">/// 参数是线程，返回值是RunLoop，这是一个C语言函数  </span>
+<span class="built_in">CFRunLoopRef</span> _<span class="built_in">CFRunLoopGet</span>(pthread_t thread) {
+    OSSpinLockLock(&amp;loopsLock);
+
+   <span class="keyword">if</span> (!loopsDic) {
+        <span class="comment">// 第一次进入时，初始化全局Dic(第一次进时loopsDic为空)，并先为主线程创建一个 RunLoop。</span>
+        <span class="comment">//初始化全局的Dic</span>
+        loopsDic = <span class="built_in">CFDictionaryCreateMutable</span>();
+        <span class="comment">//创建一个RunLoop，命名为mainLoop</span>
+        <span class="built_in">CFRunLoopRef</span> mainLoop = _<span class="built_in">CFRunLoopCreate</span>();
+        <span class="comment">//(这里的主线程是固定不变的主车间)，这里建主线程与刚才创建的mainLoop绑定在一起，然后装到loopsDic当中(loopsDic可以装不止一组值)</span>
+        <span class="built_in">CFDictionarySetValue</span>(loopsDic, pthread_main_thread_np(), mainLoop);
+    }
+
+     <span class="comment">/// 直接从Dictionary里获取。</span>
+     <span class="comment">/// 如果是第一次，那么这里的loopsDic中键是主线程，值是mainLoop，这里并不能保证传入的thread一定能取到RunLoop，比如自己创建的线程之类的</span>
+    <span class="built_in">CFRunLoopRef</span> loop = <span class="built_in">CFDictionaryGetValue</span>(loopsDic, thread));
+
+    <span class="keyword">if</span> (!loop) {
+        <span class="comment">/// 取不到时，创建一个</span>
+        loop = _<span class="built_in">CFRunLoopCreate</span>();
+        <span class="comment">/// 将新建的loop与传进来的线程绑定，然后装进loopsDic</span>
+        <span class="built_in">CFDictionarySetValue</span>(loopsDic, thread, loop);
+        <span class="comment">/// 注册一个回调，当线程销毁时，顺便也销毁其对应的 RunLoop，这里做的是安全处理</span>
+        _<span class="built_in">CFSetTSD</span>(..., thread, loop, __<span class="built_in">CFFinalizeRunLoop</span>);
+    }
+
+    OSSpinLockUnLock(&amp;loopsLock);
+    <span class="keyword">return</span> loop;
+    <span class="comment">/// 这样就能保证一定可以获取到RunLoop，而且这个RunLoop是与传进来的线程对应的，第一次进入的时候主线程会绑定一个mainLoop</span>
+}
+
+<span class="comment">///直接传入主线程得到mainLoop</span>
+<span class="built_in">CFRunLoopRef</span> <span class="built_in">CFRunLoopGetMain</span>() {
+    <span class="keyword">return</span> _<span class="built_in">CFRunLoopGet</span>(pthread_main_thread_np());
+}
+
+<span class="comment">///传入当前的线程并且得到与之对应的RunLoop</span>
+<span class="built_in">CFRunLoopRef</span> <span class="built_in">CFRunLoopGetCurrent</span>() {
+    <span class="keyword">return</span> _<span class="built_in">CFRunLoopGet</span>(pthread_self());
+</code></pre></li>
+<li><p>从代码中可以看出，线程刚刚创建的时候并没有RunLoop，如果你不去主动获取，那它一直都不会有；RunLoop的创建是在第一次获取时，RunLoop的销毁是发生在线程结束时；除了主线程之外，你只能在一个线程的内部获取其RunLoop，因为提供的函数<code>CFRunLoopGetCurrent</code>中调用<code>CFRunLoopGet()</code>函数传入的参数是pthread_self</p>
+</li>
+<li>注意，并不是一个线程只能有一个RunLoop，可以有很多个，但必须是嵌套结构，比如在根线程的RunLoop中的某一个事件里有开了一个新的线程，然后绑定了一个RunLoop，类似这样的形式</li>
+</ul>
+<h2 id="RunLoop的对外接口">RunLoop的对外接口</h2><ul>
+<li>CF中与RunLoop有关的类有五个：<ul>
+<li>CFRunLoopRef：RunLoop对象</li>
+<li>CFRunLoopModeRef：RunLoop的Mode属性对象</li>
+<li>CFRunLoopSourceRef：RunLoop的Source属性对象</li>
+<li>CFRunLoopTimerRef：RunLoop的Timer属性对象</li>
+<li>CFRunLoopObserverRef：RunLoop的Oberver属性对象</li>
+</ul>
+</li>
+<li>其中CFRunLoopModeRef并没有对外暴露接口(并不能修改其内部属性)，只能够通过CFRunLoopRef的接口来对这些属性进行简单的配置，它们的关系如下所示：<br><img src="https://dn-arthury.qbox.me/runloop.png" alt="效果图"></li>
+<li>一个 RunLoop 包含若干个Mode，每个Mode又包含若干 Source/Timer/Observer。每次调用RunLoop 的主函数时，只能指定其中一个Mode(这个Mode当中包含了要被处理的事件等等的内容)，这个Mode被称作CurrentMode(也就是当前要被处理的Mode)。如果需要切换Mode，只能退出(quit)Loop，再重新指定一个Mode进入。这样做主要是为了分隔开不同组的Source/Timer/Observer，让其互不影响。</li>
+<li>Mode可以理解为收集事件以及为各个事件指配处理模式的地方，这样的组合就称之为一个mode item，一个 item 可以被同时加入多个 mode。但一个 item 被重复加入同一个 mode 时是不会有效果的。如果一个 mode 中一个 item 都没有，则 RunLoop 会直接退出，不进入循环。</li>
+</ul>
+<h2 id="CFRunLoopSource">CFRunLoopSource</h2><ul>
+<li>Source是RunLoop的数据源抽象类(protocol)(我的理解是接受事件，然后指定这个事件运行的模式)</li>
+<li>RunLoop定义了两个Version的Source：<ul>
+<li>Source0：处理App内部的事件、App自己负责管理(触发)，比如UIEvent(各种各样的事件，比如触控事件之类的)、CFSocket</li>
+<li>Source1：由RunLoop和内核管理，Mach port驱动，如CFMachPort、CFMessagePort<ul>
+<li>Mach port主要负责进程之间的通讯问题</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>如果有需要，可以选着其中一种来实现自己的Source</li>
+</ul>
+<h2 id="CFRunLoopTimer的封装">CFRunLoopTimer的封装</h2><ul>
+<li>是我们最熟悉的<code>NSTimer</code>，以及<code>performSelector:wirhObject:afterDelay:inModes</code>、<code>CADisplayLink</code></li>
+</ul>
+<h2 id="RunLoop的Mode">RunLoop的Mode</h2><ul>
+<li><p>CFRunLoopMode的结构如下所示：</p>
+<pre><code><span class="keyword">struct</span> __<span class="built_in">CFRunLoopMode</span> {
+    <span class="built_in">CFStringRef</span> _name;            <span class="comment">// Mode Name, 例如 @"kCFRunLoopDefaultMode"，代表这个mode的类别，内置的类别有两种，一种是"kCFRunLoopCommonModes"，"kCFRunLoopDefaultMode"，当然也可以自定义类别，名字自己写</span>
+    <span class="built_in">CFMutableSetRef</span> _sources0;    <span class="comment">// Set，使用source0模式处理的事件，一下同理</span>
+    <span class="built_in">CFMutableSetRef</span> _sources1;    <span class="comment">// Set</span>
+    <span class="built_in">CFMutableArrayRef</span> _observers; <span class="comment">// Array</span>
+    <span class="built_in">CFMutableArrayRef</span> _timers;    <span class="comment">// Array</span>
+    ...
+};
+</code></pre></li>
+<li><p>CFRunLoop的结构如下所示：</p>
+<pre><code>struct __CFRunLoop {
+    CFMutableSetRef _commonModes;     // <span class="operator"><span class="keyword">Set</span>，这是一个集合，这个集合里面有各种<span class="keyword">Mode</span>，加入到这里面的<span class="keyword">Mode</span>都将具有Common属性，要将<span class="keyword">Mode</span>加入到这个集合当中，只需要将<span class="keyword">Mode</span>的<span class="keyword">name</span>添加进去便可
+    CFMutableSetRef _commonModeItems;</span> // <span class="operator"><span class="keyword">Set</span>
+    CFRunLoopModeRef _currentMode;</span>    // Current Runloop Mode
+    CFMutableSetRef _modes;           // <span class="operator"><span class="keyword">Set</span>
+    ...
+};</span>
+</code></pre></li>
+<li><p>添加事件对象的方式有两种，一种是添加到具体的Mode当中去；另一种是添加到commonModeItems当中，这样每当RunLoop中的事件发生变化时，这些就会被RunLoop自动更新到所有具有”Common”属性的 Mode 里去</p>
+</li>
+<li><p>CFRunLoop对外暴露的管理Mode接口只有下面2个：</p>
+<pre><code><span class="built_in">CFRunLoopAddCommonMode</span>(<span class="built_in">CFRunLoopRef</span> runloop, <span class="built_in">CFStringRef</span> modeName);
+<span class="built_in">CFRunLoopRunInMode</span>(<span class="built_in">CFStringRef</span> modeName, ...);
+</code></pre></li>
+<li><p>Mode 暴露的管理mode item的接口有下面几个：</p>
+<pre><code><span class="built_in">CFRunLoopAddSource</span>(<span class="built_in">CFRunLoopRef</span> rl, <span class="built_in">CFRunLoopSourceRef</span> source, <span class="built_in">CFStringRef</span> modeName);
+<span class="built_in">CFRunLoopAddObserver</span>(<span class="built_in">CFRunLoopRef</span> rl, <span class="built_in">CFRunLoopObserverRef</span> observer, <span class="built_in">CFStringRef</span> modeName);
+<span class="built_in">CFRunLoopAddTimer</span>(<span class="built_in">CFRunLoopRef</span> rl, <span class="built_in">CFRunLoopTimerRef</span> timer, <span class="built_in">CFStringRef</span> mode);
+<span class="built_in">CFRunLoopRemoveSource</span>(<span class="built_in">CFRunLoopRef</span> rl, <span class="built_in">CFRunLoopSourceRef</span> source, <span class="built_in">CFStringRef</span> modeName);
+<span class="built_in">CFRunLoopRemoveObserver</span>(<span class="built_in">CFRunLoopRef</span> rl, <span class="built_in">CFRunLoopObserverRef</span> observer, <span class="built_in">CFStringRef</span> modeName);
+<span class="built_in">CFRunLoopRemoveTimer</span>(<span class="built_in">CFRunLoopRef</span> rl, <span class="built_in">CFRunLoopTimerRef</span> timer, <span class="built_in">CFStringRef</span> mode);
+</code></pre></li>
+<li><p>从上面提供的接口可以看出，你只能够通过mode name来操作内部的mode，当你传入一个新的mode name但RunLoop内部没有对应mode时，RunLoop会自动帮你创建对应的CFRunLoopModeRef，对于一个RunLoop来说，其内部的mode只能增加不能删除</p>
+</li>
+<li>苹果公开提供的 Mode 有两个：kCFRunLoopDefaultMode (NSDefaultRunLoopMode) 和 UITrackingRunLoopMode，你可以用这两个 Mode Name 来操作其对应的 Mode。</li>
+<li>同时苹果还提供了一个操作 Common 标记的字符串：kCFRunLoopCommonModes (NSRunLoopCommonModes)，你可以用这个字符串来操作 Common Items，或标记一个 Mode 为 “Common”。使用时注意区分这个字符串和其他 mode name。</li>
+</ul>
+<h2 id="RunLoop的内部逻辑">RunLoop的内部逻辑</h2><ul>
+<li>内部逻辑实现大致如下<br><img src="https://dn-arthury.qbox.me/runloop-in.png" alt="效果图"></li>
+<li>图中展示了一个Mode，以及其中每一个item的运行情况，很好理解</li>
+<li><p>内部代码整理如下</p>
+<pre><code><span class="comment">/// 用DefaultMode启动，这是一个C语言函数，没有参数和返回值</span>
+<span class="keyword">void</span> <span class="built_in">CFRunLoopRun</span>(<span class="keyword">void</span>) {
+    <span class="comment">//获得当前的线程的RunLoop，然后用DefaultMode启动</span>
+    <span class="built_in">CFRunLoopRunSpecific</span>(<span class="built_in">CFRunLoopGetCurrent</span>(), k<span class="built_in">CFRunLoopDefaultMode</span>, <span class="number">1.0e10</span>, <span class="literal">false</span>);
+}
+
+  <span class="comment">/// 用指定的Mode启动，允许设置RunLoop超时时间</span>
+  <span class="comment">// 同样这是一个C语言函数，参数为要指定的Mode的名字，超时的时间以及是否要在Handle之后停止</span>
+<span class="keyword">int</span> <span class="built_in">CFRunLoopRunInMode</span>(<span class="built_in">CFStringRef</span> modeName, <span class="built_in">CFTimeInterval</span> seconds, Boolean stopAfterHandle) {
+    <span class="keyword">return</span> <span class="built_in">CFRunLoopRunSpecific</span>(<span class="built_in">CFRunLoopGetCurrent</span>(), modeName, seconds, returnAfterSourceHandled);
+}
+
+<span class="comment">/// RunLoop的实现</span>
+<span class="keyword">int</span> <span class="built_in">CFRunLoopRunSpecific</span>(runloop, modeName, seconds, stopAfterHandle) {
+
+     <span class="comment">/// 首先根据modeName找到对应mode</span>
+     <span class="comment">/// 在指定的RunLoop中去寻找</span>
+    <span class="built_in">CFRunLoopModeRef</span> currentMode = __<span class="built_in">CFRunLoopFindMode</span>(runloop, modeName, <span class="literal">false</span>);
+    <span class="comment">/// 如果mode里没有source/timer/observer, 直接返回。</span>
+    <span class="comment">/// 没有任何需要处理的事件就直接返回</span>
+    <span class="keyword">if</span> (__<span class="built_in">CFRunLoopModeIsEmpty</span>(currentMode)) <span class="keyword">return</span>;
+
+    <span class="comment">/// 1. 通知 Observers: RunLoop 即将进入 loop。</span>
+    __<span class="built_in">CFRunLoopDoObservers</span>(runloop, currentMode, k<span class="built_in">CFRunLoopEntry</span>);
+
+    <span class="comment">/// 内部函数，进入loop</span>
+    __<span class="built_in">CFRunLoopRun</span>(runloop, currentMode, seconds, returnAfterSourceHandled) {
+
+        Boolean sourceHandledThisLoop = <span class="literal">NO</span>;
+        <span class="keyword">int</span> retVal = <span class="number">0</span>;
+        <span class="keyword">do</span> {
+
+            <span class="comment">/// 2. 通知 Observers: RunLoop 即将触发 Timer 回调。</span>
+            __<span class="built_in">CFRunLoopDoObservers</span>(runloop, currentMode, k<span class="built_in">CFRunLoopBeforeTimers</span>);
+            <span class="comment">/// 3. 通知 Observers: RunLoop 即将触发 Source0 (非port) 回调。</span>
+            __<span class="built_in">CFRunLoopDoObservers</span>(runloop, currentMode, k<span class="built_in">CFRunLoopBeforeSources</span>);
+            <span class="comment">/// 执行被加入的block</span>
+            __<span class="built_in">CFRunLoopDoBlocks</span>(runloop, currentMode);
+
+            <span class="comment">/// 4. RunLoop 触发 Source0 (非port) 回调。</span>
+            sourceHandledThisLoop = __<span class="built_in">CFRunLoopDoSources0</span>(runloop, currentMode, stopAfterHandle);
+            <span class="comment">/// 执行被加入的block</span>
+            __<span class="built_in">CFRunLoopDoBlocks</span>(runloop, currentMode);
+
+            <span class="comment">/// 5. 如果有 Source1 (基于port) 处于 ready 状态，直接处理这个 Source1 然后跳转去处理消息。</span>
+            <span class="keyword">if</span> (__Source0DidDispatchPortLastTime) {
+                Boolean hasMsg = __<span class="built_in">CFRunLoopServiceMachPort</span>(dispatchPort, &amp;msg)
+                <span class="keyword">if</span> (hasMsg) <span class="keyword">goto</span> handle_msg;
+            }
+
+            <span class="comment">/// 通知 Observers: RunLoop 的线程即将进入休眠(sleep)。</span>
+            <span class="keyword">if</span> (!sourceHandledThisLoop) {
+                __<span class="built_in">CFRunLoopDoObservers</span>(runloop, currentMode, k<span class="built_in">CFRunLoopBeforeWaiting</span>);
+            }
+
+            <span class="comment">/// 7. 调用 mach_msg 等待接受 mach_port 的消息。线程将进入休眠, 直到被下面某一个事件唤醒；也就是等待着新事件的加入</span>
+            <span class="comment">/// ? 一个基于 port 的Source 的事件。</span>
+            <span class="comment">/// ? 一个 Timer 到时间了</span>
+            <span class="comment">/// ? RunLoop 自身的超时时间到了</span>
+            <span class="comment">/// ? 被其他什么调用者手动唤醒</span>
+            __<span class="built_in">CFRunLoopServiceMachPort</span>(waitSet, &amp;msg, <span class="keyword">sizeof</span>(msg_buffer), &amp;livePort) {
+                mach_msg(msg, MACH_RCV_MSG, port); <span class="comment">// thread wait for receive msg</span>
+            }
+
+            <span class="comment">/// 8. 通知 Observers: RunLoop 的线程刚刚被唤醒了。</span>
+            __<span class="built_in">CFRunLoopDoObservers</span>(runloop, currentMode, k<span class="built_in">CFRunLoopAfterWaiting</span>);
+
+            <span class="comment">/// 收到消息，处理消息。</span>
+            handle_msg:
+
+            <span class="comment">/// 9.1 如果一个 Timer 到时间了，触发这个Timer的回调。</span>
+            <span class="keyword">if</span> (msg_is_timer) {
+                __<span class="built_in">CFRunLoopDoTimers</span>(runloop, currentMode, mach_absolute_time())
+            } 
+
+            <span class="comment">/// 9.2 如果有dispatch到main_queue的block，执行block。</span>
+            <span class="keyword">else</span> <span class="keyword">if</span> (msg_is_dispatch) {
+                __<span class="built_in">CFRUNLOOP_IS_SERVICING_THE_MAIN_DISPATCH_QUEUE__</span>(msg);
+            } 
+
+            <span class="comment">/// 9.3 如果一个 Source1 (基于port) 发出事件了，处理这个事件</span>
+            <span class="keyword">else</span> {
+                <span class="built_in">CFRunLoopSourceRef</span> source1 = __<span class="built_in">CFRunLoopModeFindSourceForMachPort</span>(runloop, currentMode, livePort);
+                sourceHandledThisLoop = __<span class="built_in">CFRunLoopDoSource1</span>(runloop, currentMode, source1, msg);
+                <span class="keyword">if</span> (sourceHandledThisLoop) {
+                    mach_msg(reply, MACH_SEND_MSG, reply);
+                }
+            }
+
+            <span class="comment">/// 执行加入到Loop的block</span>
+            __<span class="built_in">CFRunLoopDoBlocks</span>(runloop, currentMode);
+</code></pre></li>
+</ul>
+<pre><code>            <span class="keyword">if</span> (sourceHandledThisLoop &amp;&amp; stopAfterHandle) {
+                <span class="comment">/// 进入loop时参数说处理完事件就返回。</span>
+                retVal = k<span class="built_in">CFRunLoopRunHandledSource</span>;
+            } <span class="keyword">else</span> <span class="keyword">if</span> (timeout) {
+                <span class="comment">/// 超出传入参数标记的超时时间了</span>
+                retVal = k<span class="built_in">CFRunLoopRunTimedOut</span>;
+            } <span class="keyword">else</span> <span class="keyword">if</span> (__<span class="built_in">CFRunLoopIsStopped</span>(runloop)) {
+                <span class="comment">/// 被外部调用者强制停止了</span>
+                retVal = k<span class="built_in">CFRunLoopRunStopped</span>;
+            } <span class="keyword">else</span> <span class="keyword">if</span> (__<span class="built_in">CFRunLoopModeIsEmpty</span>(runloop, currentMode)) {
+                <span class="comment">/// source/timer/observer一个都没有了</span>
+                retVal = k<span class="built_in">CFRunLoopRunFinished</span>;
+            }
+
+            <span class="comment">/// 如果没超时，mode里没空，loop也没被停止，那继续loop。loop是要接受到quit的消息之后才会退出的，或者是超时</span>
+        } <span class="keyword">while</span> (retVal == <span class="number">0</span>);
+    }
+
+    <span class="comment">/// 10. 通知 Observers: RunLoop 即将退出。</span>
+    __<span class="built_in">CFRunLoopDoObservers</span>(rl, currentMode, k<span class="built_in">CFRunLoopExit</span>);
+}
+</code></pre><h2 id="RunLoop的底层实现">RunLoop的底层实现</h2><ul>
+<li>从上面的代码可以看出，RunLoop 的核心是基于mach port的(通过这个来接受传入传出的消息)，其进入休眠时调用的函数是 mach_msg()。为了解释这个逻辑</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/08/13/iOS-RunLoop/" data-id="cidb8c20g0018w2gzvte8umv1" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RunLoop/">RunLoop</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-iOS多线程编程01" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/13/iOS多线程编程01/" class="article-date">
+  <time datetime="2015-08-13T07:00:05.000Z" itemprop="datePublished">2015-08-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/13/iOS多线程编程01/">iOS多线程编程01</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言">前言</h2><ul>
+<li>每一个iOS程序都都一个用来更新UI事件以及处理用户触摸事件的主线程，为了防止主线程阻塞，造成机子卡顿影响用户体验，就需要将一些耗时的操作放在主线程之外的线程去执行，就像是为了避免主车间过于繁忙而耽误了vip客户一样</li>
+</ul>
+<h2 id="多层次多线程编程">多层次多线程编程</h2><ul>
+<li>NSThread：最底层</li>
+<li>Cocoa Operations：</li>
+<li>Grand Central Dispath：最高层，iOS4之后出现</li>
+</ul>
+<h2 id="NSThread">NSThread</h2><ul>
+<li><a href="http://blog.csdn.net/q199109106q/article/details/8565844" target="_blank" rel="external">参见这里的说明</a></li>
+</ul>
+<h2 id="NSOperation">NSOperation</h2><ul>
+<li><a href="http://blog.csdn.net/q199109106q/article/details/8565923" target="_blank" rel="external">参见这里的说明</a></li>
+</ul>
+<h2 id="GCD">GCD</h2><ul>
+<li>GCD是所有方案中抽象度最高的，也是使用起来最方便的，这是本身苹果公司为多核并行运算提供的解决方案，GCD在工作的时候会自动利用更多的处理器核心，这样可以更加有效的利用性能更好的机器，而且由苹果自己维护，我想这应该是对于多线程编程的最佳选择了</li>
+<li>使用GCD，线程完全由系统来管理，自己并不需要编写线程代码，只需要定义想要执行的任务便可，然后添加到适当的调度队列当中，GCD会自动帮你创建线程和调度你的任务，自己没有必要再去操心这一块问题</li>
+<li>调度队列<ul>
+<li>系统提供好了多个预定义的调度队列(dispatch queue)，这些调度队列被分配在各种各样的线程上执行，包括可以保证在主线程上执行工作的dispath queue；当然我们自己也可以创建任意多个调度队列</li>
+<li>GCD的调度队列支持先进先出的原则，添加进去的工作单元是什么顺序，那么执行的时候就是什么顺序</li>
+<li>按照先进先出的顺序，串行或并发的执行任务<ul>
+<li><code>serial dispatch queue</code>，一次只执行一个任务，当前任务完成</li>
+<li><code>concurrent dispatch queue</code>，尽可能多的启动任务并发执行</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="疑惑：常规的方法调用是在哪一个线程当中执行的？">疑惑：常规的方法调用是在哪一个线程当中执行的？</h2><ul>
+<li>这里说明一下几种方法调用的区别？<br>  -</li>
+<li>viewDidLoad等等与UI处理相关的事件都会被自动安排到主线程当中去执行</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/08/13/iOS多线程编程01/" data-id="cidb8c2040013w2gz60pnvv84" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS多线程/">iOS多线程</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-iOS网络编程01" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/08/12/iOS网络编程01/" class="article-date">
@@ -207,7 +613,7 @@ string7:https://www.cloudsafe.com/文件夹
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/12/iOS网络编程01/" data-id="cid95vz2q0010hbgzjwdg7wxe" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/12/iOS网络编程01/" data-id="cidb8c2020010w2gzbpbkeu33" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -261,7 +667,7 @@ string7:https://www.cloudsafe.com/文件夹
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/12/UI动效设计01/" data-id="cid95vz38001mhbgzfcb1pojm" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/12/UI动效设计01/" data-id="cidb8c211001sw2gzyxoaowcm" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -303,7 +709,7 @@ string7:https://www.cloudsafe.com/文件夹
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/12/的/" data-id="cid95vz1n0004hbgzfl2cfql2" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/12/的/" data-id="cidb8c1z40004w2gz4nw0n1ad" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -363,7 +769,7 @@ string7:https://www.cloudsafe.com/文件夹
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/12/emacs-技巧01/" data-id="cid95vz2x0018hbgzw3gzvjhm" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/12/emacs-技巧01/" data-id="cidb8c20m001ew2gzefilf7ky" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -408,7 +814,7 @@ string7:https://www.cloudsafe.com/文件夹
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/12/快速提升开发能力的方法/" data-id="cid95vz1u000ahbgzj8ccy3zm" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/12/快速提升开发能力的方法/" data-id="cidb8c1zb000aw2gz22j2umo5" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -456,7 +862,7 @@ string7:https://www.cloudsafe.com/文件夹
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/12/git使用技巧01/" data-id="cid95vz2v0016hbgzpe53mk42" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/12/git使用技巧01/" data-id="cidb8c20k001cw2gzaoaoixqj" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -518,7 +924,7 @@ string7:https://www.cloudsafe.com/文件夹
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/12/CocoaPods01/" data-id="cid95vz5j0047hbgzegbgu3ne" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/12/CocoaPods01/" data-id="cidb8c23b004dw2gzna3dn8bl" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -582,138 +988,13 @@ Host arthury_wiki(执行git <span class="built_in">clone</span>等命令时候�
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/11/关于github的多账号管理/" data-id="cid95vz27000phbgzqd2zu4st" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/11/关于github的多账号管理/" data-id="cidb8c1zq000pw2gzx97tsfph" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
 
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-api获取" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/08/11/api获取/" class="article-date">
-  <time datetime="2015-08-11T10:44:50.000Z" itemprop="datePublished">2015-08-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/11/api获取/">api获取</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="去网站自己抓取">去网站自己抓取</h2><ul>
-<li>比如想要知道网易云音乐的搜索api，只需要去网易云音乐官网随便搜索一个关键词，然后查看url便可得到搜索的api；比如搜索月亮就会得到<code>http://music.163.com/#/search/m/?s=月亮&amp;type=1</code>，这样自己就可以根据这个使用具体的工具比如Paw来测试各种参数的效果，从而得到详细信息</li>
-<li>其他一些不能够通过直接是使用功能来得到的，可以去看网页的源码，从中寻找api的线索</li>
-<li>这样得到的api自己用来玩一玩是可以，但是拿去上架不太合适，一方面是不合法，另一方面是api的变更得不到通知，如果上线隐患太大。</li>
-<li>不管怎么样，使用这种不公开的api都是一件非常坑爹的事情</li>
-</ul>
-<h2 id="Paw使用指南">Paw使用指南</h2>
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/08/11/api获取/" data-id="cid95vz2y001bhbgzu9umzo8i" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/api/">api</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Mac优化清理" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/08/11/Mac优化清理/" class="article-date">
-  <time datetime="2015-08-11T10:15:51.000Z" itemprop="datePublished">2015-08-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/11/Mac优化清理/">Mac优化清理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前言">前言</h2><ul>
-<li>作为低配版Mac的使用者，128g的空间感觉越来越不够用了，然而新版的Mac已经无法再自行更换硬盘，实在是心累；既然这样，对于越来越小的硬盘空间，就不得不采取一系列的优化方案了</li>
-</ul>
-<h2 id="关闭Mac休眠模式">关闭Mac休眠模式</h2><ul>
-<li>打开Termal，输入<code>sudo pmset hibernatemode 0</code>(默认是3)</li>
-<li>然后再输入<code>sudo rm /var/vm/sleepimage</code></li>
-<li>再创建一个空白的sleepimage文件<code>sudo touch /private/var/vm/sleepimage</code></li>
-<li>将这个空白的文件设为只读<code>sudo chflags uchg /private/var/vm/sleepimage</code></li>
-<li>ok</li>
-<li>使用命令<code>pmset -g</code>可以参看各个属性的设置情况</li>
-</ul>
-<h2 id="禁用Mac虚拟内存"><del>禁用Mac虚拟内存</del></h2><ul>
-<li><del>禁用虚拟内存的前提是Mac的内存大小在4GB以上，否则不要轻易尝试</del></li>
-<li><del>具体原理参见<a href="https://support.apple.com/zh-cn/HT201464" target="_blank" rel="external">在 Mac 上使用“活动监视器”</a></del></li>
-<li><del>在Termal中中输入<code>sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist</code></del></li>
-<li><del>禁用虚拟内存之后，再输入<code>sudo rm /private/var/vm/swapfile*</code>删除交换文件</del></li>
-<li><del>如果之后想要重启虚拟内存可以输入<code>sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.metadata.mds.plist</code></del></li>
-<li>现在已经不推荐这个做法了，禁用虚拟内存带来的坏处比它带来的好处更多</li>
-<li>想要临时释放不活跃的内存可以执行<code>purg</code>，需要Xcode支持</li>
-</ul>
-<h2 id="Xcode文件清理">Xcode文件清理</h2><ul>
-<li>移除对旧设备的支持<ul>
-<li>在终端输入<code>open ~/Library/Developer/Xcode/iOS\ DeviceSupport</code></li>
-<li>在打开的文件夹当中删除对低版本系统的支持文件</li>
-</ul>
-</li>
-<li>移除旧的Docsets文档<ul>
-<li>在终端输入<code>open ~/Library/Developer/Shared/Documentation/DocSets</code></li>
-<li>在打开的文件夹当中删除旧的Docsets文档</li>
-</ul>
-</li>
-</ul>
-<h2 id="DaisyDisk">DaisyDisk</h2><ul>
-<li>这个简直神器，可以帮你快速分析出磁盘中各个文件夹的大小，帮你迅速锁定占据大空间的文件夹，排查那些被浪费的空间，而且软件的界面非常的优雅，实在是难能可贵</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/08/11/Mac优化清理/" data-id="cid95vz4v003hhbgz9qr8ycel" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
 
     </footer>
   </div>
@@ -737,7 +1018,7 @@ Host arthury_wiki(执行git <span class="built_in">clone</span>等命令时候�
   <div class="widget-wrap">
     <h3 class="widget-title">標簽</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunLoop/">RunLoop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS多线程/">iOS多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -746,7 +1027,7 @@ Host arthury_wiki(执行git <span class="built_in">clone</span>等命令时候�
   <div class="widget-wrap">
     <h3 class="widget-title">標簽雲</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 10px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 10px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 10px;">tips</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
+      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 10px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 10px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/iOS多线程/" style="font-size: 10px;">iOS多线程</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 10px;">tips</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
     </div>
   </div>
 
@@ -755,7 +1036,7 @@ Host arthury_wiki(执行git <span class="built_in">clone</span>等命令时候�
   <div class="widget-wrap">
     <h3 class="widget-title">歸檔</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">31</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">33</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
     </div>
   </div>
 
@@ -767,6 +1048,14 @@ Host arthury_wiki(执行git <span class="built_in">clone</span>等命令时候�
       <ul>
         
           <li>
+            <a href="/2015/08/13/iOS-RunLoop/">iOS RunLoop</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/13/iOS多线程编程01/">iOS多线程编程01</a>
+          </li>
+        
+          <li>
             <a href="/2015/08/12/iOS网络编程01/">iOS网络编程01</a>
           </li>
         
@@ -776,14 +1065,6 @@ Host arthury_wiki(执行git <span class="built_in">clone</span>等命令时候�
         
           <li>
             <a href="/2015/08/12/的/">的</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/12/emacs-技巧01/">emacs 技巧01</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/12/快速提升开发能力的方法/">快速提升开发能力的方法</a>
           </li>
         
       </ul>
