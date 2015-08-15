@@ -68,6 +68,640 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-NSTimer" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/07/31/NSTimer/" class="article-date">
+  <time datetime="2015-07-31T05:28:17.000Z" itemprop="datePublished">2015-07-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/07/31/NSTimer/">NSTimer(翻译)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="什么是NSTimer？">什么是NSTimer？</h2><ul>
+<li>NSTimer类可以被用来创建timer对象，简单的设置一个定时器。我确信你看到过许多的iOS应用有类似的功能。曾经想要知道它们是如何工作的？想要知道NSTimer是如何工作的？好，它等待经过一段特定的时间之后会被触发。触发它会给你的app发送一个特定的信息，举个栗子，你可以告诉NSTimer对象发送一个信息给window，让其在一段时间之后更新，或者是每一秒更新一个label</li>
+<li>那么现在，你想要指导如何在Swift当中使用NSTimer，不是吗？我将会在这篇教程里面展示给你看。</li>
+</ul>
+<h2 id="新建你的Xcode项目">新建你的Xcode项目</h2><ul>
+<li>创建一个Single View Application并且命名为NSTimer</li>
+<li>在你的Main.storyboard文件里我们需要加入一些控件，以下是我们需要的：<ul>
+<li>Toolbar</li>
+<li>Navigation Bar</li>
+<li>Flexble Space Bar Nutton Item</li>
+<li>Bar Button Item x 2</li>
+<li>UILable</li>
+</ul>
+</li>
+<li>Toolbar：拖拽到项目的底部<br><img src="https://dn-arthury.qbox.me/toolBar.png" alt="效果图"></li>
+<li>接下来，点击那个Item按钮然后前往属性编辑区。我们需要修改identifier为Play：<br><img src="https://dn-arthury.qbox.me/NSTimer-inspector.png" alt="效果图"></li>
+<li>这个将会修改<code>Item</code>成为一个play icon，现在你的toolbar应该看起来就会像这样：<br><img src="https://dn-arthury.qbox.me/NSTimer-play.png" alt="效果图"></li>
+<li>Flexble Space Bar Nutton Item：这个item将会隔开我们的bar buutom items。在tool bar的顶部拖动这个item<br><img src="https://dn-arthury.qbox.me/NSTimerSpaceOut.png" alt="效果图"></li>
+<li>Bar Button Item(1)：下一个item就是这个Bar Button Item，拖拽这个item到底部toolbar的左边，就像我们之前做的一样，修改identifier为Pause，那么看起来就会像下面这样<br><img src="https://dn-arthury.qbox.me/NSTimer-Pause.png" alt="效果图"></li>
+<li>Navigation Bar：拖拽导航栏到视图控制器的顶部，不要将其放在右上角，这样会遮盖组iPhone电池的图标，双击白哦提并且键入NSTimer Tutorial。这个就会得到如下结果：<br><img src="https://dn-arthury.qbox.me/NSTimer-top.png" alt="效果图"></li>
+<li>Bar Button Item(2)：拖动另外一个Bar Button Item到导航栏当中，并且将identifier修改为Clear.你可以通过双击Item来进行修改，非常的方便<br><img src="https://dn-arthury.qbox.me/NStimer-b2.png" alt="效果图"></li>
+<li>UILable：最后的控件，拖拽控件到你的视图控制器中，进入属性编辑区编辑lable的尺寸，对齐模式以及你想要的颜色。接下去，双击UILable并且改变文字’Lable’为’0’：<br><img src="https://dn-arthury.qbox.me/NSTimer-final.png" alt="效果图"></li>
+<li>这就是项目基本设置，现在我们可以开始使用NSTimer了</li>
+</ul>
+<h2 id="NSTimer_in_Swift">NSTimer in Swift</h2><ul>
+<li>在你的项目导航区域，选择ViewController.swift文件。这个文件将会是我们定义和使用NSTimer的地方</li>
+<li><p>就在这三方代码当中</p>
+<pre><code><span class="class"><span class="keyword">class</span> <span class="title">ViewController</span> : <span class="title">UIViewController</span> </span>{
+<span class="keyword">override</span> <span class="func"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> {}
+}
+</code></pre></li>
+<li><p>我们需要定义我们的NSTimer，定义一个名为timer的NSTimer变量：</p>
+<pre><code><span class="tag">var</span> timer = <span class="function"><span class="title">NSTimer</span><span class="params">()</span></span>
+</code></pre></li>
+<li><p>下面我们需要定义计时器，这个会被初始化为0。在定义完NSTimer对象之后紧接着就是定义一个counter的int类型变量：</p>
+<pre><code><span class="variable"><span class="keyword">var</span> counter</span> = <span class="number">0</span>
+</code></pre></li>
+<li><p>将UILable与ViewController关联起来，并且定义为countingLable：<br><img src="https://dn-arthury.qbox.me/countingLable.png" alt="效果图"></p>
+</li>
+<li><p>这样会生成如下所示的代码：</p>
+<pre><code><span class="annotation">@IBOutlet</span> <span class="keyword">var</span> countingLabel: UILabel!
+</code></pre></li>
+<li><p>对Play，Pause以及Clear这三个button做同样的事情，不过关联的类型选择Action，这样就会生成如下三行代码：</p>
+<pre><code><span class="variable">@IBAction</span> func <span class="function">startButton</span>(<span class="attribute">sender</span>: AnyObject) { }
+<span class="variable">@IBAction</span> func <span class="function">pauseButton</span>(<span class="attribute">sender</span>: AnyObject) { }
+<span class="variable">@IBAction</span> func <span class="function">clearButton</span>(<span class="attribute">sender</span>: AnyObject) { }
+</code></pre></li>
+<li><p>现在我们可以给countingLabel辅助，如果我门进入<code>viewDidLoad</code>方法，在<code>super.viewDidLoad()</code>之下我们可以添加基础的Swift代码，获取到counter并且将其赋值给countingLabel。稍等一下！这个counter是一个int类型并且UILabel是一个string类型。我们需要确保在数据传递过去之前将格式转换好。这个可以使用<code>String(*)</code>来简单实现</p>
+<pre><code>countingLabel<span class="class">.text</span> = <span class="function"><span class="title">String</span><span class="params">(counter)</span></span>
+</code></pre></li>
+</ul>
+<h2 id="Start_NSTimer">Start NSTimer</h2><ul>
+<li><p>在IBAction输出的<code>startButton</code>我们需要添加：</p>
+<pre><code>timer = NSTimer.scheduledTimerWithTimeInerval(TIME_INCREMENT, <span class="string">target:</span>self, <span class="string">selector:</span> Selector(<span class="string">"FUNCTION"</span>), <span class="string">userInfo:</span> nil, <span class="string">repeats:</span> BOOL)
+</code></pre></li>
+<li><p>这行代码将会生成一个NSTimer的实例赋值给这个timer变量，在这个方法里里面有一些参数；<code>TIME_INCREMENT</code>，<code>FUNCTION</code>，<code>BOOL</code>。下面将对这些参数进行介绍<br>|| <em>参数</em> || <em>用途</em> ||<br>|| TIME_INCREMENT || 触发定时器的秒数，如果秒数比0.0还要少或者相等，这个方法将会选择和非负数0.1毫秒来替代，我们将会将这个参数设置为1 ||<br>|| FUNCTION || 当定时结束之后会触发的函数，我们将会调用方法<code>updateCounter</code> ||<br>|| BOOL || 如果是YES，这个触发器就会一直重复直到被销毁；如果是NO，这个定时器在执行之后就会被销毁，我们将会设置这个值为YES ||</p>
+</li>
+<li><p>所以现在，这一行代码看起来应该是这样的</p>
+<pre><code>timer = NSTimer.scheduledTimerWithTimeInterval(<span class="number">1</span>, <span class="string">target:</span>self, <span class="string">selector:</span> Selector(<span class="string">"updateCounter"</span>), <span class="string">userInfo:</span> nil, <span class="string">repeats:</span> <span class="literal">true</span>)
+</code></pre></li>
+<li><p>下面我们需要做的局势创建一个<code>updateCounter</code>以及更新这个counter变量为1。就像我们在<code>viewDidLoad</code>方法中定义的那样，然而我们需要添加<code>++</code>给这个counter，这样这个值在每一次函数被调用之后这个值就会被加1.我们已经告诉<code>NSTimer.scheduledTimerWithTimeInterval</code>每间隔1秒调用<code>updateCounter</code>，就像这样：</p>
+<pre><code><span class="function"><span class="keyword">func</span> <span class="title">updateCounter</span><span class="params">()</span> {</span>
+    countingLabel.text = <span class="built_in">String</span>(counter++)
+}
+</code></pre></li>
+<li><p>运行你的app，下面就是见证奇迹的时刻</p>
+</li>
+</ul>
+<h2 id="暂停/停止_NSTimer">暂停/停止 NSTimer</h2><ul>
+<li><p>这个类使用了一个方法<code>invalidate()</code>，这个方法可以完美的来停止与暂停你的SNTimer。在pause button的IBAction里面我可以需要加入这一行代码：</p>
+<pre><code><span class="preprocessor">@IBAction</span> <span class="func"><span class="keyword">func</span> <span class="title">pauseButton</span><span class="params">(sender: AnyObject)</span></span> {
+    timer.invalidate()
+}
+</code></pre></li>
+<li><p>运行app，点击暂停按钮就可以看到效果了</p>
+</li>
+</ul>
+<h2 id="清除NSTimer的Counter">清除NSTimer的Counter</h2><ul>
+<li>清理NSTimer的时候需要多做一点不同的工作<ul>
+<li>停下触发的NSTimer</li>
+<li>重设counter</li>
+<li>清空countlingLabel</li>
+</ul>
+</li>
+<li><p>最后的clear按钮当中应该加入以下代码</p>
+<pre><code><span class="constant">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">clearButton</span><span class="params">(sender: AnyObject)</span> {</span>
+    timer.invalidate()
+    counter = <span class="number">0</span>
+    countingLabel.text = <span class="built_in">String</span>(counter)
+}
+</code></pre></li>
+<li><p>非常容易就可以使用这些强大的功能</p>
+</li>
+</ul>
+<h2 id="继承NSTimer">继承NSTimer</h2><ul>
+<li><a href="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSTimer_Class/index.html" target="_blank" rel="external">Apple Document</a></li>
+</ul>
+<h2 id="注意事项">注意事项</h2><ul>
+<li>在NSTimer当中不能调用private权限的方法</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/07/31/NSTimer/" data-id="cidd4nd5a003rzjgzaplce1rh" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NSTimer/">NSTimer</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-线性代数01" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/07/30/线性代数01/" class="article-date">
+  <time datetime="2015-07-30T13:07:31.000Z" itemprop="datePublished">2015-07-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/07/30/线性代数01/">线性代数01</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="求解线性方程组">求解线性方程组</h2><ul>
+<li>dadasd<br>-d d1d1</li>
+<li>dd1d</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/07/30/线性代数01/" data-id="cidd4ncwx0004zjgzpman17dy" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/线性代数/">线性代数</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-OpenGL-ES01" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/07/30/OpenGL-ES01/" class="article-date">
+  <time datetime="2015-07-30T12:11:59.000Z" itemprop="datePublished">2015-07-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/07/30/OpenGL-ES01/">OpenGL ES01</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言">前言</h2><ul>
+<li>OpenGL ES作为大部分游戏引擎的底层框架，它直接面向的是GPU，因此拥有非常强劲的性能，作为需要进行游戏开发的我，学习这些底层的东西当然是非常有必要的，应该说非常重要才对</li>
+</ul>
+<h2 id="OpenGL_Context">OpenGL Context</h2><ul>
+<li>Context是一个非常抽象的概念，可以尝试将这个理解为一个包含了所有OpenGl状态的对西安；如果把一个Context销毁了，那么OpenGl也将消失</li>
+<li>OpenGL对象包含了Textures，Vertex Buffer Objects，Shaders，Frame &amp; Render Buffers，State</li>
+</ul>
+<h2 id="GLKView">GLKView</h2><ul>
+<li>主要功能<ul>
+<li>配置OpenGL代码来渲染一个视图</li>
+<li>设置OpenGL的context</li>
+<li>用来重写绘制规则的方法<code>-(void)glkView:(GLKView *)view drawInRect:(CGRect)rect { ... }</code>；在{}当中写入OpenGL代码</li>
+</ul>
+</li>
+<li>相关的属性与方法<ul>
+<li>drawableColorFormat    <ul>
+<li>OpenGL上下文有一个缓冲区，它用以存储将在屏幕中显示的颜色。你可以使用其属性来设置缓冲区中每个像素的颜色格式</li>
+<li>缺省值是GLKViewDrawableColorFormatRGBA8888，即缓冲区的每个像素使用8个bit（所以每个像素4个字节）。这非常好，因为它给了你提供了最广泛的颜色范围，让你的app看起来更好。</li>
+<li>如果你的app允许更小范围的颜色，你可以设置为GLKViewDrawableColorFormatRGB565，从而使你的app消耗更少的资源（内存和处理时间）。       </li>
+</ul>
+</li>
+<li>drawableDepthFormat<ul>
+<li>这个缓冲区称之为深度缓冲区，这将会帮助我们确保更加接近观察者的对西安显示在远一些的对象的前面，也就是可以让前面的对象挡住后面的对象<h2 id="GLKViewController">GLKViewController</h2></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>每一帧页面的刷新都会调用<code>-(void)update{}</code>方法，可以通过这个方法来实现屏幕每一帧的渲染工作</li>
+<li>注意：这个方法在写的时候很可能不会有代码提示，这是Xcode的bug，不用理会，直接写就可以了</li>
+<li>这个类抽取出大量的样板代码，这些代码完成了OpenGL ES项目的基本配置</li>
+</ul>
+<h2 id="GLKEffects">GLKEffects</h2><ul>
+<li>这些类实现了OpenGL ES1.0公共的shdaing行为，简化了从1.0到2.0的转化；它们也提供了让光和纹理(lignthing and texturing)工作的简单方法</li>
+</ul>
+<h2 id="GLMath">GLMath</h2><ul>
+<li>在iOS5之前，每个游戏都需要它们自己的数学库，处理公共的向量和矩阵操作方法。现在有了GLMath，大多数的公共方法都可以从GLMath中获得</li>
+</ul>
+<h2 id="GLKTextureLoader">GLKTextureLoader</h2><ul>
+<li>这个类使得加载图像作为OpenGL使用的纹理更加简单。和写一个复杂的方法来处理大量不同的图像格式比，现在加载一个纹理只需要一个简单的方法调用</li>
+</ul>
+<h2 id="FrameBuffer">FrameBuffer</h2><ul>
+<li>这个buffer是其他buffer的集合</li>
+<li><p>ColorBuffer</p>
+<ul>
+<li><p>这个可以理解为是一对像素的集合，GLKView会在每一次的渲染当中将这里取出来的像素放到视图当中</p>
+<pre><code>g glClearColor<span class="list">(<span class="keyword">_red</span>, _green, _blue, _alpha)</span><span class="comment">;</span>
+glClear<span class="list">(<span class="keyword">_mask</span>)</span><span class="comment">;</span>
+</code></pre></li>
+<li><p>第一行代码调用glClearColor定义用来清理屏幕的RGB颜色和alpha值，第二行代码调用glClear来实际执行清理操作，缓冲区类型有很多</p>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/07/30/OpenGL-ES01/" data-id="cidd4nd4w003gzjgzg4ql9mxr" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-使用贝塞尔曲线实现一个弹性的UITextField" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/07/30/使用贝塞尔曲线实现一个弹性的UITextField/" class="article-date">
+  <time datetime="2015-07-30T07:59:16.000Z" itemprop="datePublished">2015-07-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/07/30/使用贝塞尔曲线实现一个弹性的UITextField/">使用贝塞尔曲线实现一个弹性的UITextField</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言">前言</h2><ul>
+<li>这篇文章在看到<a href="http://www.raywenderlich.com/100939/how-to-create-an-elastic-animation-with-swift" target="_blank" rel="external">ray</a>上面的一篇教程之后学到的，看了那篇教程之后，让我对于动画的制作有了一个新的理解，同时这个动画的实现设计并不好，在我自己的尝试过程中发现了一些问题，好了，那么废话不多说了，就让我们开始吧！</li>
+</ul>
+<h2 id="实现思路">实现思路</h2><ul>
+<li>实现的基本输入其实就是通过贝塞尔曲线画出变化之前与变化之后TextField的形状，然后再使用SpringAnimation来实现形变过程中的弹性动画，最后再使用CADisplayLink来渲染每一帧的形变</li>
+<li>将得到的Elastic View作为UITextField的子视图来使用，便可以实现弹性的UITextField</li>
+</ul>
+<h2 id="首先创建一个基础的Elastic_View">首先创建一个基础的Elastic View</h2><pre><code>import <span class="type">UIKit</span>
+<span class="keyword">class</span> <span class="type">ElasticView</span>: <span class="type">UIView</span> {
+    <span class="keyword">private</span> <span class="keyword">let</span> topControlPointView = <span class="type">UIView</span><span class="literal">()</span>
+    <span class="keyword">private</span> <span class="keyword">let</span> leftControlPointView = <span class="type">UIView</span><span class="literal">()</span>
+    <span class="keyword">private</span> <span class="keyword">let</span> bottomControlPointView = <span class="type">UIView</span><span class="literal">()</span>
+    <span class="keyword">private</span> <span class="keyword">let</span> rightControlPointView = <span class="type">UIView</span><span class="literal">()</span>
+
+    <span class="keyword">private</span> <span class="keyword">let</span> elasticShape = <span class="type">CAShapeLayer</span><span class="literal">()</span>
+
+    override init(frame: <span class="type">CGRect</span>) {
+        super.init(frame: frame)
+        setupComponents<span class="literal">()</span>
+    }
+    required init(coder aDecoder: <span class="type">NSCoder</span>) {
+        super.init(coder: aDecoder)
+        setupComponents<span class="literal">()</span>
+    }
+    <span class="keyword">private</span> func setupComponents<span class="literal">()</span> {
+
+    }
+}
+</code></pre><ul>
+<li>这里首先创建了四个控制点，通过UIView的形式来展示，当然也可以使用CALayer，作为debugPoint</li>
+<li>接下来创建了一个CAShapeLayer对象，用于将绘制好的贝塞尔曲线展示出来</li>
+<li>最后重写初始化方法，调用<code>setupComponents()</code>，这个方法将会完成动画的基本配置工作</li>
+<li><p>那么现在需要将这四个控制点加入到Elastic View当中，可以通过一个for循环来实现</p>
+<pre><code><span class="keyword">for</span> controlPoint <span class="keyword">in</span> [topControlPointView, leftControlPointView,
+    bottomControlPointView, rightControlPointView] {
+    addSubview(controlPoint)
+    controlPoint.frame = CGRect(<span class="string">x:</span> <span class="number">0.0</span>, <span class="string">y:</span> <span class="number">0.0</span>, <span class="string">width:</span> <span class="number">5.0</span>, <span class="string">height:</span> <span class="number">5.0</span>)<span class="comment">//设置四个控制点的初始位置以及大小</span>
+    controlPoint.backgroundColor = UIColor.blueColor()<span class="comment">//这里添加背景颜色是为了后面方便debug</span>
+}
+</code></pre></li>
+<li><p>添加控制点之后就需要设置它们的位置</p>
+<pre><code><span class="component">private func positionControlPoints(){
+    topControlPointView<span class="string">.center</span> = CGPoint(x: bounds<span class="string">.midX</span>, y: 0.0)
+    leftControlPointView<span class="string">.center</span> = CGPoint(x: 0.0, y: bounds<span class="string">.midY)</span>
+    bottomControlPointView<span class="string">.center</span> = CGPoint(x:bounds<span class="string">.midX</span>, y: bounds<span class="string">.maxY)</span>
+    rightControlPointView<span class="string">.center</span> = CGPoint(x: bounds<span class="string">.maxX</span>, y: bounds<span class="string">.midY)</span>
+}</span>
+</code></pre></li>
+<li><p>分别将他们设置在Elastic View上下左右的位置</p>
+</li>
+<li>之后在<code>setupComponents()</code>中进行调用便可</li>
+<li>现在可以得到如下图所示的Elastic View<br><img src="https://dn-arthury.qbox.me/ElasticView.png" alt="效果图"></li>
+</ul>
+<h2 id="使用贝塞尔曲线来画出形变前后的TextField">使用贝塞尔曲线来画出形变前后的TextField</h2><p><img src="http://cdn1.raywenderlich.com/wp-content/uploads/2015/05/Quadratic.png" alt="效果图"></p>
+<ul>
+<li>这就是形变之后的TextField</li>
+<li><p>下面的方法将会画出一个形变之后的UITextField</p>
+<pre><code>private func bezierPathForControlPoints<span class="params">()</span>-&gt;CGPathRef {
+    <span class="comment">// 1</span>
+    <span class="built_in">let</span> path = UIBezierPath<span class="params">()</span>
+
+    <span class="comment">// 2</span>
+    <span class="built_in">let</span> top = topControlPointView.layer.presentationLayer<span class="params">()</span>.position
+    <span class="built_in">let</span> left = leftControlPointView.layer.presentationLayer<span class="params">()</span>.position
+    <span class="built_in">let</span> bottom = bottomControlPointView.layer.presentationLayer<span class="params">()</span>.position
+    <span class="built_in">let</span> right = rightControlPointView.layer.presentationLayer<span class="params">()</span>.position
+
+    <span class="built_in">let</span> width = frame.size.width
+    <span class="built_in">let</span> height = frame.size.height
+
+    <span class="comment">// 3</span>
+    path.moveToPoint<span class="params">(CGPointMake<span class="params">(<span class="number">0</span>, <span class="number">0</span>)</span>)</span>
+    path.addQuadCurveToPoint<span class="params">(CGPointMake<span class="params">(width, <span class="number">0</span>)</span>, controlPoint: top)</span>
+    path.addQuadCurveToPoint<span class="params">(CGPointMake<span class="params">(width, height)</span>, controlPoint:right)</span>
+    path.addQuadCurveToPoint<span class="params">(CGPointMake<span class="params">(<span class="number">0</span>, height)</span>, controlPoint:bottom)</span>
+    path.addQuadCurveToPoint<span class="params">(CGPointMake<span class="params">(<span class="number">0</span>, <span class="number">0</span>)</span>, controlPoint: left)</span>
+
+    <span class="comment">// 4</span>
+    return path.CGPath
+
+}
+</code></pre></li>
+<li><p>这个方法追踪四个控制点的位置，然后绘制出每一阶段形变的贝塞尔曲线，形变之前与之后的TextField都是通过这个方法来绘制的，区别就在于控制点位置的变化</p>
+</li>
+<li><p>那么现在就需要使用CADisplayLink来渲染每一帧的形变了</p>
+<pre><code>private lazy <span class="keyword">var</span> displayLink : <span class="type">CADisplayLink</span> = {
+    <span class="keyword">let</span> displayLink = <span class="type">CADisplayLink</span>(target: <span class="keyword">self</span>, selector: <span class="type">Selector</span>(<span class="string">"updateLoop"</span>))
+    displayLink.addToRunLoop(<span class="type">NSRunLoop</span>.currentRunLoop(), forMode: <span class="type">NSRunLoopCommonModes</span>)
+    <span class="keyword">return</span> displayLink
+}()
+
+<span class="func"><span class="keyword">func</span> <span class="title">updateLoop</span><span class="params">()</span></span> {
+    elasticShape.path = bezierPathForControlPoints()
+}
+
+private <span class="func"><span class="keyword">func</span> <span class="title">startUpdateLoop</span><span class="params">()</span></span> {
+    displayLink.paused = <span class="literal">false</span>
+}
+
+private <span class="func"><span class="keyword">func</span> <span class="title">stopUpdateLoop</span><span class="params">()</span></span> {
+    displayLink.paused = <span class="literal">true</span>
+}
+</code></pre></li>
+<li><p>这里新建一个CADisplayLink对象，做了基本的配置，每一帧刷新的时候调用的是updateLoop，在这里面变更elasticShape的形状</p>
+</li>
+<li>然后是displayLink的停止与开启</li>
+</ul>
+<h2 id="UIView_Spring_Animations">UIView Spring Animations</h2><ul>
+<li><p>那么现在就在给形变过程加入动画效果的时候了</p>
+<pre><code><span class="func"><span class="keyword">func</span> <span class="title">animateControlPoints</span><span class="params">()</span></span> {
+    <span class="comment">//1</span>
+    <span class="keyword">let</span> overshootAmount : <span class="type">CGFloat</span> = <span class="number">10.0</span>
+    <span class="comment">// 2</span>
+    <span class="type">UIView</span>.animateWithDuration(<span class="number">0.25</span>, delay: <span class="number">0.0</span>, usingSpringWithDamping: <span class="number">0.9</span>, initialSpringVelocity: <span class="number">1.5</span>,
+    options: <span class="literal">nil</span>, animations: {
+    <span class="comment">// 3</span>
+    <span class="keyword">self</span>.topControlPointView.center.y -= overshootAmount
+    <span class="keyword">self</span>.leftControlPointView.center.x -= overshootAmount
+    <span class="keyword">self</span>.bottomControlPointView.center.y += overshootAmount
+    <span class="keyword">self</span>.rightControlPointView.center.x += overshootAmount
+
+},
+completion: { <span class="number">_</span> <span class="keyword">in</span>
+    <span class="comment">// 4</span>
+    <span class="type">UIView</span>.animateWithDuration(<span class="number">0.45</span>, delay: <span class="number">0.0</span>, usingSpringWithDamping: <span class="number">0.15</span>, initialSpringVelocity: <span class="number">5.5</span>,
+        options: <span class="literal">nil</span>, animations: {
+            <span class="comment">// 5</span>
+            <span class="keyword">self</span>.positionControlPoints()
+
+        },
+        completion: { <span class="number">_</span> <span class="keyword">in</span>
+            <span class="comment">// 6</span>
+            <span class="keyword">self</span>.stopUpdateLoop()
+        })
+    })
+}
+</code></pre></li>
+<li><p>这样便给了开始形变的过程以及结束形变的过程添加了弹性的动画效果</p>
+</li>
+<li>这里overshootAmount指的是形变度</li>
+<li><p>最后之后重写<code>touchesBegan(touches: Set, withEvent event: UIEvent)</code>方法来开启动画以及启动displaylink</p>
+<pre><code><span class="keyword">override</span> <span class="func"><span class="keyword">func</span> <span class="title">touchesBegan</span><span class="params">(touches: Set, withEvent event: UIEvent)</span></span> {
+    startUpdateLoop()
+    animateControlPoints()
+}
+</code></pre></li>
+</ul>
+<p><img src="http://cdn4.raywenderlich.com/wp-content/uploads/2015/03/j1.gif" alt="效果图"></p>
+<h2 id="优化重构">优化重构</h2><ul>
+<li>可以使用@IBInspectable关键字来声明overshootAmount属性，这样就可以在StroyBoard中调整了</li>
+<li><p>还需要调整去掉背景颜色以及修改clipsToBounds属性，只要在<code>setupComponents</code>中添加一些代码便可</p>
+<pre><code><span class="setting">backgroundColor = <span class="value">UIColor.clearColor()</span></span>
+<span class="setting">clipsToBounds = <span class="value"><span class="keyword">false</span></span></span>
+</code></pre></li>
+<li><p>接下来就可以将这个ElasticView用到例如UITextField或者UIButton上面去使用了</p>
+</li>
+</ul>
+<h2 id="制作一个Elastic_UITextField">制作一个Elastic UITextField</h2><ul>
+<li><p>新建一个ElasticTextField.swift文件继承自UITextField，然后添加一下内容</p>
+<pre><code><span class="keyword">import</span> <span class="type">UIKit</span>
+
+<span class="class"><span class="keyword">class</span> <span class="title">ElasticTextField</span>: <span class="title">UITextField</span> </span>{
+
+    <span class="comment">// 1</span>
+    <span class="keyword">var</span> elasticView : <span class="type">ElasticView</span>!
+
+    <span class="comment">// 2</span>
+    <span class="preprocessor">@IBInspectable</span> <span class="keyword">var</span> overshootAmount: <span class="type">CGFloat</span> = <span class="number">10</span> {
+        <span class="keyword">didSet</span> {
+            elasticView.overshootAmount = overshootAmount
+
+        }
+
+    }
+
+    <span class="comment">// 3</span>
+    <span class="keyword">override</span> <span class="keyword">init</span>(frame: <span class="type">CGRect</span>) {
+        <span class="keyword">super</span>.<span class="keyword">init</span>(frame: frame)
+    setupView()
+
+    }
+
+    required <span class="keyword">init</span>(coder aDecoder: <span class="type">NSCoder</span>) {
+        <span class="keyword">super</span>.<span class="keyword">init</span>(coder: aDecoder)
+        setupView()
+
+    }
+
+    <span class="comment">// 4</span>
+    <span class="func"><span class="keyword">func</span> <span class="title">setupView</span><span class="params">()</span></span> {
+        <span class="comment">// A</span>
+        clipsToBounds = <span class="literal">false</span>
+        borderStyle = .<span class="type">None</span>
+
+        <span class="comment">// B</span>
+        elasticView = <span class="type">ElasticView</span>(frame: bounds)
+        elasticView.backgroundColor = backgroundColor
+        addSubview(elasticView)
+
+        <span class="comment">// C</span>
+        backgroundColor = <span class="type">UIColor</span>.clearColor()
+
+        <span class="comment">// D</span>
+        elasticView.userInteractionEnabled = <span class="literal">false</span>
+
+    }
+
+    <span class="comment">// 5</span>
+    <span class="keyword">override</span> <span class="func"><span class="keyword">func</span> <span class="title">touchesBegan</span><span class="params">(touches: Set, withEvent event: UIEvent)</span></span> {
+        elasticView.touchesBegan(touches, withEvent: event)
+
+    }
+
+}
+</code></pre></li>
+<li><p>Swift的属性监听确实非常的不错</p>
+</li>
+<li>这里需要注意的是<code>elasticView.userInteractionEnabled = false</code>关闭了elasticView对用户的响应，使用ElasticTextField的响应来调用elasticView的touchesBegan方法(原来touchBegan方法也是可以直接调用的)，这样避免因为响应了elasticView而屏蔽了对ElasticTextField的响应，这样就会造成无法输入的情况；另外还要注意一下clipsToBounds的调整</li>
+<li>现在在StroyBoard当中拖拽一个UITextfield并将其类设置为ElasticTextField便可实现如图所示的效果<br><img src="http://cdn1.raywenderlich.com/wp-content/uploads/2015/04/Last.gif" alt="效果图"></li>
+</ul>
+<h2 id="修改背景颜色">修改背景颜色</h2><ul>
+<li>最后需要在设置颜色的时候将ElasticView的背景颜色改为clearColor，然后将elasticShape.fillColor设置为新的颜色</li>
+<li><p>在ElasticView.swift当中添加一下代码</p>
+<pre><code><span class="keyword">override</span> <span class="keyword">var</span> backgroundColor: <span class="type">UIColor</span>? {
+    <span class="keyword">willSet</span> {
+        <span class="keyword">if</span> <span class="keyword">let</span> newValue = newValue {
+            elasticShape.fillColor = newValue.<span class="type">CGColor</span>
+            <span class="keyword">super</span>.backgroundColor = <span class="type">UIColor</span>.clearColor()
+        }
+    }
+}
+</code></pre></li>
+<li><p>得到效果如下：<br><img src="http://cdn5.raywenderlich.com/wp-content/uploads/2015/04/TextTap3.gif" alt="效果图"></p>
+</li>
+</ul>
+<h2 id="最后的优化">最后的优化</h2><ul>
+<li><p>调整placeholder text的位置以及编辑时显示的字体的位置</p>
+<pre><code><span class="comment">// Add some padding to the text and editing bounds</span>
+<span class="keyword">override</span> <span class="func"><span class="keyword">func</span> <span class="title">textRectForBounds</span><span class="params">(bounds: CGRect)</span></span> -&gt; <span class="type">CGRect</span> {
+    <span class="keyword">return</span> <span class="type">CGRectInset</span>(bounds, <span class="number">10</span>, <span class="number">5</span>)
+}
+
+<span class="keyword">override</span> <span class="func"><span class="keyword">func</span> <span class="title">editingRectForBounds</span><span class="params">(bounds: CGRect)</span></span> -&gt; <span class="type">CGRect</span> {
+    <span class="keyword">return</span> <span class="type">CGRectInset</span>(bounds, <span class="number">10</span>, <span class="number">5</span>)
+}
+</code></pre></li>
+<li><p>最后再取出控制点的颜色便可</p>
+</li>
+</ul>
+<h2 id="出现的bug">出现的bug</h2><ul>
+<li>点击间隔太短的时候会出现形变不完全的情况</li>
+<li>初步猜测是UISpringAnimation的complete block在动画执行时间还没有结束就执行了，从而导致这样的问题</li>
+<li>解决方案是使用一个定时器来执行<code>stopUpdateLoop</code>，定时器的触发放在complete block里面，设定为10秒之后执行便可，这样就可以解决这个问题，但是性能方面是在不敢恭维</li>
+<li>所以说这个设计并不合适</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/07/30/使用贝塞尔曲线实现一个弹性的UITextField/" data-id="cidd4ncyl000yzjgzkj4vztgy" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Objective-C的一些小技巧" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/07/30/Objective-C的一些小技巧/" class="article-date">
+  <time datetime="2015-07-30T07:36:12.000Z" itemprop="datePublished">2015-07-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/07/30/Objective-C的一些小技巧/">Objective-C的一些小技巧</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="如何遍历一个非对象数组">如何遍历一个非对象数组</h2><ul>
+<li>不能够使用for-in循环来进行遍历，这个循环在objective-c当中只能够遍历对象数组，比如NSAarray或者是NSMutableArray之类的，但是这些数组都只能够装填对象元素，类似于int、double之类的基本元素是不能装进去的</li>
+<li><p>解决方案是通过普通的for循环来实现遍历</p>
+<pre><code><span class="keyword">int</span> <span class="built_in">array</span>[] = {<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>};
+<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt;= <span class="number">4</span>;i++){
+    <span class="keyword">int</span> temp = <span class="built_in">array</span>[i];
+    <span class="comment">//do whatever you like</span>
+}
+</code></pre></li>
+<li><p>实际上在swift当中for-in循环是可以用来遍历非对象数组的</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/07/30/Objective-C的一些小技巧/" data-id="cidd4nd4z003jzjgzevydb92t" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Objective-C/">Objective-C</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-对于语言的理解01" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/07/27/对于语言的理解01/" class="article-date">
@@ -85,7 +719,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/07/27/对于语言的理解01/" data-id="cidbz0xis000g14gzxom23pvd" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/07/27/对于语言的理解01/" data-id="cidd4ncxp000mzjgzdmeahthi" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -127,7 +761,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/07/27/Scheme学习日志01/" data-id="cidbz0xlc002p14gzmpjxtiju" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/07/27/Scheme学习日志01/" data-id="cidd4nd4g002yzjgzr2isiki5" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -210,7 +844,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/07/27/如何通过快速反馈-Immediate-feedback-来提供自己的工作效率/" data-id="cidbz0xiu000j14gzc9n41s4w" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/07/27/如何通过快速反馈-Immediate-feedback-来提供自己的工作效率/" data-id="cidd4ncxw000pzjgzf5nuj7x6" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -328,7 +962,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/07/26/UIViewAnimation06/" data-id="cidbz0xkk001y14gz1hi9f7r4" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/07/26/UIViewAnimation06/" data-id="cidd4nd390027zjgzebbk72og" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -377,625 +1011,13 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/07/25/UIViewAnimation05/" data-id="cidbz0xkm002014gz7gaddbq5" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/07/25/UIViewAnimation05/" data-id="cidd4nd3e0029zjgzjgsvmfg4" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
 
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Swift小问题汇总" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/07/25/Swift小问题汇总/" class="article-date">
-  <time datetime="2015-07-25T05:06:04.000Z" itemprop="datePublished">2015-07-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/25/Swift小问题汇总/">Swift小问题汇总</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="‘Double’_is_not_convertible_to_‘CGFloat’">‘Double’ is not convertible to ‘CGFloat’</h2><ul>
-<li><p>swift不能进行隐式类型转换，必须要显式转换才可以</p>
-<pre><code><span class="built_in">let</span> number = CGFloat<span class="params">(M_<span class="literal">PI</span>)</span>
-</code></pre></li>
-<li><p>注意显式转化的语法，要转换的数据放在里面</p>
-</li>
-</ul>
-<h2 id="关于全局的异常断点">关于全局的异常断点</h2><ul>
-<li>不要一开始的时候就加上去，等到出现异常再加，但是要注意，加了异常断点之后如果bug出现的方式与没加之前出现的方式不一样，就要注意这个bug可能是因为加入了异常断点之后引入的，这个时候就不能再靠这个异常断点了，要去掉之后再来分析</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/07/25/Swift小问题汇总/" data-id="cidbz0xl9002j14gzcj8pqa2e" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-UIViewAnimation04" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/07/24/UIViewAnimation04/" class="article-date">
-  <time datetime="2015-07-24T15:59:03.000Z" itemprop="datePublished">2015-07-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/24/UIViewAnimation04/">UIViewAnimation04</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="UIBezierPath介绍">UIBezierPath介绍</h2><ul>
-<li>此类是Core Graphics框架关于path的一个封装。使用此类可以定义简单的形状，如椭圆或者矩形，或者有多个直线和曲线段组成的形状；至于其他更加自定义的方法，可以考虑使用CGContextRef相关的更加底层的api来进行绘制，关于这一块可以去看一下Quartz2D框架</li>
-<li>UIBezierPath对象是CGPathRef数据类型的封装。path可以由直线和曲线段去创建。我们使用直线段去创建矩形和多边形，使用曲线段去创建弧，圆或者其他更复杂的曲线形状</li>
-<li>每一个线段都包含有一个或者多个点，绘图命令定义如何去诠释这些点；每一个直线段或者曲线段结束的敌法就是下一个线段开始的地方</li>
-<li>每一个连接的直线或者曲线段的集合成为subpath；一个UIBezierPath对象定义一个完整的路径包括一个或者多个</li>
-</ul>
-<h2 id="基本的创建步骤">基本的创建步骤</h2><ul>
-<li>首先要明确创建和使用一个path对象的过程是分开的</li>
-<li>创建一个path对象<ul>
-<li>首先创建一个Bezier path对象</li>
-<li>使用方法moveToPoint:去设置初始线段的起点</li>
-<li>添加line或者是curve去定义一个或者对个subpaths</li>
-<li>改变UIBezierPath对象跟绘图相关的属性</li>
-</ul>
-</li>
-<li>创建path的时候，我们英爱管理path上面的点相对于原点(0,0)，这样之后就可以很容易的移动path</li>
-<li>要绘制出path对象，就需要用到stroke和fill方法来在current graphic context下渲染path的line以及curve段</li>
-</ul>
-<h2 id="绘制一个多边形">绘制一个多边形</h2><ul>
-<li>多边形由一些直线线条组成，可是使用<code>moveToPoint:</code>设置想要创建的形状的起点，从这点开始，可以使用方法<code>addLineToPoint:</code></li>
-<li>可以连续创建line，每一个line的起点都是先前的终点，终点就是指定的点</li>
-<li><code>closePath</code>方法不仅可以结束一个shape的subpath描述，它同时在最后一个点和第一个点之间画一条线段，如果画多边形的话，这是一个便利的方法，可以不用专门去画最后一条线</li>
-</ul>
-<h2 id="UIBezierPath贝塞尔曲线的常用绘图方法">UIBezierPath贝塞尔曲线的常用绘图方法</h2><ul>
-<li>矩形 <code>+ (UIBezierPath *)bezierPathWithRect:(CGRect)rect</code></li>
-<li>矩形内切椭圆 <code>+ (UIBezierPath *)bezierPathWithOvalInRect:(CGRect)rect</code><ul>
-<li>其中参数中rect的width表示横长轴，height表示短长轴</li>
-</ul>
-</li>
-<li>圆角矩形 <code>+ (UIBezierPath *)bezierPathWithRoundedRect:(CGRect)rect cornerRadius:(CGFloat)cornerRadius</code><ul>
-<li>这是创建一个可以控制四个角圆滑度的矩形，conerRadius指的是四个角的圆半径，超过最大值之后就不会变化了    </li>
-</ul>
-</li>
-<li>可设置的圆角矩形 <code>+ (UIBezierPath *)bezierPathWithRoundedRect:(CGRect)rect byRoundingCorners:(UIRectCorner)corners cornerRadii:(CGSize)cornerRadii</code><ul>
-<li>在矩形中，可以针对四角中的某个角加圆角，上下左右，或者是全部，cornerRadii是控制圆角的大小    </li>
-</ul>
-</li>
-<li><p>画圆 <code>+ (UIBezierPath *)bezierPathWithArcCenter:(CGPoint)center radius:(CGFloat)radius startAngle:(CGFloat)startAngle endAngle:(CGFloat)endAngle clockwise:(BOOL)clockwise</code>    </p>
-<ul>
-<li>//圆的中心点，圆的半径，开始与结束的弧度，这个可以参考来确定圆上控制点的坐标，最后一个是顺逆时针</li>
-<li><p>关于计算弧度开始与技术的位置，这里有一个小技巧转换成角度来进行控制</p>
-<pre><code><span class="preprocessor">#<span class="keyword">define</span> pi <span class="number">3.14159265359</span></span>
-<span class="preprocessor">#<span class="keyword">define</span>   DEGREES_TO_RADIANS(degrees)  ((pi * degrees)/ <span class="number">180</span>)</span>
-<span class="comment">//这样就可以直接使用DEGREES_TO_RADIANS来输入角度了，非常的方便，已经放到snippet当中了</span>
-</code></pre></li>
-</ul>
-</li>
-<li><p>画出相反的曲线 <code>- bezierPathByReversingPath</code></p>
-<ul>
-<li>创建相反路径贝塞尔曲线对象，顺时针变逆时针，逆时针编程顺时针，对外观没有影响，但是对填充颜色的规则有影响</li>
-</ul>
-</li>
-<li>自定义绘制线条组合<ul>
-<li>起点：<code>- (void)moveToPoint:(CGPoint)point</code></li>
-<li>直线：<code>- (void)addLineToPoint:(CGPoint)point</code></li>
-<li>曲线：<code>- (void)addCurveToPoint:(CGPoint)endPoint controlPoint1:(CGPoint)controlPoint1 controlPoint2:(CGPoint)controlPoint2</code>，曲线回朝控制点方向起伏</li>
-<li>二次曲线：<code>- (void)addQuadCurveToPoint:(CGPoint)endPoint controlPoint:(CGPoint)controlPoint</code><br><img src="https://dn-arthury.qbox.me/二次曲线.png" alt="效果图"></li>
-<li>三次曲线：<code>- (void)addCurveToPoint:(CGPoint)endPoint controlPoint1:(CGPoint)controlPoint1 controlPoint2:(CGPoint)controlPoin
-t2</code><br><img src="https://dn-arthury.qbox.me/一次曲线.png" alt="效果图"></li>
-</ul>
-</li>
-</ul>
-<h2 id="贝塞尔曲线的属性">贝塞尔曲线的属性</h2><ul>
-<li>注意，这些属性在使用CAShapeLayer时，只会遵循CAShapeLayer的设置    </li>
-<li>设置线条型号，<code>- (void)setLineDash:(const CGFloat *)pattern count:(NSInteger)count phase:(CGFloat)phase</code><ul>
-<li>pattern：C类型的线型数据</li>
-<li>count：pattern中的数据个数</li>
-<li>phase：开始画线型的起始位置</li>
-</ul>
-</li>
-<li>另外CAShapeLayer要和UIBezierPath结合在一起才有意义，单独使用意义不大</li>
-</ul>
-<h2 id="几个问题">几个问题</h2><ul>
-<li>使用UIBezierPath绘制的曲线如何添加到当前的View当中？<ul>
-<li>有两种方法：<ul>
-<li>方法一：新建一个UIView，覆盖视图控制器自带的View，然后在新建的View当中进行添加便可</li>
-<li>方法二：绘制完成之后使用CAShapeLayer进行封装，就可以直接通过<code>addSublayer</code>的方法添加到当前的View当中</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>可以给贝塞尔曲线添加动画效果吗？<ul>
-<li>动画效果一种是给UIView添加，一种是给CALayer对象添加，并没有听过贝塞尔曲线添加        </li>
-</ul>
-</li>
-<li>类似于QuartzCore这样的工具什么时候去用比较合适？</li>
-</ul>
-<h2 id="贝塞尔曲线的弧度相关问题">贝塞尔曲线的弧度相关问题</h2><ul>
-<li>如何使用贝塞尔曲线画出弧线拼出一个圆？<ul>
-<li>选择可以用三次贝塞尔曲线，也可以使用二次贝塞尔曲线</li>
-<li>使用三次贝塞尔曲线的方案：通过四条三次贝塞尔曲线来实现，每条贝塞尔曲线上面有两个控制点来控制曲线的弧度<ul>
-<li>那么问题来了，如何通过两个控制点来控制曲线的弧度</li>
-<li>可以把圆放到一个正方形中去控制，通过然后让每条互相上的连个点关于对角线镜像对称，然后不断调整，直到出现完美的弧线为止</li>
-<li>调整的参数最好选择与边长或者对角线这样的数据关联起来，而不要通过猜测具体的数据来关联，否则兼容性就太差了，只会支持特定半径的圆，而无法兼容所有尺寸的圆，一般可以采用<code>CGFloat offset = self.bounds.width/xxx</code>的形式来测试调整参数，xxx指的是具体的数字</li>
-<li>BTW，经过测试发现三次贝塞尔曲线画圆弧的最佳的xxx是3.6</li>
-</ul>
-</li>
-<li>使用二次贝塞尔曲线的方案：基本方法同上，但是找不到最合适的xxx，所以使用二次贝塞尔曲线去画圆弧不是一个好的方案</li>
-</ul>
-</li>
-<li>对贝塞尔曲线的误解<ul>
-<li>我一直以为贝塞尔曲线画的弧线是会经过控制点的，然而实际上控制点一般是不会经过所画的圆弧的，一个特例是画直线的时候，其他时候都不会经过弧线</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/07/24/UIViewAnimation04/" data-id="cidbz0xkp002214gzegh718b1" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Pyspider01" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/07/24/Pyspider01/" class="article-date">
-  <time datetime="2015-07-24T07:54:07.000Z" itemprop="datePublished">2015-07-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/24/Pyspider01/">Pyspider01</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="安装运行">安装运行</h2><ul>
-<li><code>sudo pip install pyspider</code></li>
-<li><code>pyspider</code></li>
-<li>浏览器对应的接口便可</li>
-</ul>
-<h2 id="文件的模板">文件的模板</h2><pre><code><span class="keyword">from</span> pyspider.libs.base_handler <span class="keyword">import</span> *
-    <span class="comment">##Handler(BaseHandler)是脚本的主体，每个必须继承自BaseHandler</span>
-    <span class="class"><span class="keyword">class</span> <span class="title">Handler</span><span class="params">(BaseHandler)</span>:</span>
-        crawl_config = {
-        }
-
-<span class="decorator">        @every(minutes=24 * 60)</span>
-        <span class="comment">##脚本执行的入口，类似与main函数；@every表示任务是定时执行的，后面是时间的间隔</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">on_start</span><span class="params">(self)</span>:</span>
-            <span class="comment">## self.crawl用于控制链条抓取；callback=self.index_page指定用哪个函数来解析抓取到的页面，callback是抓取到页面的回调函数</span>
-            self.crawl(<span class="string">'http://scrapy.org'</span>, callback=self.index_page)
-
-<span class="decorator">        @config(age=10 * 24 * 60 * 60)</span>
-        <span class="comment">##页面的内容可以在response对象中获得</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">index_page</span><span class="params">(self, response)</span>:</span>
-            <span class="keyword">for</span> each <span class="keyword">in</span> response.doc(<span class="string">'a[href^="http"]'</span>).items():
-                self.craw(each.attr.href, callback=self.detail_page)
-
-        <span class="comment">##return的内容会被写入到resultdb里面，可以通过重载on_result(self, result) 函数可以修改这个行为</span>
-<span class="decorator">        @config(priority=2)</span>
-        <span class="function"><span class="keyword">def</span> <span class="title">detail_page</span><span class="params">(self, response)</span>:</span>
-            <span class="keyword">return</span> {
-                <span class="string">"url"</span>:response.url,
-                <span class="string">"title"</span>:response.doc(<span class="string">'title'</span>).text(),
-            }
-</code></pre><h2 id="基本概念解释">基本概念解释</h2><ul>
-<li>project<ul>
-<li>脚本分为不同的project，不同project之间的任务互相独立，可以为不同的站点建立不同的project<br><img src="https://dn-arthury.qbox.me/爬虫.png" alt="效果图"></li>
-<li>属性<ul>
-<li>group：分组标识</li>
-<li>name：脚本的名字</li>
-<li>status：任务状态，只有处于debug与running的状态任务才会被执行<ul>
-<li>todo：新建脚本所处的状态</li>
-<li>stop：停止</li>
-<li>checking：当任务在debug与running状态被修改时，会自动编程checking</li>
-<li>debug：任务可以开始执行，handler的<code>__env__[&#39;debug&#39;] == True</code></li>
-<li>running：任务正常执行的状态</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>rate：每秒抓取页面个数</li>
-<li>burst：并发数</li>
-</ul>
-</li>
-<li>task<ul>
-<li>任务是spider调度的最小单位</li>
-<li>taskid是任务的唯一区别标识，默认使用url的md5作为taskid</li>
-<li>不同project间任务互相独立(不同project间taskid可以相同)</li>
-<li>任务状态<ul>
-<li>active(1)：活动状态，标识任务在队列中等待被抓取(包括在队列中、抓取中、执行时间未到、重试中)</li>
-<li>success(2)：抓取成功</li>
-<li>failed(3)：经过重试后抓取失败</li>
-<li>bad(4)：损坏</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>任务调度<ul>
-<li>只有处于active状态的任务才会得到调度，schedulr对于每个project有连个队列<ul>
-<li>时间队列：当任务尚未到大执行时间，时间拉长重试也在这个队列中</li>
-<li>优先队列：任务一斤到达执行时间，任务会根据优先级priority，在有流量配额情况下，依次发起调度</li>
-<li>也就是任务都是先在时间队列里面等待着被调度，时间到了之后就会进入优先队列，然后根据优先级依次开始调度</li>
-</ul>
-</li>
-<li>scheduler会等待每一个调度任务返回(不会先去执行其他的任务？)，当执行失败时，会根据retries参数，拉长一定时间发起重试；当超时结果未返回时，会无限次的重新发起调度</li>
-</ul>
-</li>
-<li>新旧任务请求<ul>
-<li>当产生一个任务库中没有的任务请求时，会根据参数exetime中设定的执行时间决定是放入时间队列还是优先队列    </li>
-<li>当新请求已经在队列中，也就是状态为active的时候，会忽略新的请求，即时它们的细节参数不一致(只要判断为是用一个请求)</li>
-<li>当然也可以使用force_update参数强制更新处于active状态的任务</li>
-<li>当任务状态是success或failed的时候，参数age会检测上次抓取时间是否大于当前的时间，若大于，则会重启任务。</li>
-<li>可以设置itag参数，当本次请求的itag与上次不同时，会重启任务</li>
-</ul>
-</li>
-</ul>
-<h2 id="script">script</h2><ul>
-<li>pyspider的脚本都是python环境的，没有做任何隔离，可以调用host机器环境中的任何lib和资源；如果担心安全问题，请使用linux的用户隔离机制隔离processor</li>
-</ul>
-<h2 id="执行环境">执行环境</h2><ul>
-<li>环境变量<ul>
-<li><code>__project__ == self.project</code>当前任务信息</li>
-<li><code>self.project_name</code>当前脚本名</li>
-<li><code>self.response</code>当前请求的response</li>
-<li><code>self.task</code>当前请求的原始task信息</li>
-<li><code>logging</code>，logger和print的信息会被采集，使用logger打印日志(默认情况下logger一斤import到环境中)</li>
-<li>可以通过projects伪模块将其他project导入成module，然后进行引用，例如<code>from projects import some_project</code></li>
-</ul>
-</li>
-</ul>
-<h2 id="脚本约束">脚本约束</h2><ul>
-<li>接口从<code>from libs.base_handler import *</code>中导入</li>
-<li>脚本必须有至少一个继承自<code>BaseHandler</code>的类</li>
-<li>例外：当环境中有多个继承自<code>BaseHandler</code>(比如二次派生时)，请指定<em>class</em> = Handler</li>
-<li>每个task由参数callback指定的成员函数解析(默认的callback是<em>call</em>)</li>
-<li>完整的callback函数原型是：def foo(self, response, task)你可以忽略不需要的参数，但是所需要保持一致，比如foo(self,res)<ul>
-<li>response是一个抓取结果的对象</li>
-<li>task是原始的请求json，和你在调试器左侧绿色区域看到的结果一致</li>
-</ul>
-</li>
-<li>默认status_code不为200的请求不会发给回调函数解析，请用<code>catch_status_code_error</code>修饰回调函数，以捕获抓取异常。</li>
-<li>on_start是脚本执行的入口，当你在主页上点击run时，会触发on_start执行</li>
-<li>函数的返回内容会被<code>on_result(self,result)</code>函数捕获，你可以在这里将其输出到数据库中</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/07/24/Pyspider01/" data-id="cidbz0xlm003214gz4md2hlgs" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Crawler/">Crawler</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Linux命令备忘录" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/07/24/Linux命令备忘录/" class="article-date">
-  <time datetime="2015-07-24T07:44:12.000Z" itemprop="datePublished">2015-07-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/24/Linux命令备忘录/">Linux命令备忘录</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="操作进程的命令">操作进程的命令</h2><ul>
-<li><code>control + z</code>：挂起进程</li>
-<li><code>control + c</code>：结束进程</li>
-<li><code>fg + 进程名</code>：恢复挂起进程</li>
-<li><code>kill + 进程名</code>：杀死对应的进程</li>
-<li><code>jobs</code>：输出当前挂起的进程<br><img src="https://dn-arthury.qbox.me/进程.png" alt="进程名"></li>
-<li>末尾的pyspider就是进程名，可以通过这个进程进程名来操作对应的进程</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/07/24/Linux命令备忘录/" data-id="cidbz0xm9003v14gzcbpo1tpd" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Crawler01" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/07/24/Crawler01/" class="article-date">
-  <time datetime="2015-07-24T05:33:26.000Z" itemprop="datePublished">2015-07-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/24/Crawler01/">Crawler01</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="现在主流爬虫的技术层级分析">现在主流爬虫的技术层级分析</h2><ul>
-<li>Nutch<ul>
-<li>开源的Java的实时搜索引擎，提供运行自己搜索引擎所需要的全部工具，主要用于抓取网络上的数据</li>
-</ul>
-</li>
-<li>Hadoop<ul>
-<li>用于大规模的数据分析处理，底层的数据抓取采用的是Nutch，抓取到数据之后可以考虑采用这个来进行分析</li>
-</ul>
-</li>
-<li>Tika<ul>
-<li>使用多种开源内容解析项目来实现从多种格子的文件中提取元数据和结构化文本，底层的数据抓取采用的是Nutch，可以解析的文件多种多样，包括zip、pdf、html等等，支持非常多的文件</li>
-</ul>
-</li>
-<li>Gora<ul>
-<li>支持把大数据持久化到多种存储实现，底层的数据抓取采用的是Nutch</li>
-</ul>
-</li>
-<li>Crawler Commons<ul>
-<li>爬虫组件？    </li>
-</ul>
-</li>
-<li>Arachnid<ul>
-<li>微型爬虫框架，含有一个小型HTML解析器</li>
-</ul>
-</li>
-<li>crawlzilla<ul>
-<li>拥有中文分词功能    </li>
-</ul>
-</li>
-<li>Ex-Crawler<ul>
-<li>由守护进程执行，使用数据库存储网页信息</li>
-</ul>
-</li>
-<li>Heritrix<ul>
-<li>严格遵照robots文件的排除指示和META robots标签</li>
-</ul>
-</li>
-<li>heyDr<ul>
-<li>轻量级开源多线程垂直检索爬虫框架</li>
-</ul>
-</li>
-<li>ItSucks<ul>
-<li>提供swing GUI操作界面</li>
-</ul>
-</li>
-<li>jcrawl<ul>
-<li>轻量、性能优良，可以从网页抓取各种类型的文件</li>
-</ul>
-</li>
-<li>JSpider<ul>
-<li>功能强大，容易扩展</li>
-</ul>
-</li>
-<li>Leopdo<ul>
-<li>包括全文和分类垂直搜索，以及分词系统</li>
-</ul>
-</li>
-<li>MetaSeeker<ul>
-<li>网页抓取、信息提取、数据抽取工具包，操作简单</li>
-</ul>
-</li>
-<li>Playfish<ul>
-<li>通过XML配置文件实现高度可定制性与可扩展性</li>
-</ul>
-</li>
-<li>Spiderman<ul>
-<li>灵活、扩展性强，微内核+插件式架构，通过简单的配置就可以完成数据抓取，无需编写一句代码</li>
-</ul>
-</li>
-<li>webmagic<ul>
-<li>功能覆盖整个爬虫生命周期，使用Xpath和正则表达式进行链接和内容的提取</li>
-</ul>
-</li>
-<li>Web-Harvest<ul>
-<li>运用XSLT、XQuery、正则表达式等技术来实现对Text或XML的操作，具有可视化的界面</li>
-</ul>
-</li>
-<li>WebSPHINX<ul>
-<li>由两部分组成：爬虫工作平台和WebSPHINX类包</li>
-</ul>
-</li>
-<li>YaCy<ul>
-<li>基于P2P的分布式Web搜索引擎</li>
-</ul>
-</li>
-<li>QuickRecon<ul>
-<li>具有查找子域名名称、收集电子邮件地址并寻找人际关系等功能 </li>
-</ul>
-</li>
-<li>PyRailgun<ul>
-<li>简洁、轻量、高效的网页抓取框架</li>
-</ul>
-</li>
-<li>Scrapy<ul>
-<li>基于Twisted的异步处理框架，文档齐全</li>
-</ul>
-</li>
-<li>hispider<ul>
-<li>支持多机分布式下载, 支持网站定向下载</li>
-</ul>
-</li>
-<li>larbin<ul>
-<li>高性能的爬虫软件，只负责抓取不负责解析</li>
-</ul>
-</li>
-<li>Methabot<ul>
-<li>经过速度优化、可抓取WEB、FTP及本地文件系统</li>
-</ul>
-</li>
-<li>Methanol<ul>
-<li>模块化、可定制的网页爬虫，速度快</li>
-</ul>
-</li>
-<li>NWebCrawler<ul>
-<li>统计信息、执行过程可视化</li>
-</ul>
-</li>
-<li>Sinawler<ul>
-<li>国内第一个针对微博数据的爬虫程序，功能强大</li>
-</ul>
-</li>
-<li>spidernet<ul>
-<li>以递归树为模型的多线程web爬虫程序，支持以GBK (gb2312)和utf8编码的资源，使用sqlite存储数据</li>
-</ul>
-</li>
-<li>Web Crawler<ul>
-<li>多线程，支持抓取PDF/DOC/EXCEL等文档来源</li>
-</ul>
-</li>
-<li>网络矿工<ul>
-<li>功能丰富，毫不逊色于商业软件</li>
-</ul>
-</li>
-<li>OpenWebSpider<ul>
-<li>开源多线程网络爬虫，有许多有趣的功能</li>
-</ul>
-</li>
-<li>PhpDig <ul>
-<li>适用于专业化强、层次更深的个性化搜索引擎</li>
-</ul>
-</li>
-<li>Snoopy<ul>
-<li>具有采集网页内容、提交表单功能</li>
-</ul>
-</li>
-<li>ThinkUp<ul>
-<li>采集推特、脸谱等社交网络数据的社会媒体视角引擎，可进行交互分析并将结果以可视化形式展现</li>
-</ul>
-</li>
-<li>微购<ul>
-<li>可采集淘宝、京东、当当等300多家电子商务数据</li>
-</ul>
-</li>
-<li>Ebot<ul>
-<li>可伸缩的分布式网页爬虫</li>
-</ul>
-</li>
-<li>Spidr<ul>
-<li>可将一个或多个网站、某个链接完全抓取到本地</li>
-</ul>
-</li>
-<li>Neocrawler</li>
-</ul>
-<h2 id="最后的选择">最后的选择</h2><ul>
-<li>Pyspider<ul>
-<li>文档齐全，入门资料丰富，关注度高，作为入门的框架非常合适</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/07/24/Crawler01/" data-id="cidbz0xmo004914gzlj77p8m8" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Crawler/">Crawler</a></li></ul>
 
     </footer>
   </div>
@@ -1006,7 +1028,7 @@ t2</code><br><img src="https://dn-arthury.qbox.me/一次曲线.png" alt="效果�
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/4/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/6/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/4/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/6/">Next &raquo;</a>
     </nav>
   
 </section>
@@ -1019,7 +1041,7 @@ t2</code><br><img src="https://dn-arthury.qbox.me/一次曲线.png" alt="效果�
   <div class="widget-wrap">
     <h3 class="widget-title">標簽</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunLoop/">RunLoop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Security/">Security</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS多线程/">iOS多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunLoop/">RunLoop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Security/">Security</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS多线程/">iOS多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/keychain/">keychain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/warning/">warning</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解读/">源码解读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -1028,7 +1050,7 @@ t2</code><br><img src="https://dn-arthury.qbox.me/一次曲线.png" alt="效果�
   <div class="widget-wrap">
     <h3 class="widget-title">標簽雲</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 13.33px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 10px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/Security/" style="font-size: 10px;">Security</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/iOS多线程/" style="font-size: 10px;">iOS多线程</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 10px;">tips</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
+      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 13.33px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 10px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/Security/" style="font-size: 13.33px;">Security</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/iOS多线程/" style="font-size: 10px;">iOS多线程</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 13.33px;">tips</a> <a href="/tags/warning/" style="font-size: 10px;">warning</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/源码解读/" style="font-size: 10px;">源码解读</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
     </div>
   </div>
 
@@ -1037,7 +1059,7 @@ t2</code><br><img src="https://dn-arthury.qbox.me/一次曲线.png" alt="效果�
   <div class="widget-wrap">
     <h3 class="widget-title">歸檔</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">35</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">40</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
     </div>
   </div>
 
@@ -1049,23 +1071,23 @@ t2</code><br><img src="https://dn-arthury.qbox.me/一次曲线.png" alt="效果�
       <ul>
         
           <li>
-            <a href="/2015/08/15/iOS的安全相关01/">iOS的安全相关01</a>
+            <a href="/2015/08/15/烦人的警告-Warning/">烦人的警告(Warning)</a>
           </li>
         
           <li>
-            <a href="/2015/08/14/Mac使用小技巧/">Mac使用小技巧</a>
+            <a href="/2015/08/15/解读爱卡源码有感01/">解读爱卡源码有感01</a>
           </li>
         
           <li>
-            <a href="/2015/08/13/iOS-RunLoop/">iOS RunLoop</a>
+            <a href="/2015/08/15/DLog的使用/">DLog的使用</a>
           </li>
         
           <li>
-            <a href="/2015/08/13/iOS多线程编程01/">iOS多线程编程01</a>
+            <a href="/2015/08/15/CocoaSecurity/">CocoaSecurity</a>
           </li>
         
           <li>
-            <a href="/2015/08/12/iOS网络编程01/">iOS网络编程01</a>
+            <a href="/2015/08/15/sskeychain01/">sskeychain01</a>
           </li>
         
       </ul>

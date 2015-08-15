@@ -68,6 +68,618 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-Swift小问题汇总" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/07/25/Swift小问题汇总/" class="article-date">
+  <time datetime="2015-07-25T05:06:04.000Z" itemprop="datePublished">2015-07-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/07/25/Swift小问题汇总/">Swift小问题汇总</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="‘Double’_is_not_convertible_to_‘CGFloat’">‘Double’ is not convertible to ‘CGFloat’</h2><ul>
+<li><p>swift不能进行隐式类型转换，必须要显式转换才可以</p>
+<pre><code><span class="built_in">let</span> number = CGFloat<span class="params">(M_<span class="literal">PI</span>)</span>
+</code></pre></li>
+<li><p>注意显式转化的语法，要转换的数据放在里面</p>
+</li>
+</ul>
+<h2 id="关于全局的异常断点">关于全局的异常断点</h2><ul>
+<li>不要一开始的时候就加上去，等到出现异常再加，但是要注意，加了异常断点之后如果bug出现的方式与没加之前出现的方式不一样，就要注意这个bug可能是因为加入了异常断点之后引入的，这个时候就不能再靠这个异常断点了，要去掉之后再来分析</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/07/25/Swift小问题汇总/" data-id="cidd4nd48002szjgzfvv91x6n" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-UIViewAnimation04" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/07/24/UIViewAnimation04/" class="article-date">
+  <time datetime="2015-07-24T15:59:03.000Z" itemprop="datePublished">2015-07-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/07/24/UIViewAnimation04/">UIViewAnimation04</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="UIBezierPath介绍">UIBezierPath介绍</h2><ul>
+<li>此类是Core Graphics框架关于path的一个封装。使用此类可以定义简单的形状，如椭圆或者矩形，或者有多个直线和曲线段组成的形状；至于其他更加自定义的方法，可以考虑使用CGContextRef相关的更加底层的api来进行绘制，关于这一块可以去看一下Quartz2D框架</li>
+<li>UIBezierPath对象是CGPathRef数据类型的封装。path可以由直线和曲线段去创建。我们使用直线段去创建矩形和多边形，使用曲线段去创建弧，圆或者其他更复杂的曲线形状</li>
+<li>每一个线段都包含有一个或者多个点，绘图命令定义如何去诠释这些点；每一个直线段或者曲线段结束的敌法就是下一个线段开始的地方</li>
+<li>每一个连接的直线或者曲线段的集合成为subpath；一个UIBezierPath对象定义一个完整的路径包括一个或者多个</li>
+</ul>
+<h2 id="基本的创建步骤">基本的创建步骤</h2><ul>
+<li>首先要明确创建和使用一个path对象的过程是分开的</li>
+<li>创建一个path对象<ul>
+<li>首先创建一个Bezier path对象</li>
+<li>使用方法moveToPoint:去设置初始线段的起点</li>
+<li>添加line或者是curve去定义一个或者对个subpaths</li>
+<li>改变UIBezierPath对象跟绘图相关的属性</li>
+</ul>
+</li>
+<li>创建path的时候，我们英爱管理path上面的点相对于原点(0,0)，这样之后就可以很容易的移动path</li>
+<li>要绘制出path对象，就需要用到stroke和fill方法来在current graphic context下渲染path的line以及curve段</li>
+</ul>
+<h2 id="绘制一个多边形">绘制一个多边形</h2><ul>
+<li>多边形由一些直线线条组成，可是使用<code>moveToPoint:</code>设置想要创建的形状的起点，从这点开始，可以使用方法<code>addLineToPoint:</code></li>
+<li>可以连续创建line，每一个line的起点都是先前的终点，终点就是指定的点</li>
+<li><code>closePath</code>方法不仅可以结束一个shape的subpath描述，它同时在最后一个点和第一个点之间画一条线段，如果画多边形的话，这是一个便利的方法，可以不用专门去画最后一条线</li>
+</ul>
+<h2 id="UIBezierPath贝塞尔曲线的常用绘图方法">UIBezierPath贝塞尔曲线的常用绘图方法</h2><ul>
+<li>矩形 <code>+ (UIBezierPath *)bezierPathWithRect:(CGRect)rect</code></li>
+<li>矩形内切椭圆 <code>+ (UIBezierPath *)bezierPathWithOvalInRect:(CGRect)rect</code><ul>
+<li>其中参数中rect的width表示横长轴，height表示短长轴</li>
+</ul>
+</li>
+<li>圆角矩形 <code>+ (UIBezierPath *)bezierPathWithRoundedRect:(CGRect)rect cornerRadius:(CGFloat)cornerRadius</code><ul>
+<li>这是创建一个可以控制四个角圆滑度的矩形，conerRadius指的是四个角的圆半径，超过最大值之后就不会变化了    </li>
+</ul>
+</li>
+<li>可设置的圆角矩形 <code>+ (UIBezierPath *)bezierPathWithRoundedRect:(CGRect)rect byRoundingCorners:(UIRectCorner)corners cornerRadii:(CGSize)cornerRadii</code><ul>
+<li>在矩形中，可以针对四角中的某个角加圆角，上下左右，或者是全部，cornerRadii是控制圆角的大小    </li>
+</ul>
+</li>
+<li><p>画圆 <code>+ (UIBezierPath *)bezierPathWithArcCenter:(CGPoint)center radius:(CGFloat)radius startAngle:(CGFloat)startAngle endAngle:(CGFloat)endAngle clockwise:(BOOL)clockwise</code>    </p>
+<ul>
+<li>//圆的中心点，圆的半径，开始与结束的弧度，这个可以参考来确定圆上控制点的坐标，最后一个是顺逆时针</li>
+<li><p>关于计算弧度开始与技术的位置，这里有一个小技巧转换成角度来进行控制</p>
+<pre><code><span class="preprocessor">#<span class="keyword">define</span> pi <span class="number">3.14159265359</span></span>
+<span class="preprocessor">#<span class="keyword">define</span>   DEGREES_TO_RADIANS(degrees)  ((pi * degrees)/ <span class="number">180</span>)</span>
+<span class="comment">//这样就可以直接使用DEGREES_TO_RADIANS来输入角度了，非常的方便，已经放到snippet当中了</span>
+</code></pre></li>
+</ul>
+</li>
+<li><p>画出相反的曲线 <code>- bezierPathByReversingPath</code></p>
+<ul>
+<li>创建相反路径贝塞尔曲线对象，顺时针变逆时针，逆时针编程顺时针，对外观没有影响，但是对填充颜色的规则有影响</li>
+</ul>
+</li>
+<li>自定义绘制线条组合<ul>
+<li>起点：<code>- (void)moveToPoint:(CGPoint)point</code></li>
+<li>直线：<code>- (void)addLineToPoint:(CGPoint)point</code></li>
+<li>曲线：<code>- (void)addCurveToPoint:(CGPoint)endPoint controlPoint1:(CGPoint)controlPoint1 controlPoint2:(CGPoint)controlPoint2</code>，曲线回朝控制点方向起伏</li>
+<li>二次曲线：<code>- (void)addQuadCurveToPoint:(CGPoint)endPoint controlPoint:(CGPoint)controlPoint</code><br><img src="https://dn-arthury.qbox.me/二次曲线.png" alt="效果图"></li>
+<li>三次曲线：<code>- (void)addCurveToPoint:(CGPoint)endPoint controlPoint1:(CGPoint)controlPoint1 controlPoint2:(CGPoint)controlPoin
+t2</code><br><img src="https://dn-arthury.qbox.me/一次曲线.png" alt="效果图"></li>
+</ul>
+</li>
+</ul>
+<h2 id="贝塞尔曲线的属性">贝塞尔曲线的属性</h2><ul>
+<li>注意，这些属性在使用CAShapeLayer时，只会遵循CAShapeLayer的设置    </li>
+<li>设置线条型号，<code>- (void)setLineDash:(const CGFloat *)pattern count:(NSInteger)count phase:(CGFloat)phase</code><ul>
+<li>pattern：C类型的线型数据</li>
+<li>count：pattern中的数据个数</li>
+<li>phase：开始画线型的起始位置</li>
+</ul>
+</li>
+<li>另外CAShapeLayer要和UIBezierPath结合在一起才有意义，单独使用意义不大</li>
+</ul>
+<h2 id="几个问题">几个问题</h2><ul>
+<li>使用UIBezierPath绘制的曲线如何添加到当前的View当中？<ul>
+<li>有两种方法：<ul>
+<li>方法一：新建一个UIView，覆盖视图控制器自带的View，然后在新建的View当中进行添加便可</li>
+<li>方法二：绘制完成之后使用CAShapeLayer进行封装，就可以直接通过<code>addSublayer</code>的方法添加到当前的View当中</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>可以给贝塞尔曲线添加动画效果吗？<ul>
+<li>动画效果一种是给UIView添加，一种是给CALayer对象添加，并没有听过贝塞尔曲线添加        </li>
+</ul>
+</li>
+<li>类似于QuartzCore这样的工具什么时候去用比较合适？</li>
+</ul>
+<h2 id="贝塞尔曲线的弧度相关问题">贝塞尔曲线的弧度相关问题</h2><ul>
+<li>如何使用贝塞尔曲线画出弧线拼出一个圆？<ul>
+<li>选择可以用三次贝塞尔曲线，也可以使用二次贝塞尔曲线</li>
+<li>使用三次贝塞尔曲线的方案：通过四条三次贝塞尔曲线来实现，每条贝塞尔曲线上面有两个控制点来控制曲线的弧度<ul>
+<li>那么问题来了，如何通过两个控制点来控制曲线的弧度</li>
+<li>可以把圆放到一个正方形中去控制，通过然后让每条互相上的连个点关于对角线镜像对称，然后不断调整，直到出现完美的弧线为止</li>
+<li>调整的参数最好选择与边长或者对角线这样的数据关联起来，而不要通过猜测具体的数据来关联，否则兼容性就太差了，只会支持特定半径的圆，而无法兼容所有尺寸的圆，一般可以采用<code>CGFloat offset = self.bounds.width/xxx</code>的形式来测试调整参数，xxx指的是具体的数字</li>
+<li>BTW，经过测试发现三次贝塞尔曲线画圆弧的最佳的xxx是3.6</li>
+</ul>
+</li>
+<li>使用二次贝塞尔曲线的方案：基本方法同上，但是找不到最合适的xxx，所以使用二次贝塞尔曲线去画圆弧不是一个好的方案</li>
+</ul>
+</li>
+<li>对贝塞尔曲线的误解<ul>
+<li>我一直以为贝塞尔曲线画的弧线是会经过控制点的，然而实际上控制点一般是不会经过所画的圆弧的，一个特例是画直线的时候，其他时候都不会经过弧线</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/07/24/UIViewAnimation04/" data-id="cidd4nd3i002bzjgzvj76vtvb" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Pyspider01" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/07/24/Pyspider01/" class="article-date">
+  <time datetime="2015-07-24T07:54:07.000Z" itemprop="datePublished">2015-07-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/07/24/Pyspider01/">Pyspider01</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="安装运行">安装运行</h2><ul>
+<li><code>sudo pip install pyspider</code></li>
+<li><code>pyspider</code></li>
+<li>浏览器对应的接口便可</li>
+</ul>
+<h2 id="文件的模板">文件的模板</h2><pre><code><span class="keyword">from</span> pyspider.libs.base_handler <span class="keyword">import</span> *
+    <span class="comment">##Handler(BaseHandler)是脚本的主体，每个必须继承自BaseHandler</span>
+    <span class="class"><span class="keyword">class</span> <span class="title">Handler</span><span class="params">(BaseHandler)</span>:</span>
+        crawl_config = {
+        }
+
+<span class="decorator">        @every(minutes=24 * 60)</span>
+        <span class="comment">##脚本执行的入口，类似与main函数；@every表示任务是定时执行的，后面是时间的间隔</span>
+        <span class="function"><span class="keyword">def</span> <span class="title">on_start</span><span class="params">(self)</span>:</span>
+            <span class="comment">## self.crawl用于控制链条抓取；callback=self.index_page指定用哪个函数来解析抓取到的页面，callback是抓取到页面的回调函数</span>
+            self.crawl(<span class="string">'http://scrapy.org'</span>, callback=self.index_page)
+
+<span class="decorator">        @config(age=10 * 24 * 60 * 60)</span>
+        <span class="comment">##页面的内容可以在response对象中获得</span>
+        <span class="function"><span class="keyword">def</span> <span class="title">index_page</span><span class="params">(self, response)</span>:</span>
+            <span class="keyword">for</span> each <span class="keyword">in</span> response.doc(<span class="string">'a[href^="http"]'</span>).items():
+                self.craw(each.attr.href, callback=self.detail_page)
+
+        <span class="comment">##return的内容会被写入到resultdb里面，可以通过重载on_result(self, result) 函数可以修改这个行为</span>
+<span class="decorator">        @config(priority=2)</span>
+        <span class="function"><span class="keyword">def</span> <span class="title">detail_page</span><span class="params">(self, response)</span>:</span>
+            <span class="keyword">return</span> {
+                <span class="string">"url"</span>:response.url,
+                <span class="string">"title"</span>:response.doc(<span class="string">'title'</span>).text(),
+            }
+</code></pre><h2 id="基本概念解释">基本概念解释</h2><ul>
+<li>project<ul>
+<li>脚本分为不同的project，不同project之间的任务互相独立，可以为不同的站点建立不同的project<br><img src="https://dn-arthury.qbox.me/爬虫.png" alt="效果图"></li>
+<li>属性<ul>
+<li>group：分组标识</li>
+<li>name：脚本的名字</li>
+<li>status：任务状态，只有处于debug与running的状态任务才会被执行<ul>
+<li>todo：新建脚本所处的状态</li>
+<li>stop：停止</li>
+<li>checking：当任务在debug与running状态被修改时，会自动编程checking</li>
+<li>debug：任务可以开始执行，handler的<code>__env__[&#39;debug&#39;] == True</code></li>
+<li>running：任务正常执行的状态</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>rate：每秒抓取页面个数</li>
+<li>burst：并发数</li>
+</ul>
+</li>
+<li>task<ul>
+<li>任务是spider调度的最小单位</li>
+<li>taskid是任务的唯一区别标识，默认使用url的md5作为taskid</li>
+<li>不同project间任务互相独立(不同project间taskid可以相同)</li>
+<li>任务状态<ul>
+<li>active(1)：活动状态，标识任务在队列中等待被抓取(包括在队列中、抓取中、执行时间未到、重试中)</li>
+<li>success(2)：抓取成功</li>
+<li>failed(3)：经过重试后抓取失败</li>
+<li>bad(4)：损坏</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>任务调度<ul>
+<li>只有处于active状态的任务才会得到调度，schedulr对于每个project有连个队列<ul>
+<li>时间队列：当任务尚未到大执行时间，时间拉长重试也在这个队列中</li>
+<li>优先队列：任务一斤到达执行时间，任务会根据优先级priority，在有流量配额情况下，依次发起调度</li>
+<li>也就是任务都是先在时间队列里面等待着被调度，时间到了之后就会进入优先队列，然后根据优先级依次开始调度</li>
+</ul>
+</li>
+<li>scheduler会等待每一个调度任务返回(不会先去执行其他的任务？)，当执行失败时，会根据retries参数，拉长一定时间发起重试；当超时结果未返回时，会无限次的重新发起调度</li>
+</ul>
+</li>
+<li>新旧任务请求<ul>
+<li>当产生一个任务库中没有的任务请求时，会根据参数exetime中设定的执行时间决定是放入时间队列还是优先队列    </li>
+<li>当新请求已经在队列中，也就是状态为active的时候，会忽略新的请求，即时它们的细节参数不一致(只要判断为是用一个请求)</li>
+<li>当然也可以使用force_update参数强制更新处于active状态的任务</li>
+<li>当任务状态是success或failed的时候，参数age会检测上次抓取时间是否大于当前的时间，若大于，则会重启任务。</li>
+<li>可以设置itag参数，当本次请求的itag与上次不同时，会重启任务</li>
+</ul>
+</li>
+</ul>
+<h2 id="script">script</h2><ul>
+<li>pyspider的脚本都是python环境的，没有做任何隔离，可以调用host机器环境中的任何lib和资源；如果担心安全问题，请使用linux的用户隔离机制隔离processor</li>
+</ul>
+<h2 id="执行环境">执行环境</h2><ul>
+<li>环境变量<ul>
+<li><code>__project__ == self.project</code>当前任务信息</li>
+<li><code>self.project_name</code>当前脚本名</li>
+<li><code>self.response</code>当前请求的response</li>
+<li><code>self.task</code>当前请求的原始task信息</li>
+<li><code>logging</code>，logger和print的信息会被采集，使用logger打印日志(默认情况下logger一斤import到环境中)</li>
+<li>可以通过projects伪模块将其他project导入成module，然后进行引用，例如<code>from projects import some_project</code></li>
+</ul>
+</li>
+</ul>
+<h2 id="脚本约束">脚本约束</h2><ul>
+<li>接口从<code>from libs.base_handler import *</code>中导入</li>
+<li>脚本必须有至少一个继承自<code>BaseHandler</code>的类</li>
+<li>例外：当环境中有多个继承自<code>BaseHandler</code>(比如二次派生时)，请指定<em>class</em> = Handler</li>
+<li>每个task由参数callback指定的成员函数解析(默认的callback是<em>call</em>)</li>
+<li>完整的callback函数原型是：def foo(self, response, task)你可以忽略不需要的参数，但是所需要保持一致，比如foo(self,res)<ul>
+<li>response是一个抓取结果的对象</li>
+<li>task是原始的请求json，和你在调试器左侧绿色区域看到的结果一致</li>
+</ul>
+</li>
+<li>默认status_code不为200的请求不会发给回调函数解析，请用<code>catch_status_code_error</code>修饰回调函数，以捕获抓取异常。</li>
+<li>on_start是脚本执行的入口，当你在主页上点击run时，会触发on_start执行</li>
+<li>函数的返回内容会被<code>on_result(self,result)</code>函数捕获，你可以在这里将其输出到数据库中</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/07/24/Pyspider01/" data-id="cidd4nd4s003bzjgzukyeowv4" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Crawler/">Crawler</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Linux命令备忘录" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/07/24/Linux命令备忘录/" class="article-date">
+  <time datetime="2015-07-24T07:44:12.000Z" itemprop="datePublished">2015-07-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/07/24/Linux命令备忘录/">Linux命令备忘录</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="操作进程的命令">操作进程的命令</h2><ul>
+<li><code>control + z</code>：挂起进程</li>
+<li><code>control + c</code>：结束进程</li>
+<li><code>fg + 进程名</code>：恢复挂起进程</li>
+<li><code>kill + 进程名</code>：杀死对应的进程</li>
+<li><code>jobs</code>：输出当前挂起的进程<br><img src="https://dn-arthury.qbox.me/进程.png" alt="进程名"></li>
+<li>末尾的pyspider就是进程名，可以通过这个进程进程名来操作对应的进程</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/07/24/Linux命令备忘录/" data-id="cidd4nd5o0044zjgzupk2d0v8" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Crawler01" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/07/24/Crawler01/" class="article-date">
+  <time datetime="2015-07-24T05:33:26.000Z" itemprop="datePublished">2015-07-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/07/24/Crawler01/">Crawler01</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="现在主流爬虫的技术层级分析">现在主流爬虫的技术层级分析</h2><ul>
+<li>Nutch<ul>
+<li>开源的Java的实时搜索引擎，提供运行自己搜索引擎所需要的全部工具，主要用于抓取网络上的数据</li>
+</ul>
+</li>
+<li>Hadoop<ul>
+<li>用于大规模的数据分析处理，底层的数据抓取采用的是Nutch，抓取到数据之后可以考虑采用这个来进行分析</li>
+</ul>
+</li>
+<li>Tika<ul>
+<li>使用多种开源内容解析项目来实现从多种格子的文件中提取元数据和结构化文本，底层的数据抓取采用的是Nutch，可以解析的文件多种多样，包括zip、pdf、html等等，支持非常多的文件</li>
+</ul>
+</li>
+<li>Gora<ul>
+<li>支持把大数据持久化到多种存储实现，底层的数据抓取采用的是Nutch</li>
+</ul>
+</li>
+<li>Crawler Commons<ul>
+<li>爬虫组件？    </li>
+</ul>
+</li>
+<li>Arachnid<ul>
+<li>微型爬虫框架，含有一个小型HTML解析器</li>
+</ul>
+</li>
+<li>crawlzilla<ul>
+<li>拥有中文分词功能    </li>
+</ul>
+</li>
+<li>Ex-Crawler<ul>
+<li>由守护进程执行，使用数据库存储网页信息</li>
+</ul>
+</li>
+<li>Heritrix<ul>
+<li>严格遵照robots文件的排除指示和META robots标签</li>
+</ul>
+</li>
+<li>heyDr<ul>
+<li>轻量级开源多线程垂直检索爬虫框架</li>
+</ul>
+</li>
+<li>ItSucks<ul>
+<li>提供swing GUI操作界面</li>
+</ul>
+</li>
+<li>jcrawl<ul>
+<li>轻量、性能优良，可以从网页抓取各种类型的文件</li>
+</ul>
+</li>
+<li>JSpider<ul>
+<li>功能强大，容易扩展</li>
+</ul>
+</li>
+<li>Leopdo<ul>
+<li>包括全文和分类垂直搜索，以及分词系统</li>
+</ul>
+</li>
+<li>MetaSeeker<ul>
+<li>网页抓取、信息提取、数据抽取工具包，操作简单</li>
+</ul>
+</li>
+<li>Playfish<ul>
+<li>通过XML配置文件实现高度可定制性与可扩展性</li>
+</ul>
+</li>
+<li>Spiderman<ul>
+<li>灵活、扩展性强，微内核+插件式架构，通过简单的配置就可以完成数据抓取，无需编写一句代码</li>
+</ul>
+</li>
+<li>webmagic<ul>
+<li>功能覆盖整个爬虫生命周期，使用Xpath和正则表达式进行链接和内容的提取</li>
+</ul>
+</li>
+<li>Web-Harvest<ul>
+<li>运用XSLT、XQuery、正则表达式等技术来实现对Text或XML的操作，具有可视化的界面</li>
+</ul>
+</li>
+<li>WebSPHINX<ul>
+<li>由两部分组成：爬虫工作平台和WebSPHINX类包</li>
+</ul>
+</li>
+<li>YaCy<ul>
+<li>基于P2P的分布式Web搜索引擎</li>
+</ul>
+</li>
+<li>QuickRecon<ul>
+<li>具有查找子域名名称、收集电子邮件地址并寻找人际关系等功能 </li>
+</ul>
+</li>
+<li>PyRailgun<ul>
+<li>简洁、轻量、高效的网页抓取框架</li>
+</ul>
+</li>
+<li>Scrapy<ul>
+<li>基于Twisted的异步处理框架，文档齐全</li>
+</ul>
+</li>
+<li>hispider<ul>
+<li>支持多机分布式下载, 支持网站定向下载</li>
+</ul>
+</li>
+<li>larbin<ul>
+<li>高性能的爬虫软件，只负责抓取不负责解析</li>
+</ul>
+</li>
+<li>Methabot<ul>
+<li>经过速度优化、可抓取WEB、FTP及本地文件系统</li>
+</ul>
+</li>
+<li>Methanol<ul>
+<li>模块化、可定制的网页爬虫，速度快</li>
+</ul>
+</li>
+<li>NWebCrawler<ul>
+<li>统计信息、执行过程可视化</li>
+</ul>
+</li>
+<li>Sinawler<ul>
+<li>国内第一个针对微博数据的爬虫程序，功能强大</li>
+</ul>
+</li>
+<li>spidernet<ul>
+<li>以递归树为模型的多线程web爬虫程序，支持以GBK (gb2312)和utf8编码的资源，使用sqlite存储数据</li>
+</ul>
+</li>
+<li>Web Crawler<ul>
+<li>多线程，支持抓取PDF/DOC/EXCEL等文档来源</li>
+</ul>
+</li>
+<li>网络矿工<ul>
+<li>功能丰富，毫不逊色于商业软件</li>
+</ul>
+</li>
+<li>OpenWebSpider<ul>
+<li>开源多线程网络爬虫，有许多有趣的功能</li>
+</ul>
+</li>
+<li>PhpDig <ul>
+<li>适用于专业化强、层次更深的个性化搜索引擎</li>
+</ul>
+</li>
+<li>Snoopy<ul>
+<li>具有采集网页内容、提交表单功能</li>
+</ul>
+</li>
+<li>ThinkUp<ul>
+<li>采集推特、脸谱等社交网络数据的社会媒体视角引擎，可进行交互分析并将结果以可视化形式展现</li>
+</ul>
+</li>
+<li>微购<ul>
+<li>可采集淘宝、京东、当当等300多家电子商务数据</li>
+</ul>
+</li>
+<li>Ebot<ul>
+<li>可伸缩的分布式网页爬虫</li>
+</ul>
+</li>
+<li>Spidr<ul>
+<li>可将一个或多个网站、某个链接完全抓取到本地</li>
+</ul>
+</li>
+<li>Neocrawler</li>
+</ul>
+<h2 id="最后的选择">最后的选择</h2><ul>
+<li>Pyspider<ul>
+<li>文档齐全，入门资料丰富，关注度高，作为入门的框架非常合适</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/07/24/Crawler01/" data-id="cidd4nd68004kzjgzp6vtnftn" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Crawler/">Crawler</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-UIViewAnimation03" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/07/24/UIViewAnimation03/" class="article-date">
@@ -135,7 +747,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/07/24/UIViewAnimation03/" data-id="cidbz0xkq002414gz24pkd7lf" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/07/24/UIViewAnimation03/" data-id="cidd4nd3m002dzjgze7y4g83r" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -294,7 +906,7 @@ UIImage<span class="list">(<span class="keyword">name:</span><span class="string
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/07/24/UIViewAnimation02/" data-id="cidbz0xks002614gz603ibx6z" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/07/24/UIViewAnimation02/" data-id="cidd4nd3o002fzjgz6zx7wx8c" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -398,7 +1010,7 @@ console.<span class="built_in">log</span>(<span class="number">3</span>);
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/07/23/Event-Loop/" data-id="cidbz0xmd004014gzhbjdv1wf" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/07/23/Event-Loop/" data-id="cidd4nd5u0049zjgzciqqskzw" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -509,7 +1121,7 @@ UIView.animateWithDuration(<span class="number">1.0</span>, <span class="string"
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/07/23/UIViewAnimation01/" data-id="cidbz0xkx002814gzssknthf7" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/07/23/UIViewAnimation01/" data-id="cidd4nd3t002hzjgzpbxbvgmh" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -557,1076 +1169,7 @@ UIView.animateWithDuration(<span class="number">1.0</span>, <span class="string"
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/05/16/leiningen/" data-id="cidbz0xjc000z14gzi0io89an" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Clojure" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/05/13/Clojure/" class="article-date">
-  <time datetime="2015-05-13T04:20:42.000Z" itemprop="datePublished">2015-05-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/05/13/Clojure/">Clojure</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="学习资源">学习资源</h2><ul>
-<li><a href="http://xumingming.sinaapp.com/302/clojure-functional-programming-for-the-jvm-clojure-tutorial/#introduction" target="_blank" rel="external">基础入门</a></li>
-</ul>
-<h2 id="Clojure开发环境配置">Clojure开发环境配置</h2><ul>
-<li>参考资料：<ul>
-<li><a href="http://segmentfault.com/a/1190000002591631" target="_blank" rel="external">在OS X上配置Clojure开发环境</a></li>
-</ul>
-</li>
-<li>遇到了环境变量的问题，目前的想要尝试的方法是通过脚本去解决</li>
-<li>Clojure中1.6版对于clojure_contrib没有特殊的要求，使用mvn安装了之后不知道路径是哪里，展示不要去管</li>
-<li>加入了rlwrap进行自动补全</li>
-<li>配置在emacs下的开发环境，要选择是手动下载配置还是使用安装配置，需要好好斟酌一下<ul>
-<li>先说自动安装配置，这个是最适合我的emacs配置<ul>
-<li>遇到的问题是leiningen的下载，无法使用brew进行安装，会出现无法下载的问题，在寻找新的办法</li>
-</ul>
-</li>
-<li>先去尝试手动安装，看一下最新版的swank-clojure，以及init.el如何对应.emacs的手动安装，配置文件要如何进行对应，等待尝试<ul>
-<li>lein在连接了vpn之后现在成功了，现在是下载插件出了问题，使用了配置文件感觉根本就没有下载下来，</li>
-<li>寻找到了另外一种解决办法，叫做cider</li>
-<li>cider下载失败是因为gnu的软件源被我给注释了，之后就可以正常下载了</li>
-<li>现在cider已经下载好了，接下来就是花时间去调整配置了，但是现在并不知道要如何才能够用上cider</li>
-<li>另外在配置的过程中意外的解决了用emacs打开的文件的时候会询问冲突的问题</li>
-</ul>
-</li>
-<li>总算是配置完成了，简直累死人，这些配置过程记录下来是很有必要的，因为自己可能要在服务器上配置自己的开发环境，为了避免做重复功，就需要把这些东西给记录清楚才可以</li>
-<li>关于cider的使用<ul>
-<li>这个是emacs针对clojure进行调整开发的插件，不知如何在emacs中直接运行clojure</li>
-<li>使用体验有点奇葩，入门资料太少了，或许我应该去找一些因为的教材才对</li>
-<li>使用C-c M-j进入到repl之后，再切换到代码编辑的窗口，就可以使用cider定义好的一些列的快捷键了，注意一定要遵循好这些步骤才可以</li>
-<li>想要进入已经激活的repl，直接用C-c M-c再输入相应的host就可以了，host直接就可以看到的，在buffer的列表里面切换到这个server，然后就可以看到了</li>
-</ul>
-</li>
-<li>新建一个clojure项目<ul>
-<li>使用lein new 项目名(小写字母)</li>
-<li>编辑profiles.clj文件，添加cider插件</li>
-<li>进入到src源文件里面开始编辑</li>
-</ul>
-</li>
-<li>关于clojure的repl<ul>
-<li>代码在这里面是一行一编译运行的，一次只可以执行一行代码，也就是我刚才定义了一个函数，但是却没有编译执行，导致我下面调用在各个函数的时候找不到这个函数，所以就会出现错误</li>
-<li>cider的正确使用方法应该是编写一个函数或者一个命令具使用C-x C-e运行一次，这样才是正确的使用方法，而不是全部写完之后才编译运行，这样会出错</li>
-<li>开启repl使用C-c M-j的方法，原来使用C-c M-c再加上自己指定端口的方式现在可以通过分屏的方法来取代，分屏的才是王道</li>
-<li>要开始运行看现实结果的时候一定要注意光标一旦要移动到最后才可以。这样才会执行完整的代码，否则会报错</li>
-</ul>
-</li>
-<li>现在环境配置都差不多了，那么要如何进行开发呢？能够用来做什么呢？</li>
-<li>有没有必要把command作为M键</li>
-</ul>
-</li>
-</ul>
-<h2 id="为什么要学习Clojure？">为什么要学习Clojure？</h2><ul>
-<li>jvm虚拟机非常的强大，我非常的看好，但是java又实在是太沉重繁琐，所以我选择了lisp在jvm上面的方言，Clojure，相比于java这个是生产效率上的提升，也就是既有java的强大特性又能够进行快速开发</li>
-<li>再一次体会到英语学习的重要性，多看英语视频，多看英语原著，这样才可以开阔自己的眼界</li>
-<li>我看到了Clojure可以用来写Processing，这又掀起了我浓厚的兴趣去学习</li>
-<li>ClojureScript非常不错，可以实现javascript，非常有意思</li>
-<li>Clojure可以简单的开发web应用</li>
-<li>我需要非常了解clojure的特性，与java的不同之处，如何实现java能够实现的东西，优势又在什么地方；面向对象中的类与对象的这些概念要如何对应到函数式编程里面，或许我会爱上这些东西</li>
-</ul>
-<h2 id="函数式编程的思想/优点">函数式编程的思想/优点</h2><ul>
-<li>将函数作为参数就是高阶函数</li>
-<li>优点：<ul>
-<li>数据不能够进行修改，也就是并不需要进行上锁就可以对数据进行并发的访问，那提高的效率是相当可观的</li>
-</ul>
-</li>
-<li>在lisp当中什么都是函数，包括一组数据也可以是函数，这个说起来可能有点奇怪，注意用括号()包起来的东西就是对一个函数的调用，举个例子<code>([1 2 3] 0);输出1</code>，’({:a 1 :b 2 :c 3} :b);=&gt; 2’，容器可以看作是一个函数，它能接受一个参数，返回所对应的值；对于map还可以有这样的写法，<code>(:b {:a 1 :b 2 :c 3})</code>，当然这只适用于map的情况</li>
-<li><p>关于在面向对象中的类的概念在函数式当中是如何体现的，如何实现的，还是？看来我很有必要了解一下面向过程(OP–Procedure Oriented)、面向对象(OO–Object Oriented)以及函数式(FP)之间的区别与联系，还有必要了解一下clojure的设计哲学</p>
-<blockquote>
-<p>面向对象中的类是对数据类型的抽象，而函数式中的类是闭包，对函数的抽象；面向对象的核心是类，函数式的核心是函数(我想我需要写一个小demo)<br>偶然复杂性的一个例子就是现代面向对象程序设计语言的一个发展趋势，即它要将所有可运行代码打包在类定义、继承和类型声明这样的层次里。Clojure 通过支持“纯函数”去除了所有这些东西，所谓纯函数就是传入几个实参，然后，只根据这些实参产生一个返回值。然而我并不知道这些要如何去实现面向对象可以实现的东西，这是一种全新的编程思想，不要再用原来面向对象的老观点去看待，怎么去使用纯函数来实现自己想要实现的东西，意外的会开启新世界的大门<br>面向对象解决问题的思维与函数式解决问题的思维是不一样的，所以不要在函数式里面用面向对象的思维来思考问题，总是想把东西抽象成类来解决是不合适的<br>clojure除了可以直接调用java的类或者方法之外，还有更多的选择来与java进行交互，可以根据具体的情况进行选择</p>
-<ul>
-<li>举个栗子：用类来抽象与用函数来抽象<ul>
-<li>用类来实现抽象<ul>
-<li>我要做一个围棋游戏，我需要先定义一个棋盘类，再来一个棋子类</li>
-<li>棋盘类的具体属性可以是大小，颜色，格子数，方法可以有胜负的判断之类的</li>
-<li>棋子类的具体属性可以是颜色，大小，方法可以使如何走下一步之类的</li>
-</ul>
-</li>
-<li>用函数来抽象(尝试使用函数式思维来处理自己遇到的问题)<br>许多程序员认为是类的东西，实际上就是Clojure用map和记录形式提供的数据表<ul>
-<li>对于棋盘的模拟，直接用一个集合就可以搞定了</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</blockquote>
-<pre><code>(ns joy.chess)
-(defn initial-board []
-[<span class="string">\r</span> <span class="string">\n</span> <span class="string">\b</span> <span class="string">\q</span> <span class="string">\k</span> <span class="string">\b</span> <span class="string">\n</span> <span class="string">\r</span>
-<span class="string">\p</span> <span class="string">\p</span> <span class="string">\p</span> <span class="string">\p</span> <span class="string">\p</span> <span class="string">\p</span> <span class="string">\p</span> <span class="string">\p</span>         ; 小写表示黑棋
-<span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span>
-<span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span>
-<span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span>
-<span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span> <span class="string">\-</span>
-<span class="string">\P</span> <span class="string">\P</span> <span class="string">\P</span> <span class="string">\P</span> <span class="string">\P</span> <span class="string">\P</span> <span class="string">\P</span> <span class="string">\P</span>         ; 大写表示白棋
-<span class="string">\R</span> <span class="string">\N</span> <span class="string">\B</span> <span class="string">\Q</span> <span class="string">\K</span> <span class="string">\B</span> <span class="string">\N</span> <span class="string">\R])</span>
-</code></pre></li>
-</ul>
-<h2 id="命名空间的问题">命名空间的问题</h2><ul>
-<li>可以通过不同的命名空间来建立一定的层次结构</li>
-<li>通过命令空间封装是最为普遍的一种封装方式，当然如果选择词法闭包，则又更多的封装选择，比如block级封装、局部封装(虽然不知道具体要如何去使用)</li>
-<li>任何时候总有一个默认的名字空间，初始化的时候这个默认的名字空间是“user”，这个默认的名字空间的值被保存在特殊符号<em>ns</em>.里</li>
-<li><p>关于默认名字名字空间user</p>
-<ul>
-<li>“user” 这个名字空间提供对于clojure.core 这个名字空间里面所有符号的访问。同样道理对于那些通过ns 宏来改变成默认名字空间的名字空间里面也是可以看到 clojure.core里面的所有的函数的；如果要访问哪些不在默认名字空间里面的符号、函数， 那么你必须要指定全限定的完整名字，比如 clojure.string 包里面定义了一个join 函数。它把多个字符串用一个分隔符隔开然后连起来，返回这个连起来的字符串。它的全限定名是clojure.string/join</li>
-<li><p>require函数加载clojure库，接受一个或者多个名字空间的名字；require是进行显示的加载，任何引用到的命名空间必须已经加载过，或者是clojure核心命名空间之一，这样会被隐式的加载，要么通过:require显示加载。</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">require</span></span> <span class="variable">'clojure.string</span>)</span>
-<span class="comment">;;这样就会加载这个类库</span>
-<span class="comment">;;然而加载进来之后在调用函数的时候不加名字空间还是无法调用，那么加载进来的意义何在?</span>
-</code></pre></li>
-</ul>
-</li>
-<li><p>clojure里面名字空间和方法名之间的分隔符是<code>/</code>而不是java里面使用的<code>.</code></p>
-<pre><code>(clojure.<span class="built_in">string</span>/join <span class="string">"$"</span> [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]);;=&gt;<span class="string">"1$2$3"</span>
-</code></pre></li>
-<li><p>alias函数(这个在zsh的配置文件里面也有经常使用到，感觉非常的便利)给一个名字空间指定一个别名以减少我们打字的工作，当然这个别名的定义只在当前的名字空间里面有效；不想加载整个库，有想要使用里面部分方法的时候就可以考虑这个</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">alias</span></span> 'su 'clojure.string)</span>
-<span class="list">(<span class="keyword">su/join</span> <span class="string">"$"</span> <span class="collection">[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</span>)</span><span class="comment">;;=&gt;"1$2$3"</span>
-</code></pre></li>
-<li><p>refer函数使得指定的名字空间里面的函数在当前名字空间里面可以访问(不用使用全限定名字)。一个特例就是如果当前名字空间有那个名字空间一样的名字， 那么你访问的时候还是要制定名字空间的。但是它只为已经加载的程序库创建映射</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">refer</span></span> 'clojure.string)</span>
-<span class="list">(<span class="keyword">join</span> <span class="string">"$"</span> <span class="collection">[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</span>)</span><span class="comment">;;=&gt;"1$2$3"</span>
-</code></pre></li>
-<li><p>还可以使用rename关键字和一个map为同样的函数设置一个别名；rename除了可以与:refer共同起作用，还可以与:use共同起作用</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">ns</span></span> joy.yet-another
- <span class="list">(<span class="attribute">:refer</span> joy.ch1 <span class="attribute">:rename</span> <span class="collection">{hello hi}</span>)</span>)</span>
-<span class="list">(<span class="keyword">hi</span>)</span>
-</code></pre></li>
-<li><p>use命令，通常require和refer是结合在一起使用，而这个相当于require和refer的简洁形式</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">use</span></span> 'clojure.string)</span>
-</code></pre></li>
-<li><p>import命令，一般用来加载java类，非java类一般用use来加载，在命名空间创建时，会自动导入java.lang包里的类，那么问题来了，如果我要使用第三方的库要怎么办?</p>
-</li>
-<li><p>ns宏可以用来改变默认名字空间，通常在一个源代码的最上面指定这个</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">ns</span></span> com.ociweb.demo
-  <span class="list">(<span class="attribute">:use</span> clojure.string)</span>
-  <span class="list">(<span class="attribute">:import</span> <span class="list">(<span class="keyword">java.text</span> NumberFormat)</span> <span class="list">(<span class="keyword">javax.swing</span> JFrame JLable)</span>)</span>)</span>
-  <span class="comment">;;use以及import这些指令写在ns里面的时候格式如上</span>
-  <span class="comment">;;输出当前的命名空间</span>
-  <span class="list">(<span class="keyword">println</span> <span class="string">"The current namepace is "</span> *ns*)</span><span class="comment">;;=&gt;输出当前的命名空间</span>
-  <span class="comment">;;如果多个命名空间的函数命名冲突，就必须要结合命名空间来调用了</span>
-</code></pre></li>
-<li>create-ns函数可以创建一个新的名字空间，但是不会变成默认的名字空间</li>
-</ul>
-<h2 id="分发平台">分发平台</h2><ul>
-<li>Clojure Core</li>
-<li>Clojure Contrib</li>
-<li>两个版本比如相同，不能混合使用</li>
-</ul>
-<h2 id="命名规范">命名规范</h2><ul>
-<li>Clojure采用的命名规范采用的是小写字母的形式，多个字母之间使用短线连接，而不是采用驼峰命名法，这个有一点特别</li>
-</ul>
-<h2 id="特性">特性</h2><ul>
-<li>延迟计算，需要的时候才回去调用</li>
-<li><p>动态语言：不需要去声明变量的类型，非常的便利</p>
-<ul>
-<li><p>动态类型系统(Duck Typing)：所谓动态体现在很多方面，首先Clojure使用动态类型系统，每个Symbol所代表的值的类型是在运行的时候确定的；对于一个函数而言，它只关心参数能接受某些操作，并不会对具体的类型做出限制，比如<code>fn[a b](+ a b)</code>，它只要求a和b必须能作为+的参数，而并不对其类型做限制(这让我想要知道Clojure是否为强类型语言)；当然动态还体现在Symbol的动态绑定上，利用binding来进行动态绑定，这样可以实现高效的单元测试，来一个demo说明一下</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">defn</span></span> some-op <span class="collection">[]</span> <span class="list">(<span class="keyword">send-email</span>)</span> <span class="comment">;定义了一个some-op函数，不接受参数，函数具体的内容是调用send-email函数)</span>
-<span class="comment">;在单元测试的时候不可能真的去发邮件，于是可以这样做</span>
-<span class="list">(<span class="keyword">binding</span> <span class="collection">[send-email <span class="list">(<span class="keyword"><span class="built_in">fn</span></span> <span class="collection">[]</span>)</span>]</span> <span class="list">(<span class="keyword">some-op</span>)</span>)</span>
-<span class="comment">;这里先将send-email与一个空函数进行绑定，然后再调用some-op</span>
-<span class="comment">;这样的特性在开发大型系统的时候非常的有帮助</span></span>
-</code></pre></li>
-</ul>
-</li>
-<li><p>支持分数，也就是不会丢失精度，这个特性有点强大</p>
-</li>
-<li>repl，非常简单的交互式学习方法，输入一行代码，直接就反馈出结果</li>
-<li>名字空间，就相当于是一个文件名，自己写的代码所属的文件是哪一个？</li>
-<li>并发编程<ul>
-<li>这是clojure的一个杀手级特性，既然用了clojure来进行编程，那么就要好好利用这一个特性才可以，把区别于java的地方找出来</li>
-</ul>
-</li>
-<li>不可变性<ul>
-<li>clojure会保证各个数据的历史版本，就像是git的版本跟踪一样，每一个状态与时间关联在了一起</li>
-</ul>
-</li>
-</ul>
-<h2 id="代码的处理">代码的处理</h2><ul>
-<li><a href="">效果图</a></li>
-</ul>
-<h2 id="语法">语法</h2><ul>
-<li>lisp的语法相对而言有点奇怪，但也不尽然，用久了自然就会习惯，主要是要学习一些新的名词概念</li>
-<li><p>函数</p>
-<ul>
-<li>调用：(a b c)表示对函数a的调用，参数是b和c，<code>(function-name arg1 arg2 agr3)</code></li>
-<li><p>定义：</p>
-<pre><code><span class="comment">;写一个简单的hello问好函数</span>
-<span class="comment">;如果没有一个标识符与定义的函数进行绑定，就需要使用defn进行说明，调用的时候就使用函数名进行调用</span>
-<span class="list">(<span class="keyword"><span class="built_in">defn</span></span> hello <span class="collection">[name]</span> <span class="list">(<span class="keyword">println</span> <span class="string">"Hello,"</span> name)</span>)</span><span class="comment">;非常的简单，分号都被省略掉了</span>
-<span class="list">(<span class="keyword">hello</span> <span class="string">"Arthury"</span>)</span> <span class="comment">;=&gt;Hello, Arthury</span>
-<span class="comment">;;可以定义接受多个版本的参数，并且支持在定义内部加上一席文档描述</span>
-<span class="list">(<span class="keyword"><span class="built_in">defn</span></span> make-a-set
-  <span class="string">"Taks either one or two values and makes a set form them"</span>
-  <span class="list">(<span class="collection">[x]</span> #<span class="collection">{x}</span>)</span>
-  <span class="list">(<span class="collection">[x y]</span> #<span class="collection">{x y}</span>)</span>)</span>
-<span class="comment">;如果有一个标识符用来绑定，就是用def，调用的时候使用标识符来调用</span>
-<span class="list">(<span class="keyword"><span class="built_in">def</span></span> say-hello <span class="list">(<span class="keyword">hello</span> <span class="collection">[name]</span> <span class="list">(<span class="keyword">println</span> <span class="string">"Hello,"</span> name)</span>)</span>
-<span class="list">(<span class="keyword">say-hello</span> <span class="string">"Arthury"</span>)</span>
-<span class="comment">;;一次性函数，定义完之后直接调用，之后就无法再进行使用了，使用fn来进行声明，这种一次性函数连名字都可以省掉了</span>
-<span class="list">(<span class="list">(<span class="keyword"><span class="built_in">fn</span></span> <span class="collection">[name]</span> <span class="list">(<span class="keyword">println</span> <span class="string">"Hello "</span> name)</span>)</span> <span class="string">"Arthury"</span>)</span><span class="comment">;;写完之后直接在后面跟上参数便可，非常的简单粗暴</span>
-<span class="comment">;;还有一种定义可以在调用函数的时候重载元数(其实就是接受的参数的数量)，这个有点像是objective-c里面的嵌套调用，可以自己选择参数的数量</span>
-<span class="list">(<span class="keyword"><span class="built_in">fn</span></span>
-  <span class="list">(<span class="collection">[x]</span> #<span class="collection">{x}</span>)</span>
-  <span class="list">(<span class="collection">[x y]</span> #<span class="collection">{x y}</span>)</span> <span class="number">42</span>)</span>
-<span class="comment">;;同样可以让函数接受任意数量的参数，使用&amp;就可以实现，只要不超过20个</span>
-<span class="list">(<span class="list">(<span class="keyword"><span class="built_in">fn</span></span> arity2+ <span class="collection">[x y &amp; z]</span> <span class="collection">[x y z]</span>)</span> <span class="number">1</span> <span class="number">2</span>)</span><span class="comment">;;=&gt;[1 2 nil]</span></span>
-</code></pre></li>
-<li><p>以#()定义原位(in-place)函数</p>
-<ul>
-<li><p>可以使用了#()来方便的创建匿名函数，使用了#()读取器的特性，这个可以很方便的将函数作为一个参数来进行使用，非常的便利</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">def</span></span> make-a-list_ #<span class="list">(<span class="keyword"><span class="built_in">list</span></span> %)</span>)</span><span class="comment">;;%表示要接受参数，#()在很多场景下都是可以使用，非常的灵活</span>
-<span class="list">(<span class="keyword"><span class="built_in">def</span></span> make-a-list1 #<span class="list">(<span class="keyword"><span class="built_in">list</span></span> %<span class="number">1</span> %<span class="number">2</span>)</span>)</span><span class="comment">;;可以接受多个参数</span>
-<span class="list">(<span class="keyword"><span class="built_in">def</span></span> make-a-list2 #<span class="list">(<span class="keyword"><span class="built_in">list</span></span> %<span class="number">1</span> %<span class="number">2</span> %&amp;)</span>)</span><span class="comment">;;同样可以接受可变的参数</span>
-</code></pre></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>block</p>
-<ul>
-<li>如果要把一系列表达式或一个表达式的 block 当做一个整体对待，那就要用到 do form 了。所有的表达式都会求值，但只有最后一个会返回；这样可以在repl里面一次性编译多个表达式，但是block的意义仅限于此吗？<br>这样</li>
-</ul>
-</li>
-<li><p>不一样的操作数</p>
-<ul>
-<li>Clojure中的操作符是前置的，这样的一个好处是当操作数很多的时候，只需要写一个操作符便可，这样看来一个操作符就相当于一个函数，<code>(+ a b c)</code>表示<code>a + b + c</code></li>
-</ul>
-</li>
-<li><p>语法糖</p>
-<ul>
-<li><p>概念解释</p>
-<ul>
-<li>Bindings<ul>
-<li>不存在变量这一说法，binding也是一个新概念，可以理解为标识符与表达式的绑定</li>
-<li>分类：<ul>
-<li>全局binding</li>
-<li>线程本地(thread local)</li>
-<li>函数内本地的</li>
-<li>表达式内部的binding</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>Symbols</p>
-<ul>
-<li>这个理解为象征，类似java里面的变量的名字，是用来给东西命名的</li>
-<li>Symbols的值是它所代表的名字的值，如果要使用Symbols的值，就需要把它用引号引起来，<code>&#39;n&#39;</code>，就相当于标识符</li>
-<li><p>标识符而可以代表运行环境中的对象，因此可以与特定对象绑定起来，比如字符串或者函数之类的，都是可以的</p>
-<pre><code>(def my-string <span class="string">"Hello World!"</span>) ;把my-string与<span class="string">"Hello World"</span>绑定在一起
-(def <span class="keyword">say</span>-hello
-(fn <span class="comment">[name]</span> (println (str <span class="string">"Hello"</span> name)))) ;把<span class="keyword">say</span>-hello与函数fn绑定在一起，具体的函数也是属于特定的对象
-</code></pre></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>与#相关</p>
-<ul>
-<li>正则表达式:#”pattern”</li>
-<li>匿名函数:#(single-expression)，这个有用于做filter的筛选条件，总之匿名函数用的还是比较多的，而是比较方便使用的一种形式</li>
-</ul>
-</li>
-<li><p>操作</p>
-<ul>
-<li><p>def</p>
-<ul>
-<li><p>相当于定义加赋值，可以用来定义的时候同时赋值，这是一个special form，一般是用来绑定标识符与特定对象的</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">def</span></span> n <span class="number">2</span>)</span>
-<span class="comment">;这里表示一个名字叫"n"的symbol被定义</span>
-</code></pre></li>
-</ul>
-</li>
-<li><p>let</p>
-<ul>
-<li>这也是一个special form，let会创建局限于一个当前form的bindings，它的第一个参数是一个vector，里面包含名字-表达式的对子，表达式的值会被解析然后赋给左边的标识符；这些binding(标识符与表达式的绑定)可以在这个vector后面的表达式里面的使用，这个binding还可以被多处赋值以改变它们的值，也就是可以改变当前标识符所绑定的标识符；let命令剩下的参数是一些利用这个binding来进行计算的一些表达式。但是要注意：如果是属于调用其他函数(一般指自己写的函数)的表达式，那么这个函数是无法利用let创建的这个binding的(原来自己想当然认为可以使用，结果导致了后面的理解困难，后面如果再遇到困难就回想一下自己是否默认了什么奇怪的前提)</li>
-<li>用处<ul>
-<li>绑定”变量”的，<code>(let [x 1 y 2] (print x &quot;,&quot; y))</code>，输出<code>x=&gt;1, y=&gt;2</code></li>
-<li>绑定可以理解为是赋值，let起到的作用是局部绑定，就可以理解为局部变量</li>
-</ul>
-</li>
-<li>隐式的do：let 体的部分有时被形容成“隐式的 do”，因为其遵循着相同的规则：可以包括任意数量的表达式，所有的都会求值，但只有最后一个会返。</li>
-</ul>
-</li>
-<li><p>binding        </p>
-<ul>
-<li><p>这个与let类似，但是它创建的本地binding会暂时的覆盖已经存在的全局binding，这个binding可以创建这个binding的form以及这个form里面调用的函数里面都能够看到，但是一旦跳出这个binding那么被覆盖的全局binding的值会回复到之前的状态，就像是局部变量与全局变量一样；但是使用let给定一个binding并不会影响全局binding，let的原理并不是覆盖，只是享有优先访问权的而已，如果使用binding就是覆盖，虽然离开各自的form都会失效</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">def</span></span> ^<span class="attribute">:dynamic</span> v <span class="number">1</span>)</span> <span class="comment">; v is a global binding</span>
-<span class="list">(<span class="keyword"><span class="built_in">defn</span></span> f1 <span class="collection">[]</span>
-  <span class="list">(<span class="keyword">println</span> <span class="string">"f1: v ="</span> v)</span>)</span> <span class="comment">; global binding</span>
-<span class="list">(<span class="keyword"><span class="built_in">defn</span></span> f2 <span class="collection">[]</span>
-  <span class="list">(<span class="keyword">println</span> <span class="string">"f2: before let v ="</span> v)</span> <span class="comment">; global binding</span>
-  <span class="list">(<span class="keyword"><span class="built_in">let</span></span> <span class="collection">[v <span class="number">2</span>]</span> <span class="comment">; creates local binding v that shadows global one</span>
-    <span class="list">(<span class="keyword">println</span> <span class="string">"f2: in let, v ="</span> v)</span> <span class="comment">; 调用会输出2，访问的是局部的binding，并不是全局的binding，通过优先权来进行实现</span>
-    <span class="list">(<span class="keyword">f1</span>)</span>)</span> <span class="comment">;这里调用其他函数还是会访问全局的binding</span>
-  <span class="list">(<span class="keyword">println</span> <span class="string">"f2: after let v ="</span> v)</span>)</span> <span class="comment">; 调用会输出1</span>
-<span class="list">(<span class="keyword"><span class="built_in">defn</span></span> f3 <span class="collection">[]</span>
-  <span class="list">(<span class="keyword">println</span> <span class="string">"f3: before binding v ="</span> v)</span> <span class="comment">; global binding</span>
-  <span class="list">(<span class="keyword">binding</span> <span class="collection">[v <span class="number">3</span>]</span> <span class="comment">; same global binding with new, temporary value</span>
-    <span class="list">(<span class="keyword">println</span> <span class="string">"f3: in binding, v ="</span> v)</span> <span class="comment">; 调用会输出3，访问的是全局的binding，通过覆盖来实现</span>
-    <span class="list">(<span class="keyword">f1</span>)</span>)</span> <span class="comment">;输出3，因为全局的binding已被覆盖，只要没有跳出当前的form，效果就还在</span>
-  <span class="list">(<span class="keyword">println</span> <span class="string">"f3: after binding v ="</span> v)</span>)</span> <span class="comment">; global binding</span>
-</code></pre></li>
-<li><p>binding只能用于动态的变量上，动态绑定的特性</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>循环</p>
-<ul>
-<li><p>构建循环的经典方式是递归调用</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">defn</span></span> sum-dowm-from <span class="collection">[sum x]</span>
-  <span class="list">(<span class="keyword"><span class="built_in">if</span></span> <span class="list">(<span class="keyword"><span class="built_in">pos?</span></span> x)</span>
-    <span class="list">(<span class="keyword"><span class="built_in">recur</span></span> <span class="list">(<span class="keyword"><span class="built_in">+</span></span> sum x)</span> <span class="list">(<span class="keyword"><span class="built_in">dec</span></span> x)</span>)</span><span class="comment">;;这里的表达式很可能是与上面函数的参数相对应的，值的绑定直接就是一一对应上去，所以要注意的是写表达式的时候要一一对应上去</span>
-    sum)</span>)</span><span class="comment">;;这里写sum就会直接返回自身，数据自身也可以是一个函数;简而言之，出现在表达式结尾位置的form，其值可以作为整个表达式的返回值;这里整个if form也是整个函数的返回值</span>
-</code></pre></li>
-<li><p>recur，专门用于尾递归的form</p>
-<ul>
-<li>recur里的表达式都是先依次执行，然后同时绑定在函数实参上，也就是这里会自动执行重新的绑定</li>
-<li><p>可以用loop指定recur跳转的位置，同样也可以使用fn</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">defn</span></span> sum-down-form <span class="collection">[initial-x]</span>
-  <span class="list">(<span class="keyword"><span class="built_in">loop</span></span> <span class="collection">[sum <span class="number">0</span>, x initial-x]</span>
-    <span class="list">(<span class="keyword"><span class="built_in">if</span></span> <span class="list">(<span class="keyword"><span class="built_in">pos?</span></span> x)</span>
-      <span class="list">(<span class="keyword"><span class="built_in">recur</span></span> <span class="list">(<span class="keyword"><span class="built_in">+</span></span> sum x)</span> <span class="list">(<span class="keyword"><span class="built_in">dec</span></span> x)</span>)</span>
-      sum)</span>)</span>)</span>
-</code></pre></li>
-<li><p>recur form都是在结尾位置使用，作为返回值使用，因为是递归</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>副作用</p>
-<ul>
-<li>副作用操作指的是上面的操作会对下面产生影响？</li>
-</ul>
-</li>
-<li>注释<ul>
-<li>不一样的注释，使用<code>;</code>进行注释</li>
-</ul>
-</li>
-<li><p>不一样的原生数据结构(集合)</p>
-<ul>
-<li>clojure中的集合具有不可修改的、异源的以及持久的，不可修改意味着一旦一个集合产生滞后，你不能从集合里面删除一个元素，往里面加入元素也是不可以的；异源代表着集合中的数据类型可以不一样；持久意味着当一个集合新的版本产生之后，旧的版本还是在的，Clojure以一种非常高效的，共享内存的方式来实现这个的，比如有一个map里面有一千个name-valuea pair, 现在要往map里面加一个，那么对于那些没有变化的元素， 新的map会共享旧的map的内存，而只需要添加一个新的元素所占用的内存，这种比普通的编程语言直接生成一个新的集合要高效多了</li>
-<li>clojure中集合是不能进行修改，一些函数可以根据已有的集合高效的创造出一个新的集合；同时也有一些函数操作一个已有的集合（比如vector)来产生另外一种类型的集合(比如LazySeq)</li>
-<li>vector: <code>[a b c]</code>或者<code>vector &quot;a&quot; &quot;b&quot; &quot;c&quot;</code>，这里面的a、b、c就是标识符，代表运行环境里的某个对象，这也是一种有序的集合，函数定义的时候指定参数列表用的就是vector，多个参数写在一个vector里面；这种几个对于从最后面删除一个元素，或者获取最后面一个元素是非常高效的；另外，除非你要写的程序要特别用到list的从前面添加/删除效率很高的这个特性， 否则一般来说我们鼓励你们用vector而不是lists。这主要是因为语法上[…] 比 ‘(…) 更自然，更不容易弄混淆。因为函数，宏以及special form的语法也是(…)。</li>
-<li><p>map: <code>{:a 1 :b 2}</code>(也可以写成<code>{:a 1, :b 2}</code>，这里的逗号没有什么实际意义，一般只为提高可读性)，其中的:a与:b是键，以:开头的表达式被称为关键字，而1与2是它们对应的值；有点像是字典类型，但是这些符号只代表它们自己，不代表其他任何的对象；map一般采用关键字做键，但是也可以采用其他类型的做键</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">def</span></span> popsicle-map <span class="list">(<span class="keyword"><span class="built_in">hash-map</span></span> <span class="attribute">:red</span> <span class="attribute">:cherry</span>, <span class="attribute">:green</span> <span class="attribute">:apple</span>, <span class="attribute">:purple</span> <span class="attribute">:grape</span>)</span>)</span>
-<span class="list">(<span class="keyword"><span class="built_in">def</span></span> posicle-map <span class="collection">{<span class="attribute">:red</span> <span class="attribute">:cherry</span>, <span class="attribute">:green</span> <span class="attribute">:apple</span>, <span class="attribute">:purple</span> <span class="attribute">:grape</span>}</span>)</span>
-<span class="list">(<span class="keyword"><span class="built_in">def</span></span> posicle-map <span class="list">(<span class="keyword"><span class="built_in">sorted-map</span></span> <span class="attribute">:red</span> <span class="attribute">:cherry</span>, <span class="attribute">:green</span> <span class="attribute">:apple</span>, <span class="attribute">:purple</span> <span class="attribute">:grape</span>)</span>)</span>
-<span class="comment">;;获取数据的方法有三种</span>
-<span class="list">(<span class="keyword"><span class="built_in">get</span></span> posicle-map <span class="attribute">:green</span>)</span>
-<span class="list">(<span class="keyword">posicle-map</span> <span class="attribute">:green</span>)</span>
-<span class="list">(<span class="attribute">:green</span> posicle-map)</span>
-<span class="comment">;;contains?函数在这里的用处就是检查map是否包含有对应的key，注意是看检查key</span>
-<span class="list">(<span class="keyword"><span class="built_in">contains?</span></span> posicle-map <span class="attribute">:green</span>)</span> <span class="comment">;=&gt;true</span>
-<span class="comment">;;key与vals函数分别返回map里面所有可以与值的集合</span>
-<span class="list">(<span class="keyword"><span class="built_in">key</span></span> posicle-map)</span> <span class="comment">;=&gt; (:red :green :purple)</span>
-<span class="list">(<span class="keyword"><span class="built_in">vals</span></span> posicle-map)</span> <span class="comment">;=&gt; (:cherry :apple :grape)</span>
-<span class="comment">;;assoc函数可以更新maps的元素，没有就添加，有就更新值</span>
-<span class="list">(<span class="keyword"><span class="built_in">assoc</span></span> posicle-map <span class="attribute">:green</span> <span class="attribute">:lime</span> <span class="attribute">:blue</span> <span class="attribute">:blueberry</span>)</span> <span class="comment">;=&gt;{:blue :blueberry, :green :lime, :purple :grape, :red :cherry}</span>
-<span class="comment">;;dissoc也是在现有的基础上创建一个新的map，同时忽略掉给定的key，第二个参数就是填写要忽略的key</span>
-<span class="list">(<span class="keyword"><span class="built_in">dissoc</span></span> popsicle-map <span class="attribute">:green</span> <span class="attribute">:blue</span>)</span> <span class="comment">;=&gt;{:purple :grape, :red :cherry}</span>
-<span class="comment">;;可以使用doseq与destructuring来遍历map</span>
-<span class="comment">;;select-keys函数接收一个map对象，以及一个key集合作为参数，它返回这个集合里面key在那个集合里面的一个子map</span>
-<span class="list">(<span class="keyword"><span class="built_in">select-keys</span></span> popsicle-map <span class="collection">[<span class="attribute">:red</span> <span class="attribute">:green</span> <span class="attribute">:blue</span>]</span>)</span> <span class="comment">;=&gt;{:green :apple :red :cherry}，如果参数里面的key找不到，就会被无视掉</span>
-<span class="comment">;;conj 函数添加一个map里面的所有元素到另外一个map里面去。如果目标map里面的key在源map里面也有，那么目标map的值会被更新成源map里面的值</span>
-<span class="comment">;;map里面可以嵌套map，而且可以无限嵌套，这样看上去就好像一个json数组</span>
-<span class="list">(<span class="keyword"><span class="built_in">def</span></span> person <span class="collection">{
-<span class="attribute">:name</span> <span class="string">"Arthury"</span>
-<span class="attribute">:address</span> <span class="collection">{
-  <span class="attribute">:street</span> <span class="string">"644 Glen Summit"</span>
-  <span class="attribute">:city</span> <span class="string">"HanZhou"</span>}</span>
-<span class="attribute">:employer</span> <span class="collection">{
-    <span class="attribute">:name</span> <span class="string">"Mike"</span>
-    <span class="attribute">:address</span> <span class="collection">{
-        <span class="attribute">:city</span> <span class="string">"Beijing"</span>}</span>}</span>}</span>)</span>
-  <span class="comment">;;get-in函数、宏-&gt;以及reduce函数都可以用来获得内嵌的key，这是三种用于获得内嵌key的方法</span>
-  <span class="list">(<span class="keyword"><span class="built_in">get-in</span></span> person <span class="collection">[<span class="attribute">:employer</span> <span class="attribute">:address</span> <span class="attribute">:city</span>]</span>)</span><span class="comment">;;法一</span>
-  <span class="list">(<span class="keyword"><span class="built_in">-&gt;</span></span> person <span class="attribute">:employer</span> <span class="attribute">:adress</span> <span class="attribute">:city</span>)</span><span class="comment">;;法二</span>
-  <span class="list">(<span class="keyword"><span class="built_in">reduce</span></span> get person <span class="collection">[<span class="attribute">:employer</span> <span class="attribute">:address</span> <span class="attribute">:city</span>]</span>)</span><span class="comment">;;法三</span>
-  <span class="comment">;;assoc-in函数可以用来修改一个内嵌的key的值(这里的修改是"修改")</span>
-  <span class="list">(<span class="keyword">assoc-in</span> person <span class="collection">[<span class="attribute">:employer</span> <span class="attribute">:address</span> <span class="attribute">:city</span>]</span> <span class="string">"Clayton"</span>)</span>
-  <span class="comment">;;update-in函数也是用来更新给定的内嵌的key对应的值，只是这个新值是通过一个给定的函数来计算出来</span>
-  <span class="list">(<span class="keyword"><span class="built_in">update-in</span></span> person <span class="collection">[<span class="attribute">:employer</span> <span class="attribute">:address</span> <span class="attribute">:zip</span>]</span> str <span class="string">"-1234"</span>)</span> <span class="comment">;;这段代码会将原来的zip更新为"-1234"</span>
-</code></pre></li>
-<li><p>set: <code>#{1 2 3}</code>，这是一个包含不重复元素，但是不要求集合里面的元素保持它们添加时候的顺序； Clojure 支持两种不同的set： 排序的和不排序的。如果添加到set里面的元素相互之间不能比较大小，那么一个ClassCastException 异常会被抛出来</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">def</span></span> stooges <span class="list">(<span class="keyword"><span class="built_in">hash-set</span></span> <span class="string">"Moe"</span> <span class="string">"Larray"</span> <span class="string">"Curly"</span>)</span>)</span> <span class="comment">;没有排序的</span>
-<span class="list">(<span class="keyword"><span class="built_in">def</span></span> stooges #<span class="collection">{<span class="string">"Moe"</span> <span class="string">"Larray"</span> <span class="string">"Curly"</span>}</span>)</span> <span class="comment">;同上</span>
-<span class="list">(<span class="keyword"><span class="built_in">def</span></span> stooges <span class="list">(<span class="keyword"><span class="built_in">sorted-set</span></span> <span class="string">"Moe"</span> <span class="string">"Larray"</span> <span class="string">"Curly"</span>)</span>)</span> <span class="comment">;会进行排序的</span>
-</code></pre></li>
-<li><p>Lists: 这是一个有序的集合</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">def</span></span> set-name <span class="list">(<span class="keyword"><span class="built_in">list</span></span> <span class="string">"Moe"</span> <span class="string">"Larry"</span> <span class="string">"Curly"</span>)</span>)</span>
-<span class="list">(<span class="keyword"><span class="built_in">def</span></span> set-name <span class="list">(<span class="keyword"><span class="built_in">quote</span></span> <span class="list">(<span class="string">"Moe"</span> <span class="string">"Larry"</span> <span class="string">"Curly"</span>)</span>)</span>)</span>
-<span class="list">(<span class="keyword"><span class="built_in">def</span></span> set-name '<span class="list">(<span class="string">"Moe"</span> <span class="string">"Larry"</span> <span class="string">"Curly"</span>)</span>)</span>
-<span class="comment">;;这几个创建出来的list都是一样的</span>
-<span class="comment">;;注意:空的lisp可以用()表示，这个与nil不同，在某一些lisp方言当中，()与nil是等价的</span>
-</code></pre></li>
-<li><p>数据结构之间是可以相互嵌套的，而且Clojure并没有要求vector、map或set里的元素是同一类型，也就是可以使混合类型</p>
-<pre><code><span class="collection">[<span class="number">1</span> <span class="number">2</span> <span class="string">"abc"</span> <span class="collection">[<span class="attribute">:a</span> <span class="number">1</span>]</span>]</span>
-<span class="collection">{<span class="attribute">:a</span> <span class="number">1</span>, <span class="string">"b"</span> <span class="number">2</span>, <span class="string">"abc"</span> #<span class="collection">{<span class="number">1</span> <span class="attribute">:a</span> <span class="attribute">:b</span>}</span>}</span><span class="comment">;这里面的逗号是随便加的，可以随便加，并不一定要全部加，关键字本身也可以直接作为元素</span>
-</code></pre></li>
-<li><p>集合的求值问题</p>
-<ul>
-<li>一般集合在求值的时候，其包含的各项会先求值，除非是以宏或特殊form名字开头的list</li>
-<li><p>字面标量值会对自身求值，返回自身</p>
-<pre><code><span class="number">1</span>;=&gt;<span class="number">1</span>
-</code></pre></li>
-<li><p>集合vector，其求值也是先对其包含的项求值，完成之后，继续对vector求值；map的求值也同vector</p>
-<pre><code>[<span class="number">2</span> <span class="number">3</span>];=&gt;[<span class="number">2</span> <span class="number">3</span>]
-</code></pre></li>
-<li><p>集合list的求值有点不同，它会调用函数，或者触发特殊form；无论是list头是什么函数，都会用list余下的项作为实参调用，也就是list集合的第一个元素会被当成是函数来进行调用</p>
-<pre><code>(cons <span class="number">1</span> [<span class="number">2</span> <span class="number">3</span>]);=&gt;(<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>);;cons自身也包含在这个<span class="built_in">list</span>里面
-</code></pre></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>quote:这是一个特殊的form，可以让它的参数不求值，在某些时候会非常的有用；无论多么复杂的实参，quote都能起作用，里面还可以进行各种各样的嵌套，最后整个东西都会返回</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">quote</span></span> <span class="list">(<span class="keyword"><span class="built_in">cons</span></span> <span class="number">1</span> <span class="collection">[<span class="number">2</span> <span class="number">3</span>]</span>)</span>)</span><span class="comment">;;=&gt;(cons 1 [2 3])</span>
-</code></pre><ul>
-<li><p>应用场景：可以使用list做数据集合，然后让list其中的函数不被调用</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">cons</span></span> <span class="number">1</span> <span class="list">(<span class="keyword"><span class="built_in">quote</span></span> <span class="list">(<span class="keyword">2</span> <span class="number">3</span>)</span>)</span>)</span><span class="comment">;;=&gt;(1 2 3),这样2就不会被当成是函数来调用从而出错</span>
-</code></pre></li>
-<li><p>简便写法，可以用<code>&#39;</code>代替<code>quote</code></p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">cons</span></span> <span class="number">1</span> '<span class="list">(<span class="keyword">2</span> <span class="number">3</span>)</span>)</span><span class="comment">;;=&gt;(1 2 3)</span>
-</code></pre></li>
-<li><p>一组对比，写的是什么，就会一模一样的返回什么</p>
-<pre><code><span class="list">[<span class="keyword">1</span> <span class="list">(<span class="keyword"><span class="built_in">+</span></span> <span class="number">2</span> <span class="number">3</span>)</span>] <span class="comment">;;=&gt; [1 5]</span>
-'<span class="list">(<span class="keyword">1</span> <span class="list">(<span class="keyword"><span class="built_in">+</span></span> <span class="number">2</span> <span class="number">3</span>)</span>)</span> <span class="comment">;;=&gt; (1 (+ 2 3)),写的是什么，返回的就是什么</span></span>
-</code></pre></li>
-<li><p>与quote对应的有一个语法quote，功能差不多，但是多了一些额外的特性，比较适合用来构建代码的集合</p>
-<pre><code>`(<span class="number">1</span> <span class="number">2</span> <span class="number">4</span>);=&gt;(<span class="number">1</span> <span class="number">2</span> <span class="number">4</span>)，写法就是一个反引号
-</code></pre><ul>
-<li><p>语法quote会自动对其实参里未限定的符号进行限定，这里的限定是指对其所在命名空间进行匹配，如果符号命名的var或类还不存在，语法quote会使用当前的命名空间</p>
-<pre><code>`<span class="built_in">map</span>
-;=&gt; clojure.core/<span class="built_in">map</span>
-`Integer
-;=&gt; java.lang.Integer
-`(<span class="built_in">map</span> even? [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>])
-;=&gt; (clojure.core/<span class="built_in">map</span> clojure.core/even? [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>])
-`is-always-right
-;=&gt;user/is-always-right
-</code></pre></li>
-<li><p>反quote，quote阻止了其实参及其所有子form求值，但是如果想要做到对其中某些form求值，就可以使用反quote，<code>~</code></p>
-<pre><code>`<span class="params">(+ <span class="number">10</span> <span class="params">(* <span class="number">3</span> <span class="number">2</span>)</span>)</span>
-;=&gt;<span class="params">(clojure.core/+ <span class="number">10</span> <span class="params">(clojure.core/* <span class="number">3</span> <span class="number">2</span>)</span>)</span>
-`<span class="params">(+ <span class="number">10</span> ~<span class="params">(* <span class="number">3</span> <span class="number">2</span>)</span>)</span>
-;=&gt;<span class="params">(clojure.core/+ <span class="number">10</span> <span class="number">6</span>)</span>
-<span class="params">(let [x '<span class="params">(<span class="number">2</span> <span class="number">3</span>)</span>] `<span class="params">(<span class="number">1</span> ~x)</span>)</span>;;=&gt; <span class="params">(<span class="number">1</span> <span class="params">(<span class="number">2</span> <span class="number">3</span>)</span>)</span>
-</code></pre></li>
-<li><p>类似于反quote的还有一个反quote拼接，这是反quote的一个变体</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">let</span></span> <span class="list">[<span class="keyword">x</span> '<span class="list">(<span class="keyword">2</span> <span class="number">3</span>)</span>] `<span class="list">(<span class="keyword">1</span> ~@x)</span>)<span class="comment">;;=&gt;(1 2 3);;这里是直接把序列x拼装到最终的list里，而不是作为嵌套list插入，区别就在这里</span></span></span>
-</code></pre></li>
-</ul>
-</li>
-<li><p>auto-gensym</p>
-<ul>
-<li><p>如果需要哟个未限定的符号，只要在语法quote里，最简单的做法是，在符号名后添加一个#，让clojure生成一个新的未限定符号</p>
-<pre><code>`potion<span class="preprocessor"># </span>
-</code></pre></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>():一个括号里面可以执行不止一个的操作，同样<code>()</code>也可以理解为是一个容器(或者说是一个form)，这个容器的作用还不是很清楚，现在只知道调用一个函数就需要使用<code>()</code>,并不知道在<code>()</code>里面嵌套<code>()</code>是什么样的标准</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">let</span></span> <span class="collection">[a <span class="number">1</span> b <span class="number">2</span>]</span> <span class="list">(<span class="keyword"><span class="built_in">+</span></span> a b)</span>)</span>
-</code></pre></li>
-<li><p>真与假</p>
-<ul>
-<li>对于if而言，除了false与nil，其余的都是true，像数字0之类的也会被当成是true；如果一个对象不是nil或false，它就一直是”true”</li>
-<li><p>另外要注意的是不要创建布尔对象，因为这样的对象无论值是什么，有时候会被当成true，有时候又会被当成false，所以不要用；如果要解析字符串，直接用Boolean类的静态方法valueOf便可，而不要使用其构造函数</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">if</span></span> <span class="list">(<span class="keyword">Boolean/value</span> <span class="string">"false"</span>)</span> <span class="attribute">:truthy</span> <span class="attribute">:falsey</span>)</span><span class="comment">;;=&gt;:falsey</span>
-</code></pre></li>
-<li><p>介绍一下seq函数，使用seq做终止条件是检查序列是否为空的惯用习惯，因为空集合并非为false，所以需要这样来操作</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">defn</span></span> print-seq <span class="collection">[s]</span>
-  <span class="list">(<span class="keyword"><span class="built_in">when</span></span> <span class="list">(<span class="keyword"><span class="built_in">seq</span></span> s)</span>
-    <span class="list">(<span class="keyword"><span class="built_in">prn</span></span> <span class="list">(<span class="keyword"><span class="built_in">first</span></span> s)</span>)</span>
-    <span class="list">(<span class="keyword"><span class="built_in">recur</span></span> <span class="list">(<span class="keyword">reset</span> s)</span>)</span>)</span>)</span>
-</code></pre></li>
-</ul>
-</li>
-<li><p>解构</p>
-<ul>
-<li>可以方便的实现对集合元素的访问</li>
-<li>解构与访问器方法<ul>
-<li>在面向对象程序设计语言当中，都会需要创建一个类来管理自己的数据对象，每一个数据对象都对应着自己的一套getter和setter方法；然而在clojure当中并没有类这个概念，构建应用对象最常见的做法是根据需要组合出map和vector</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>if语句</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">def</span></span> bug-numbers <span class="collection">[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span>]</span>)</span>
-<span class="list">(<span class="keyword"><span class="built_in">if</span></span> <span class="list">(<span class="keyword"><span class="built_in">pos?</span></span> <span class="list">(<span class="keyword"><span class="built_in">count</span></span> bug-numbers)</span>)</span>
-  <span class="list">(<span class="keyword">println</span> <span class="string">"No ready for release"</span>)</span>)</span>
-<span class="comment">;具体作用是判断集合bug-numbers中的元素是否大于0，然后决定是否执行println函数，这里面使用到了两个库函数，一个是pos，另一个是count</span>
-</code></pre></li>
-<li><p>宏-&gt;，也称之为”thread”，它本质上是调用一系列的函数，前一个函数的返回值作为后一个函数的参数，有点像是递归调用，但是宏-&gt;貌似不止有<code>-&gt;</code>这一种而已</p>
-<pre><code><span class="list">(<span class="keyword">f1</span> <span class="list">(<span class="keyword">f2</span> <span class="list">(<span class="keyword">f3</span> x)</span>)</span>)</span>
-<span class="list">(<span class="keyword"><span class="built_in">-&gt;</span></span> x f3 f2 f1)</span>
-<span class="comment">;;针对于map当中的嵌套key的访问写法上可能有点不一样</span>
-<span class="list">(<span class="keyword"><span class="built_in">-&gt;</span></span> map-name key-1 key-2 key-3)</span>
-</code></pre></li>
-<li><p>介绍几个初级函数</p>
-<ul>
-<li><p>conj:可以用来添加元素，根据不同的数据类型会选择出最合适的添加方式</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">conj</span></span> <span class="collection">[<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>]</span> <span class="number">4</span>)</span> <span class="comment">;=&gt; [1 2 3 4]</span>
-<span class="list">(<span class="keyword"><span class="built_in">conj</span></span> '<span class="list">(<span class="number">1</span> <span class="number">2</span> <span class="number">3</span>)</span> <span class="number">4</span>)</span> <span class="comment">;=&gt; (4 1 2 3)</span>
-</code></pre></li>
-<li><p>remove: 创建一个只包含所指定的谓词函数测试结果为false的元素的集合，把为true的都剔除掉</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">def</span></span> less-set <span class="list">(<span class="keyword"><span class="built_in">remove</span></span> #<span class="list">(<span class="keyword"><span class="built_in">=</span></span> % <span class="string">"Curly"</span>)</span> set-name)</span>)</span>
-</code></pre></li>
-<li><p>disj函数通过去掉给定的set里面的一些元素来创建一个新的set，对比区别一下remove，注意disj只能应用于set集合，其他的集合是不可以的</p>
-</li>
-<li>into: 见两个list里面的元素合并成一个新的大list</li>
-<li><p>str:返回字符串，注意这里是返回字符串，而不是输出字符串</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">str</span></span>)</span> <span class="comment">;=&gt;""</span>
-<span class="list">(<span class="keyword"><span class="built_in">str</span></span> x)</span> <span class="comment">;这里的要么是标识符，要么就是直接的字符串，如果就是直接的字符串，那要放在""里面，否则会报错</span>
-<span class="list">(<span class="keyword"><span class="built_in">str</span></span> <span class="string">"x"</span>)</span> <span class="comment">;=&gt;"x"</span>
-<span class="list">(<span class="keyword"><span class="built_in">str</span></span> <span class="string">"x"</span> <span class="string">"d"</span>)</span> <span class="comment">;=&gt;"xd"，会把所有的字符串合成之后返回</span>
-<span class="list">(<span class="keyword"><span class="built_in">str</span></span> 'x)</span> <span class="comment">;=&gt;"x"，这两个效果是一样的</span>
-<span class="list">(<span class="keyword"><span class="built_in">str</span></span> 'x 'd)</span> <span class="comment">;=&gt;"xd"</span>
-<span class="list">(<span class="keyword"><span class="built_in">str</span></span> <span class="string">"x) ;=&gt;这个是另外一种效果，目前还是未知的
-(str x y z) ;这里的xyz都是标识符</span></span>
-</code></pre></li>
-<li><p>println:输出字符串并且自动换行</p>
-<pre><code><span class="list">(<span class="keyword">println</span> <span class="string">"hello"</span> <span class="string">"world"</span>)</span> <span class="comment">;=&gt;hello world，中间的空格也会被保留，也可以像str那样使用'来传参数</span>
-</code></pre></li>
-<li><p>first: 返回集合的第一个字符，集合为空就返回nil</p>
-</li>
-<li>second: 返回集合的第二个字符</li>
-<li>last: 返回集合的最后一个字符</li>
-<li><p>nth:</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">nth</span></span> coll index)</span>
-<span class="list">(<span class="keyword"><span class="built_in">nth</span></span> coll index not-found)</span>
-<span class="comment">;;返回集合中指定索引的元素，索引是从0开始，如果越界就会抛出异常</span>
-</code></pre></li>
-<li><p>get: 用法同nth，但是如果所用越界是返回nil，而不是抛出异常，也就会更加的友好；如果集合类型是map，那么第二个参数就应该是key</p>
-</li>
-<li>next: 返回一个集合除了第一个元素之后的所有元素，如果没有更多的元素就会返回nil</li>
-<li>butlast: 返回一个集合除了最后一个元素之后的所有元素，如果只有一个元素就会返回nil</li>
-<li><p>drop-last: 见名知意，就是丢下一个集合中最后几个元素</p>
-<pre><code>(<span class="keyword">drop</span>-<span class="keyword">last</span> <span class="keyword">number</span> <span class="keyword">set</span>)
-</code></pre></li>
-<li><p>filter: 筛选函数，第一参数是自己的筛选规则，一般是自己写的匿名函数，第二个参数是等到筛选的参数</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">filter</span></span> #<span class="list">(<span class="keyword"><span class="built_in">&gt;</span></span> <span class="list">(<span class="keyword"><span class="built_in">count</span></span> %)</span> <span class="number">3</span>)</span> you-set)</span> <span class="comment">;筛选该集合中字符数超过三个的元素</span>
-</code></pre></li>
-<li><p>nthnext: 返回一个集合从索引值出直到末尾的所有元素</p>
-</li>
-<li><p>every?: 扫描集合中所有的元素，如果全部满足条件，就返回true，否则就返回false</p>
-<pre><code><span class="list">(<span class="keyword">every?</span> #<span class="list">(<span class="keyword"><span class="built_in">instance?</span></span> String %)</span> your-set)</span> <span class="comment">;扫描集合中所有的元素，看里面的元素是否为String实例，如果全部都是，就返回true，否则返回false</span>
-</code></pre></li>
-<li><p>not-every?:扫描集合中所有的元素，如果全部满足条件，就返回false，否则就返回true</p>
-</li>
-<li>some:扫描集合中的元素，遇到满足条件的就返回true，否则就返回nil，但是需要知己写匿名函数来做判断规则</li>
-<li>contains?: 这个函数可以操作sets和maps， 当操作set的时候, 它返回给定的set是否包含某个元素。这比在list和vector上面使用的some函数就简单多了</li>
-<li>not-any?:扫描集合中的元素，遇到满足条件的就返回false,否则就返回true</li>
-<li><p>subs: 返回一个子字符串</p>
-<pre><code><span class="list">(<span class="keyword">subs</span> <span class="string">"haha"</span> <span class="number">1</span>)</span> <span class="comment">;=&gt;aha ;返回索引(包括索引))之后的子字符串，这个是目前已知的用法</span>
-</code></pre></li>
-<li><p>count: 返回集合里面的元素个数</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">count</span></span> <span class="collection">[<span class="number">19</span> <span class="string">"yellow"</span> <span class="literal">true</span>]</span>)</span> <span class="comment">;=&gt; 3</span>
-</code></pre></li>
-<li><p>reverse: 把集合里面的元素反转</p>
-<pre><code>(reverse [<span class="number">2</span> <span class="number">4</span> <span class="number">7</span>]) ;=&gt;(<span class="number">7</span> <span class="number">4</span> <span class="number">2</span>)
-</code></pre></li>
-<li><p>map: 接受多个参数，第一个参数是要对后面集合的操作，后面的参数是要被操作的集合</p>
-<pre><code>(<span class="built_in">map</span> <span class="preprocessor">#(+ % <span class="number">3</span>) [<span class="number">2</span> <span class="number">4</span> <span class="number">7</span>]) ;=&gt;( <span class="number">5</span> <span class="number">7</span> <span class="number">10</span>)，第一个参数是要求对后面的集合采取+<span class="number">3</span>的操作，这里%是书写语法的要求，并不是取余的操作</span>
-(<span class="built_in">map</span> + [<span class="number">2</span> <span class="number">4</span> <span class="number">7</span>] [<span class="number">5</span> <span class="number">6</span>] [<span class="number">1</span> <span class="number">2</span> <span class="number">3</span> <span class="number">4</span>]) ;=&gt;(<span class="number">8</span> <span class="number">12</span>)，这里第一个参数就是一个加法函数，对后面的集合进行操作，如果不够加就以最短的集合为标准，多出来的就会被直接无视掉
-</code></pre></li>
-<li><p>apply: 与map有点类似，但是还是有不少的不同点的</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">apply</span></span> + <span class="collection">[<span class="number">2</span> <span class="number">4</span> <span class="number">7</span>]</span>)</span> <span class="comment">;=&gt;13，第一个参数是一个操作数，第二个参数是一个集合，对这个集合操作之后返回一个值</span>
-</code></pre></li>
-<li><p>reduce: 接收一个需要两个参数的函数, 一个可选的value以及一个集合。它会以value以及集合的第一个元素作为参数来调用给定的函数（如果指定了value的话）， 要么以集合的第一个元素以及第二个元素为参数来调用给定的函数（如果没有指定value的话)。接着就以这个返回值以及集合里面的下一个元素为参数来调用给定的函数，知道集合里面的元素都被计算了 — 最后返回一个值</p>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="与Java的交互">与Java的交互</h2><ul>
-<li>clojure程序可以使用所有的java类以及接口，包括各种java类中的方法都可以直接调用，可以手动使用import函数来导入其他包的类，这就是说可以使用所有java可以使用的框架，然后使用clojure来进行实现，这简直是太棒了！这样java的框架基本基本上都可以使用了，这个不错，搞清楚怎么把这些导入到自己的项目里面，另外看一下clojure自己有没有一些框架，不是java的，jvm虚拟机是一个好东西</li>
-<li><p>clojure与其宿主共生，它提供了丰富而强大的特性，而java则提供了对象模型、程序库和运行时等方面的支持，相辅相成简直完美；注意，可以与java进行交互是因为可以使用java现存的大量的第三方库，然而使用clojure去解决问题是不使用面向对象的方法来的，所以不存在去构造类的说法，clojure有自己解决问题的模式</p>
-</li>
-<li><p>这里直接导入java的库就可以使用了，那么为什么需要使用lein来组织文件的目录，意义？</p>
-</li>
-<li><p>新建一个对象</p>
-<ul>
-<li><p>使用new方法可以轻松的做到</p>
-<pre><code><span class="list">(<span class="keyword">Classname.</span> args*)</span>
-<span class="list">(<span class="keyword"><span class="built_in">new</span></span> Classname args*)</span>
-<span class="comment">;;不明白这里的args*要如何进行理解？应该是类的构造方法，这里要传入进去的是构造函数的参数？有点意思</span>
-<span class="list">(<span class="keyword"><span class="built_in">new</span></span> java.util.HashMap <span class="collection">{<span class="string">"foo"</span> <span class="number">42</span> <span class="string">"bar"</span> <span class="number">9</span> <span class="string">"baz"</span> <span class="string">"quux"</span>}</span>)</span><span class="comment">;;这样就穿建立一个简单的HashMap</span>
-<span class="comment">;;当然也可以与标识符进行绑定</span>
-<span class="list">(<span class="keyword"><span class="built_in">def</span></span> my-hash-map <span class="list">(<span class="keyword"><span class="built_in">new</span></span> java.util.HashMap <span class="collection">{<span class="string">"foo"</span> <span class="number">42</span> <span class="string">"bar"</span> <span class="number">9</span> <span class="string">"baz"</span> <span class="string">"quux"</span>}</span>)</span>)</span>
-</code></pre></li>
-<li><p>还可以用更简洁的Clojure form，这个才是最常用的方法</p>
-<pre><code><span class="list">(<span class="keyword">java.util.HashMap.</span> <span class="collection">{<span class="string">"foo"</span> <span class="number">42</span> <span class="string">"bar"</span> <span class="number">9</span> <span class="string">"baz"</span> <span class="string">"quux"</span>}</span>)</span>
-</code></pre></li>
-<li><p>调用java对象的方法</p>
-<pre><code>(. <span class="keyword">object</span>-name <span class="keyword">method</span> arg);;形式一
-(.<span class="keyword">method</span> <span class="keyword">object</span>-name arg);;形式二
-</code></pre><ul>
-<li><p>方法的连续调用，可以用..宏串起来</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">.</span></span> <span class="list">(<span class="keyword"><span class="built_in">.</span></span> calendar getTimeZone)</span> getDisplayName)</span><span class="comment">;;形式一</span>
-<span class="list">(<span class="keyword"><span class="built_in">..</span></span> calendar getTimeZone getDisplayName)</span><span class="comment">;;形式二，这个更加的常用</span>
-<span class="comment">;;另外一个宏同样可以用来连续调用方法，是.?.，与..这个宏的区别就在于在调用过程中如果有一个方法返回nil，那么就不会继续调用了，可以防止出现NullPointerException异常，然而这个要调用牵扯到命名空间的问题，目前还不是很了解，至少目前在使用的时候出现了问题</span>
-</code></pre></li>
-<li><p>设置java实例对象的属性，如果没有setXXX这样的修改方法，java实例属性可以通过set!函数设定</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">let</span></span> <span class="collection">[origin <span class="list">(<span class="keyword">java.awt.Point.</span> <span class="number">0</span> <span class="number">0</span>)</span>]</span>
-  <span class="list">(<span class="keyword"><span class="built_in">set!</span></span> <span class="list">(<span class="keyword">.x</span> origin)</span> <span class="number">15</span>)</span><span class="comment">;;set!的第一个实参是一个实例成员访问的form</span>
-  <span class="list">(<span class="keyword"><span class="built_in">str</span></span> origin)</span>)</span>
-</code></pre></li>
-<li><p>使用doto函数来调用一个对象上的多个方法，第一个参数是对象，后面的参数都是对该对象方法的调用</p>
-<pre><code><span class="list">(<span class="keyword"><span class="built_in">doto</span></span> calendar
-  <span class="list">(<span class="keyword">.set</span> Calendar/YEAR <span class="number">1996</span>)</span>
-  <span class="list">(<span class="keyword">.set</span> Calendar/MONTH Calendar/AUGUST)</span>)</span>
-<span class="comment">;;一看就懂的东西</span>
-<span class="comment">;;定义的是HashMap对象，并且往里面添加元素</span>
-<span class="list">(<span class="keyword"><span class="built_in">def</span></span> my-hash-map <span class="list">(<span class="keyword">java.util.HashMap.</span>)</span>)</span>
-<span class="list">(<span class="keyword"><span class="built_in">doto</span></span> my-hash-map
-  <span class="list">(<span class="keyword">.put</span> <span class="string">"HOME"</span> <span class="string">"home.me"</span>)</span>
-  <span class="list">(<span class="keyword">.put</span> <span class="string">"SRC"</span> <span class="string">"src"</span>)</span>
-  <span class="list">(<span class="keyword">.put</span> <span class="string">"BIN"</span> <span class="string">"classes"</span>)</span>)</span>
-</code></pre></li>
-</ul>
-</li>
-<li><p>memfn宏 </p>
-</li>
-</ul>
-</li>
-<li><p>Proxies</p>
-<ul>
-<li>proxy 创建一个继承了指定类并且/或者实现了0个或者多个接口的类的对象。这对于创建那种必须要实现某个接口才能得到通知的listener对象很有用</li>
-<li>在clojure中还是有对象这个概念的，但是类的概念并没有提及，类都是使用java中的类型，并没有看到可以使用clojure来进行自定义类</li>
-</ul>
-</li>
-</ul>
-<h2 id="异常处理">异常处理</h2><ul>
-<li>抛出和捕获运行时异常：分别叫throw和catch</li>
-</ul>
-<h2 id="如何调用各种各样的库">如何调用各种各样的库</h2><ul>
-<li><p>调用clojure的库</p>
-<pre><code>(clojure.<span class="type">string</span>/upper-<span class="keyword">case</span> <span class="string">"load noises!"</span>)
-;;直接使用`library/<span class="keyword">method</span>`的形式来进行调用
-</code></pre><ul>
-<li>clojure自带的一些库<ul>
-<li>clojure.string，可以与java.lang.String对比一下</li>
-<li>里面有提供一些常用的方法，比如大小写转换，去除空格之类的方法</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="并发编程(杀手级特性)">并发编程(杀手级特性)</h2><ul>
-<li>传统的通过锁来队并发进行管理是非常困难的，不知道什么时候要加锁，什么时候不应该，忘了或者加多了，或者时机不对，都会导致非常糟糕的结果出现</li>
-<li>使用clojure来进行并发式编程是非常好的，因为在这里面所有的数据都是只读得，除非显示的使用Var、Ref、Atom、Agent来标明它们是可以修改的，这些都有提供安全的方法去管理共享状态</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/05/13/Clojure/" data-id="cidbz0xmy004l14gzsz50cgew" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Matlab" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/05/13/Matlab/" class="article-date">
-  <time datetime="2015-05-13T01:38:35.000Z" itemprop="datePublished">2015-05-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/05/13/Matlab/">Matlab</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="基本语言">基本语言</h2>
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/05/13/Matlab/" data-id="cidbz0xlz003m14gzxnvmwaj4" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-iOS7-8" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/05/11/iOS7-8/" class="article-date">
-  <time datetime="2015-05-11T00:49:06.000Z" itemprop="datePublished">2015-05-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/05/11/iOS7-8/">iOS7/8</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="资源来源">资源来源</h2><ul>
-<li>博客</li>
-<li>微博</li>
-<li>wwdc</li>
-<li>视频</li>
-<li>书籍</li>
-<li>现在看来我需要先把自己qq上的资料先整理一遍，然后把part1快速复习一遍，并且把最新的布局技术给学会，接着是动画与存储一块，python现在也只能一天花上一小点的时间</li>
-<li>使用继承的</li>
-</ul>
-<h2 id="常用框架">常用框架</h2><ul>
-<li>绘图相关<ul>
-<li>OpenGL:一个开源的C语言绘图框架，包括3d绘图，可以利用绘图设备全部的好处。这个经常是最有效的绘图方法，特别是当动画被包含的时候。iOS收录了一个OPenGL的简单版本称为OpenGL ES。可以参考苹果的<code>OpenGL Programming Guide for iOS</code> 。通过GLKit框架Open GL可视化的结构，文本的载入，阴影的渲染，并且计算都非常的简单；看苹果有关于GLKit的相关框架</li>
-</ul>
-</li>
-<li>游戏相关<ul>
-<li>Sprite Kit:苹果内置的用于开发2d游戏的框架</li>
-<li>Game Kit:这个框架提供了三个可以提高用户游戏体验的方面：无线或者蓝牙在设备之间的直接交流；在一个已存在的网络交流的基础上进行声音的交流；Game Center，可以更多的提高玩家的游戏体验</li>
-</ul>
-</li>
-<li>广告相关<ul>
-<li>Advertising:可以在app里面放置广告</li>
-</ul>
-</li>
-<li>订阅相关<ul>
-<li>Newsstand</li>
-</ul>
-</li>
-<li>未知<ul>
-<li>Accelerate:</li>
-<li>Telephone:</li>
-<li>Pass Kit:</li>
-<li>External accessories:</li>
-</ul>
-</li>
-<li>打印相关<ul>
-<li>Printing:    </li>
-</ul>
-</li>
-<li>安全相关<ul>
-<li>Security</li>
-</ul>
-</li>
-</ul>
-<h2 id="View">View</h2><ul>
-<li>UIView<ul>
-<li>子类<ul>
-<li>UIWindow</li>
-</ul>
-</li>
-<li>属性<ul>
-<li>绘制相关<ul>
-<li>layer属性<ul>
-<li>layer属性是CALayer实例</li>
-<li>工作原理<ul>
-<li>UIView在layer上绘制自己，然后layer展示在屏幕上</li>
-</ul>
-</li>
-<li>绘图的缓存机制：<ul>
-<li>一个view并不会被频繁绘制，被绘制过的版本会被缓存起来，在任何需要被使用的地方被重新使用</li>
-<li>这些缓存起来的版本就是layer</li>
-</ul>
-</li>
-<li>layer拥有许多绘图相关的属性，是UIView绘图的核心，通过UIView提供的方法没有办法做的事情，通过其layer也许可以做到</li>
-<li>特性<ul>
-<li>可混合，不同的layer可以混合在一起进行运作，从不同的方向进行绘制</li>
-<li>可动画，</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>布局相关</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/05/11/iOS7-8/" data-id="cidbz0xjk001914gzc2if2wuc" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Docker" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/05/09/Docker/" class="article-date">
-  <time datetime="2015-05-09T07:43:47.000Z" itemprop="datePublished">2015-05-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/05/09/Docker/">Docker</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Docker简介">Docker简介</h2>
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/05/09/Docker/" data-id="cidbz0xml004614gzjtkugi2s" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Entrepreneurial-insight" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/05/09/Entrepreneurial-insight/" class="article-date">
-  <time datetime="2015-05-09T06:41:18.000Z" itemprop="datePublished">2015-05-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/05/09/Entrepreneurial-insight/">Entrepreneurial-insight</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="用户激励体系">用户激励体系</h2><ul>
-<li>健康的激励形式，避免用户的集体撤离</li>
-<li>确保产品往好的方向发展</li>
-<li>精神、物质、功能(分级体验)</li>
-<li>你的用户到底扮演的是什么角色</li>
-</ul>
-<h2 id="创业者如何选择合适的vc">创业者如何选择合适的vc</h2><ul>
-<li>价值观与文化的适配性，是否志趣相投</li>
-<li>除了投资与被投资，还剩下什么？我只是赚钱工具吗？还是是我的导师？</li>
-<li>一定要懂行，是投机，还是投资，了解其过往的投资案例</li>
-<li>没有完美的vc，但是一定要是合适的vc，vc一定选择，就没有那么容易开除了</li>
-</ul>
-<h2 id="低频o2o">低频o2o</h2><ul>
-<li>亲身体验</li>
-<li>了解行业特点</li>
-<li>是否需要体验店要看需求</li>
-<li>出来混，早晚都是要卖的</li>
-<li>市场大小、创新是否有足够吸引力，商业模式是否有价值</li>
-</ul>
-<h2 id="优秀的商业模式">优秀的商业模式</h2><ul>
-<li>o2o，线上与线下</li>
-<li>免费</li>
-<li>传统行业，低效转高效的点</li>
-<li>平台型</li>
-<li>快速打造自己的品牌</li>
-</ul>
-<h2 id="陌陌">陌陌</h2><ul>
-<li>社交(非熟人社交)</li>
-<li>本地化</li>
-<li>o2o</li>
-</ul>
-<h2 id="可穿戴设备">可穿戴设备</h2><h2 id="我们是为了什么而聚集在一起，有一样的价值观吗？">我们是为了什么而聚集在一起，有一样的价值观吗？</h2><h2 id="投资者拖延融资(比如红杉资本)">投资者拖延融资(比如红杉资本)</h2><ul>
-<li>直到整个项目歇菜</li>
-<li>创业是一条反复痛苦与反复的打击当中，生命不息创业不止</li>
-<li>病态的心理，病态的精神可以激发更高的领导力，杀不死我就会使我更强大</li>
-<li>创业者其实都是病态的</li>
-</ul>
-<h2 id="关于创业团队如何融资与招人">关于创业团队如何融资与招人</h2><ul>
-<li>如何打造好的开场白<ul>
-<li>什么业务？</li>
-<li>什么内容？</li>
-<li>尽可能简短容易理解</li>
-<li>让团队的加入</li>
-<li>与投资人时刻保持联系</li>
-</ul>
-</li>
-<li>初创的团队？<ul>
-<li>上马能武，下马能文</li>
-<li>能够独当一面</li>
-<li>用自身的条件来吸引</li>
-<li>第一阶段的要求一定要非常高，绝对不能低，这是针对核心团队，核心团队一烂，那么整个公司都会没救</li>
-<li>公司一定要诚实，绝对不能让人感觉是在忽悠，实话实说，让别人知道公司不会占你的便宜，我们是真诚的</li>
-</ul>
-</li>
-</ul>
-<h2 id="关注政府政策的动向是很有必要的，顺天者昌，逆天者亡">关注政府政策的动向是很有必要的，顺天者昌，逆天者亡</h2><h2 id="关注BAT，三大霸王，底下诸侯争雄">关注BAT，三大霸王，底下诸侯争雄</h2><ul>
-<li>把握一个场景的连接式服务，从源头到尾都被自己掌控到手中，邪恶脸</li>
-<li>小小的拼车蕴含着如此大的玄机</li>
-<li>一切随着流量而动，如何与用户来建立连接，如何一步接一步的把资源都连接在一起，说到底就是资源的争夺</li>
-<li>互联网战场中也是没有永恒的敌人，只有永恒的利益</li>
-</ul>
-<h2 id="寓意深长的话">寓意深长的话</h2><ul>
-<li>召集一般人去攻占山头有点困难，但是在路上召集人来攻占会很容易</li>
-<li>想法好并不代表产品好</li>
-<li>不要根据自己的主观去思考</li>
-<li>目前本土化的思维是比较好的思维模式，但是也不能只埋头看到眼前的利益</li>
-<li>情怀是有了资源之后才可以聊的</li>
-</ul>
-<h2 id="需要关注的公司">需要关注的公司</h2><ul>
-<li>大疆无人机</li>
-</ul>
-<h2 id="南方性的创业者">南方性的创业者</h2><ul>
-<li>不能只是埋头苦干，一定要懂得宣传，主要就是舆论媒体，不管别人怎么说，高调宣传能够起到的效果是不容忽视的</li>
-<li>一定要结合南拳北腿，成为商界的李小龙</li>
-<li>柏拉图的洞穴理论</li>
-</ul>
-<h2 id="创业者的类型">创业者的类型</h2><ul>
-<li>理工型：比尔盖茨</li>
-<li>文艺型：乔布斯</li>
-</ul>
-<h2 id="初创团队">初创团队</h2><ul>
-<li>股权分配(其实就是能否hold住合伙人)<ul>
-<li>平均分配，之后再根据贡献度来进行分配</li>
-<li>自己牛逼，让人无话可说</li>
-</ul>
-</li>
-</ul>
-<h2 id="你手上的牌是好牌还是烂牌？">你手上的牌是好牌还是烂牌？</h2><ul>
-<li>用户量或者营业额依靠口碑传播月连续增长率能够达到百分之十以上，这就是值得自己去浪费生命去做的项目</li>
-<li>转型是继承还是？<ul>
-<li>继承<ul>
-<li>自己的产品中的某一项是否有必要进行发展</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="h5的前景">h5的前景</h2><ul>
-<li>app+h5+入口</li>
-<li>渠道、工具、产品</li>
-<li>h5游戏目前比较有前景</li>
-<li>先有好产品，再转到后端做引擎</li>
-<li>以原生app带动海量的h5app，全入口，多载体，h5+webapp+多种入口将会成为主流的玩法</li>
-<li>云集就是这样一个代表</li>
-</ul>
-<h2 id="如何提高app用户的活跃度">如何提高app用户的活跃度</h2><ul>
-<li>通过流量分发来获利</li>
-<li>用户、自身、行业三方利益出发，打造一个良性的循环，企业才能够健康发展</li>
-</ul>
-<h2 id="目前看好的几个产品的分析">目前看好的几个产品的分析</h2><ul>
-<li>云集<ul>
-<li>作为小众webapp的推广平台</li>
-<li>自身对于webapp有进行一定的优化</li>
-<li>接口开放，h5接入，这是现在h5主流的</li>
-<li>盈利的模式很容易就可以找到</li>
-</ul>
-</li>
-</ul>
-<h2 id="风口论">风口论</h2><ul>
-<li>不要什么火，就去做什么，能够真正有价值的是能为社会创造机制的</li>
-</ul>
-<h2 id="分享经济学">分享经济学</h2><ul>
-<li>airbnb，又是一个改变人类世界的产品，改变了社会，创造了价值</li>
-<li>缺口就是商机</li>
-<li>创业就是如此的艰辛，千万不要和不清楚，不信任的人进行合作，核心团队的人绝对不能随便，如果不了解就不要拉拢进来，只会毁了整个公司</li>
-</ul>
-<h2 id="数据对于管理层决策的重要性">数据对于管理层决策的重要性</h2><ul>
-<li>没有有效的数据是致命的</li>
-<li>特别是财务数据更加的致命，美团在这一点做的实在是厉害</li>
-</ul>
-<h2 id="创业期项目的特点">创业期项目的特点</h2><ul>
-<li>项目一点要能够做到快速开发，去试探市场</li>
-<li>另外多人协作的时候要如何去好好的分析，如何才能够高效的调配各种各样的人事资源，如何避免混乱的情况发生才是最关键的</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/05/09/Entrepreneurial-insight/" data-id="cidbz0xmf004314gzgvlzz3pf" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/05/16/leiningen/" data-id="cidd4nd060018zjgz8elfjts5" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -1641,7 +1184,7 @@ UIView.animateWithDuration(<span class="number">1.0</span>, <span class="string"
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
     </nav>
   
 </section>
@@ -1654,7 +1197,7 @@ UIView.animateWithDuration(<span class="number">1.0</span>, <span class="string"
   <div class="widget-wrap">
     <h3 class="widget-title">標簽</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunLoop/">RunLoop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Security/">Security</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS多线程/">iOS多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunLoop/">RunLoop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Security/">Security</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS多线程/">iOS多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/keychain/">keychain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/warning/">warning</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解读/">源码解读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -1663,7 +1206,7 @@ UIView.animateWithDuration(<span class="number">1.0</span>, <span class="string"
   <div class="widget-wrap">
     <h3 class="widget-title">標簽雲</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 13.33px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 10px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/Security/" style="font-size: 10px;">Security</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/iOS多线程/" style="font-size: 10px;">iOS多线程</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 10px;">tips</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
+      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 13.33px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 10px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/Security/" style="font-size: 13.33px;">Security</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/iOS多线程/" style="font-size: 10px;">iOS多线程</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 13.33px;">tips</a> <a href="/tags/warning/" style="font-size: 10px;">warning</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/源码解读/" style="font-size: 10px;">源码解读</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
     </div>
   </div>
 
@@ -1672,7 +1215,7 @@ UIView.animateWithDuration(<span class="number">1.0</span>, <span class="string"
   <div class="widget-wrap">
     <h3 class="widget-title">歸檔</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">35</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">40</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
     </div>
   </div>
 
@@ -1684,23 +1227,23 @@ UIView.animateWithDuration(<span class="number">1.0</span>, <span class="string"
       <ul>
         
           <li>
-            <a href="/2015/08/15/iOS的安全相关01/">iOS的安全相关01</a>
+            <a href="/2015/08/15/烦人的警告-Warning/">烦人的警告(Warning)</a>
           </li>
         
           <li>
-            <a href="/2015/08/14/Mac使用小技巧/">Mac使用小技巧</a>
+            <a href="/2015/08/15/解读爱卡源码有感01/">解读爱卡源码有感01</a>
           </li>
         
           <li>
-            <a href="/2015/08/13/iOS-RunLoop/">iOS RunLoop</a>
+            <a href="/2015/08/15/DLog的使用/">DLog的使用</a>
           </li>
         
           <li>
-            <a href="/2015/08/13/iOS多线程编程01/">iOS多线程编程01</a>
+            <a href="/2015/08/15/CocoaSecurity/">CocoaSecurity</a>
           </li>
         
           <li>
-            <a href="/2015/08/12/iOS网络编程01/">iOS网络编程01</a>
+            <a href="/2015/08/15/sskeychain01/">sskeychain01</a>
           </li>
         
       </ul>
