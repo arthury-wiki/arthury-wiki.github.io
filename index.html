@@ -100,10 +100,109 @@
 <li>在iOS SDK中，根据特定的需求，有些类不仅提供了单例访问的接口，还为开发者提供可实例化一个新对象的接口；举个栗子，NSFileManager可以通过defaultManager方法来共享已经创建的实例；如果需要新的NSFileManager实例对象，可以选择init方法</li>
 </ul>
 <h2 id="How_to_use?">How to use?</h2><ul>
-<li><p>有非ARC和ARC+GCD两种方式，可以都了解一下</p>
-<pre><code><span class="comment">#import UIKit</span>
-<span class="variable">@inerface</span> <span class="constant">NonARCSingleton</span><span class="symbol">:NSObject</span>
+<li>有非ARC和ARC+GCD两种方式，可以都了解一下</li>
+<li><p>先是非ARC实现：</p>
+<pre><code><span class="preprocessor">#import UIKit</span>
+@inerface NonARCSingleton:<span class="built_in">NSObject</span>
+<span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, retain) <span class="built_in">NSString</span> *tempProperty;
++ (NonARCSingleton *)sharedInstance;
+<span class="keyword">@end</span>
+
+<span class="class"><span class="keyword">@implementation</span> <span class="title">NonARCSingleton</span></span>
+<span class="keyword">static</span> NonARCSingleton *sharedInstance = <span class="literal">nil</span>;
+<span class="comment">//获取一个sharedInstance实例，如果有必要，实例化一个(有必要是指这个实例并没有被创建的时候吗?)</span>
++ (NonARCSingleton *)sharedInstance {
+    <span class="keyword">if</span>(sharedInstance == <span class="literal">nil</span>){
+        <span class="comment">//在这里调用init方法进行初始化</span>
+        sharedInstance = [[<span class="keyword">super</span> allocWithZone:<span class="literal">NULL</span>] init];
+    }
+    <span class="keyword">return</span> sharedInstance;
+}
+
+<span class="comment">//当第一次使用这个单例的时候，就会调用这个init方法</span>
+- (<span class="keyword">id</span>)init{
+    <span class="keyword">self</span> = [<span class="keyword">super</span> init];
+    <span class="keyword">if</span>(<span class="keyword">self</span>){
+        <span class="comment">//通常值这里做一些相关的初始化任务</span>
+    }
+   <span class="keyword">return</span> <span class="keyword">self</span>;
+}
+
+<span class="comment">//这个dealloc方法永远都不会被调用，因为在app的生命周期中，该单例会一直存在，所以说没有必要去实现</span>
+- (<span class="keyword">void</span>)delloc{
+    [<span class="keyword">super</span> dealloc];
+}
+
+<span class="comment">//通过返回当前的sharedInstance实例，就可以防止实例化一个新的对象</span>
++ (<span class="keyword">id</span>)alllocWithZone:(<span class="built_in">NSZone</span> *)zone{
+    <span class="keyword">return</span> [[<span class="keyword">self</span> sharedInstance] retain];
+}
+
+<span class="comment">//同样，不希望生成单例的多个拷贝</span>
+- (<span class="keyword">id</span>)copyWithZone:(<span class="built_in">NSZone</span> *)zone{
+    <span class="keyword">return</span> <span class="keyword">self</span>;
+}
+
+<span class="comment">//什么也不做，该单例并不需要一个引用计数</span>
+- (<span class="keyword">id</span>)retain{
+    <span class="keyword">return</span> <span class="keyword">self</span>;
+}
+
+<span class="comment">// 替换掉引用计数，这样就永远都不会release这个单例</span>
+- (<span class="built_in">NSUInteger</span> *)retainCount{
+    <span class="keyword">return</span> <span class="built_in">NSUIntegerMax</span>;
+}
+
+<span class="comment">//该方法是空的，不希望用户release掉这个对象</span>
+- (<span class="keyword">oneway</span> <span class="keyword">void</span>)release{
+
+}
+
+<span class="comment">//除了返回单例之外，什么都不做</span>
+- (<span class="keyword">id</span>)autorelease{
+    <span class="keyword">return</span> <span class="keyword">self</span>;
+}
 </code></pre></li>
+<li><p>上面实现单例的方法是线程不安全的，假如有多个线程同时调用sharedInstance方法获取一个实例，而sharedInstance方法需要花费1-2秒钟的时间，那么NonARCSingleton的init方法就可能会被多次调用，也就是不同线程获得的NonARCSingleton有可能不是同一个实例；那么如何解决这个线程的不安全(线程不安全就是指在多个线程中，执行的操作会造成相互的干扰，得不到与其应该得到的结果，不如一个在修改，一个在读取，或者像这样执行获取共享实例的操作，但是结果却得到了不同的实例)呢？答案是可以使用@synchronized来创建互斥锁即可，也就是当一个线程操作的时候锁住，不让其他线程进行操作(这样方法并不能保证单例中所有的调用都是线程安全的，而且加锁这样的操作并不是很推荐)</p>
+<pre><code>+ (NonARCSingleton *)sharedInstance{
+    <span class="comment">//保证实例化的时候是线程安全的</span>
+    <span class="keyword">@synchronized</span>(<span class="keyword">self</span>){
+        <span class="keyword">if</span>(sharedInstance == <span class="literal">nil</span>){
+            sharedInstance = [[<span class="keyword">super</span> allocWithZone:<span class="literal">NULL</span>] init];
+        }
+    }
+}
+</code></pre></li>
+<li><p>ARC+GCD</p>
+<pre><code><span class="class"><span class="keyword">@interface</span> <span class="title">ARCSingleton</span>:<span class="title">NSObject</span></span>
+<span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">weak</span>)<span class="built_in">NSString</span> *tempProperty;
++ (ARCSingleton *)sharedInstance;
+<span class="keyword">@end</span>
+
+<span class="class"><span class="keyword">@implementation</span> <span class="title">ARCSingleton</span></span>
++ (ARCSingleton)sharedInstance{
+    <span class="keyword">static</span> ARCSingleton *sharedInstance = <span class="literal">nil</span>;
+    <span class="keyword">static</span> <span class="built_in">dispatch_once_t</span> onceTolen; <span class="comment">//锁</span>
+    dispatch_one(&amp;amp;onceTolen,^{
+    <span class="comment">//最多调用一次</span>
+        sharedInstance = [[<span class="keyword">self</span> alloc] init];
+    })
+    <span class="keyword">return</span> sharedInstance;
+}
+
+<span class="comment">//当第一次使用这个单例的时候，会调用这个init方法</span>
+-(<span class="keyword">id</span>)init{
+    <span class="keyword">self</span> = [<span class="keyword">super</span> init];
+
+    <span class="keyword">if</span>(<span class="keyword">self</span>){
+        <span class="comment">//通常在这里做一些相关的初始化任务</span>
+    }
+    <span class="keyword">return</span> <span class="keyword">self</span>;
+}
+</code></pre></li>
+<li><p>在上面的方法中调用了<code>dispatch_once</code>方法就可以确保ARCSingleton只被实例化一次。并且该方法是线程安全的，我们不用担心在不同的线程中，会获得不同的实例(当然这个方法同样不能保证该单例中所有方法的调用都是线程安全的)；这个写法我在</p>
+</li>
+<li>不用GCD</li>
 </ul>
 
       
@@ -320,6 +419,7 @@
         <h2 id="这类代码会存在的问题">这类代码会存在的问题</h2><ul>
 <li>项目里面带有大量的第三方类库，如果只是想要知道这些类库的用法，那么就去单独的下载官方的demo来看，千万不要一口气拖到playground里面去看效果，这样太蛋疼了，一大堆的依赖文件，而且不知道这些文件的依赖关系是什么，这样会造成非常严重的问题</li>
 <li>最好的办法是进行分离，各个击破，把每一块的文件的作用和用法搞清楚，最后再合流才是最佳方案，如果分离的时候发现与其他模块有关联就把那个关联断掉，千万不要把依赖也拖进来，这样会导致最后整个项目都被拖进去</li>
+<li>这启发了我看大型第三方框架的思路，我也可以去拆分，一个一个的拖到playground里面去看效果，甚至很的分析的更加细致，一段一段代码的去测试，最后合流，这样难度就会减低很多了，而且效率也会变得很高，简直nice，我太机智了</li>
 </ul>
 
       
@@ -630,7 +730,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">標簽</h3>
+    <h3 class="widget-title">标签</h3>
     <div class="widget">
       <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Observer/">Observer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunLoop/">RunLoop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Security/">Security</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS多线程/">iOS多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/keychain/">keychain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pattern/">pattern</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/warning/">warning</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解读/">源码解读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
     </div>
@@ -639,7 +739,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">標簽雲</h3>
+    <h3 class="widget-title">标签云</h3>
     <div class="widget tagcloud">
       <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 13.33px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 10px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/Observer/" style="font-size: 10px;">Observer</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/Security/" style="font-size: 13.33px;">Security</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/iOS多线程/" style="font-size: 10px;">iOS多线程</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/pattern/" style="font-size: 10px;">pattern</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 16.67px;">tips</a> <a href="/tags/warning/" style="font-size: 10px;">warning</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/源码解读/" style="font-size: 10px;">源码解读</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
     </div>
@@ -648,7 +748,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">歸檔</h3>
+    <h3 class="widget-title">归档</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">43</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
     </div>
@@ -688,7 +788,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">友情鏈接</h3>
+    <h3 class="widget-title">友情链接</h3>
     <div class="widget">
       <ul>
         
@@ -729,7 +829,7 @@
 </nav>
   <!-- totop start -->
 <div id="totop">
-<a title="返回頂部"><img src="/img/scrollup.png"/></a>
+<a title="返回顶部"><img src="/img/scrollup.png"/></a>
 </div>
 
 <!-- totop end -->
