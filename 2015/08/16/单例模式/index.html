@@ -4,24 +4,29 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Masonry01 | Hexo</title>
+  <title>单例模式 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="可以添加三个autolayout约束的函数- (NSArray *)mas_makeConstraints:(void(^)(MASConstraintMaker *make))block;
-- (NSArray *)mas_updateConstraints:(void(^)(MASConstraintMaker *make))block;
-- (NSArray *)mas_remakeCons">
+  <meta name="description" content="什么是单例模式？
+单例模式是一个类在系统中只有一个实例对象，通过全局的一个入口点对这个实例对象进行访问。
+UML类图如下所示：
+iOS自带的SDK当中也有很多类使用了单例模式，比如UIApplication：当程序启动的时候，会调用UIApplicationMain方法，在该方法中，会实例化一个UIApplication对象，之后在程序中的任意地方调用sharedApplication方法都会返回">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Masonry01">
-<meta property="og:url" content="http://yoursite.com/2015/08/02/Masonry01/index.html">
+<meta property="og:title" content="单例模式">
+<meta property="og:url" content="http://yoursite.com/2015/08/16/单例模式/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="可以添加三个autolayout约束的函数- (NSArray *)mas_makeConstraints:(void(^)(MASConstraintMaker *make))block;
-- (NSArray *)mas_updateConstraints:(void(^)(MASConstraintMaker *make))block;
-- (NSArray *)mas_remakeCons">
-<meta property="og:updated_time" content="2015-08-02T08:49:53.000Z">
+<meta property="og:description" content="什么是单例模式？
+单例模式是一个类在系统中只有一个实例对象，通过全局的一个入口点对这个实例对象进行访问。
+UML类图如下所示：
+iOS自带的SDK当中也有很多类使用了单例模式，比如UIApplication：当程序启动的时候，会调用UIApplicationMain方法，在该方法中，会实例化一个UIApplication对象，之后在程序中的任意地方调用sharedApplication方法都会返回">
+<meta property="og:image" content="http://cdn.cocimg.com/cms/uploads/allimg/130510/4196_130510100306_1.png">
+<meta property="og:image" content="http://cdn.cocimg.com/cms/uploads/allimg/130510/4196_130510100253_1.jpg">
+<meta property="og:updated_time" content="2015-08-16T06:08:26.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Masonry01">
-<meta name="twitter:description" content="可以添加三个autolayout约束的函数- (NSArray *)mas_makeConstraints:(void(^)(MASConstraintMaker *make))block;
-- (NSArray *)mas_updateConstraints:(void(^)(MASConstraintMaker *make))block;
-- (NSArray *)mas_remakeCons">
+<meta name="twitter:title" content="单例模式">
+<meta name="twitter:description" content="什么是单例模式？
+单例模式是一个类在系统中只有一个实例对象，通过全局的一个入口点对这个实例对象进行访问。
+UML类图如下所示：
+iOS自带的SDK当中也有很多类使用了单例模式，比如UIApplication：当程序启动的时候，会调用UIApplicationMain方法，在该方法中，会实例化一个UIApplication对象，之后在程序中的任意地方调用sharedApplication方法都会返回">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -73,10 +78,10 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main"><article id="post-Masonry01" class="article article-type-post" itemscope itemprop="blogPost">
+      <section id="main"><article id="post-单例模式" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2015/08/02/Masonry01/" class="article-date">
-  <time datetime="2015-08-02T06:46:30.000Z" itemprop="datePublished">2015-08-02</time>
+    <a href="/2015/08/16/单例模式/" class="article-date">
+  <time datetime="2015-08-16T05:14:17.000Z" itemprop="datePublished">2015-08-16</time>
 </a>
     
   </div>
@@ -87,7 +92,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Masonry01
+      单例模式
     </h1>
   
 
@@ -95,30 +100,33 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="可以添加三个autolayout约束的函数">可以添加三个autolayout约束的函数</h2><pre><code><span class="tag">-</span> (<span class="tag">NSArray</span> *)<span class="rule"><span class="attribute">mas_makeConstraints</span>:<span class="value">(<span class="function">void</span>(^)(MASConstraintMaker *make))block</span></span>;
-<span class="tag">-</span> (<span class="tag">NSArray</span> *)<span class="rule"><span class="attribute">mas_updateConstraints</span>:<span class="value">(<span class="function">void</span>(^)(MASConstraintMaker *make))block</span></span>;
-<span class="tag">-</span> (<span class="tag">NSArray</span> *)<span class="rule"><span class="attribute">mas_remakeConstraints</span>:<span class="value">(<span class="function">void</span>(^)(MASConstraintMaker *make))block</span></span>;
-</code></pre><ul>
-<li>mas_makeConstraints 只负责新增约束 Autolayout不能同时存在两条针对于同一对象的约束 否则会报错</li>
-<li>mas_updateConstraints 针对上面的情况 会更新在block中出现的约束 不会导致出现两个相同约束的情况</li>
-<li>mas_remakeConstraints 则会清除之前的所有约束 仅保留最新的约束</li>
+        <h2 id="什么是单例模式？">什么是单例模式？</h2><ul>
+<li>单例模式是一个类在系统中只有一个实例对象，通过全局的一个入口点对这个实例对象进行访问。<br><img src="http://cdn.cocimg.com/cms/uploads/allimg/130510/4196_130510100306_1.png" alt="效果图"></li>
+<li>UML类图如下所示：<br><img src="http://cdn.cocimg.com/cms/uploads/allimg/130510/4196_130510100253_1.jpg" alt="效果图"></li>
+<li>iOS自带的SDK当中也有很多类使用了单例模式，比如UIApplication：当程序启动的时候，会调用UIApplicationMain方法，在该方法中，会实例化一个UIApplication对象，之后在程序中的任意地方调用sharedApplication方法都会返回一个与当前应用程序相关的UIApplication实例(原来如此)</li>
 </ul>
-<h2 id="注意事项">注意事项</h2><ul>
-<li>在autolayout之前一定要先将view添加到superview上，否则会报错</li>
+<h2 id="When_to_use?">When to use?</h2><ul>
+<li>在app中，单例模式经常用于只希望一个类只有一个实例，而不运行一个类还有连个以上的实例，也就是第一次实例化之后，下面要用到就是采用sharedInstance的方式来共享这个实例</li>
+<li>在iOS SDK中，根据特定的需求，有些类不仅提供了单例访问的接口，还为开发者提供可实例化一个新对象的接口；举个栗子，NSFileManager可以通过defaultManager方法来共享已经创建的实例；如果需要新的NSFileManager实例对象，可以选择init方法</li>
 </ul>
-<p>## </p>
+<h2 id="How_to_use?">How to use?</h2><ul>
+<li><p>有非ARC和ARC+GCD两种方式，可以都了解一下</p>
+<pre><code><span class="comment">#import UIKit</span>
+<span class="variable">@inerface</span> <span class="constant">NonARCSingleton</span><span class="symbol">:NSObject</span>
+</code></pre></li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/02/Masonry01/" data-id="cide3e7kn0043fugzh175tzgp" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/16/单例模式/" data-id="cide3e7hb000xfugzz629kynm" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
 
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/layout/">layout</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pattern/">pattern</a></li></ul>
 
     </footer>
   </div>
@@ -126,19 +134,10 @@
     
 <nav id="article-nav">
   
-    <a href="/2015/08/02/Core-Graphics-Tutorial-Part-1-Getting-Started/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">
-        
-          Core Graphics Tutorial Part 1: Getting Started(翻译)
-        
-      </div>
-    </a>
   
-  
-    <a href="/2015/08/02/布局01/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2015/08/16/iOS开发的小技巧01/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">布局01</div>
+      <div class="article-nav-title">iOS开发的小技巧01</div>
     </a>
   
 </nav>

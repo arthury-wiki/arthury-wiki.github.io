@@ -68,6 +68,209 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-如何通过快速反馈-Immediate-feedback-来提供自己的工作效率" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/07/27/如何通过快速反馈-Immediate-feedback-来提供自己的工作效率/" class="article-date">
+  <time datetime="2015-07-27T05:39:36.000Z" itemprop="datePublished">2015-07-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/07/27/如何通过快速反馈-Immediate-feedback-来提供自己的工作效率/">如何通过快速反馈(Immediate feedback)来提供自己的工作效率?</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言">前言</h2><ul>
+<li>一般我们在开发iOS程序的时候，常见的流程就是写代码，点击运行，然后看模拟器的结果，看输出，然后回头继续改代码，然后再修改代码，继续输出，不断的循环；这样的工作流效率其实非常的低下，首先如果是在做绘图有关的代码操作，通过这样不断运行模拟器来观察界面的变化是一件非常低效的，因为无法直观的看出界面的变化，特别是在做一些细节修改的时候；另外如果自己在做的项目体积很大，那么build的时间会很长，有时候甚至长达18秒之久，而且偶尔模拟器还会抽风一下，又不得不去重启，简直蛋疼无比，这样每天浪费在等待的时间上是非常可怕的</li>
+<li>那么问题来了？What the hell can I do with this fucking stuff?</li>
+</ul>
+<h2 id="Swift党Playground能够拯救你？">Swift党Playground能够拯救你？</h2><ul>
+<li>继Xcode5之后Apple加入了一个Playground技术，能够通过快速编译让你实时看到直接写出来的代码的效果，但是这些只能够实现观察UI的变化，与交互相关的操作并不能实现，这是Playground一个非常大的缺陷，因此Playground远远不能够满足我的需求</li>
+</ul>
+<h2 id="KZPlayground_–_逆天的Objective-C–Playground">KZPlayground – 逆天的Objective-C–Playground</h2><ul>
+<li>这是由大牛Krzysztof Zabłocki开发的Objective-C Playground，解决了Swift Playground的大部分痛点</li>
+<li>动态代码注入技术解析，KZPlayground使用的技术栈</li>
+<li>功能使用分析</li>
+<li>各个场景的结果分析<ul>
+<li>可以用来学习一些绘图的api，或者是一些动画效果的api，结合dash文档一个一个api试过去实在是太美妙了</li>
+<li>可以用来辅助自己的原型设计，通过修改属性可以实时显示出效果，这样可以辅助自己直观的进行调整设计，甚至还可以用来辅助自己去设计一些游戏场景，通过实时修改比例，颜色，尺寸等等的属性来进行分析设计</li>
+<li>可以内置到每次自己app的开发当中去，作为测试UI的工具，可以自己提供测试各种类型场景的debug模板，放到snippets当中，需要测试对应版本UI的时候拖出来测试便可，测试结束之后可以将界面切换到SB，然后进行部署</li>
+<li>KZPlayground本身是设计跑在iPad上面的，所以TimeLine上点击显示详细信息内容的功能是不能在iPhone上用的，否则会crash，另外TimeLine是可以关闭的，直接搜索到源码部分进行修改便可</li>
+<li>另外可以将会KZPlayground打包成Framework，这样每次使用的时候直接拖进去就可以了，不需要再去安装Pod那么麻烦，而且可以屏蔽掉那一大堆的警告</li>
+</ul>
+</li>
+<li>代码分析</li>
+<li>对StroyBoard的支持还不够完善</li>
+<li>我可以修改这个项目，使得这个项目支持StoryBoard，组织的形式采用原生的形式，就是自己在模拟器运行的时候注入代码，就相当于是在Injection4Ccode的基础上加上对StoryBoard的支持，可以通过采取各种技术来避免在修改的过程crash掉</li>
+<li>dyci与injection4Xcode的坑太多了，dyci虽然支持StroyBoard修改的实时反馈，但是一旦关联到代码上面就会马上crash，并且代码注入要生效就需要将相应的代码放到dyci指定的方法当中才可以，好在KZPlayground已经填好了大部分坑，KZPlayground保持了底层dyci的接口，这样在测试过程中自己也可以使用，非常的方便</li>
+<li>关于不支持swift这一点，我觉得这个其实很好解决，为什么呢？我可以通过文件的桥接来解决这个问题，对于一些内部细节属性，我可以先把接口开放出来，用来debug，等到debug结束之后，再去隐藏这些接口便可</li>
+<li>代码注入的本质，这种东西最多用来测试修改一些修过，直观的进行一些布局工作，不可能是把类似声明一个对象，添加导入一个类这样的逻辑也用CJ来进行，这是做不到，先这样的操作就必须要重启整个模拟器来刷新了，当然可以自己可以进行一些修改使得能够支持这些功能，KZPlayground就做到了</li>
+<li>调整元素的位置，这个实际上使用StroyBoard就可以看了，但是使用CJ可以做到更加的直观，StroyBoard能够预览到的最多只有位置的变化，至于更多的细节就看不出来了，不如颜色的变化，layer的变化等等都是看不出来的，但是使用CJ可以做到预览这一切的效果</li>
+<li>在Xib当中使用CJ来布局会出现非常诡异的情况，不知道用StroyBoard布局是否会这样</li>
+<li>一个项目里面可以有很多个playground，但是active的playground只能有一个，可以通过实现不同的active来进行切换</li>
+</ul>
+<h2 id="Debug_Playground_Template">Debug Playground Template</h2><ul>
+<li>通过学习别人制作的框架来做出一些基础的调试模板来辅助自己今后制作各种各样的效果</li>
+<li>贝塞尔曲线测试</li>
+<li>动画效果测试</li>
+<li>。。。</li>
+</ul>
+<h2 id="技巧">技巧</h2><ul>
+<li>iPhone模拟器的window选项卡中有一个选项叫做Stayfront，可以把模拟器固定在窗口上面，原来一直都不知道有这么好用的功能</li>
+<li>Xcode有一个插件可以快速在代码内部搜索代码文件，非常的方便</li>
+<li>现在开始要整理收藏自己经常使用的一些代码片段了，提高自己的开发效率</li>
+</ul>
+<h2 id="XTrace">XTrace</h2><ul>
+<li>可以追踪代码的调用流程</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/07/27/如何通过快速反馈-Immediate-feedback-来提供自己的工作效率/" data-id="cide3e7h6000rfugz9k3e9qs1" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Efficiency/">Efficiency</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-UIViewAnimation06" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/07/26/UIViewAnimation06/" class="article-date">
+  <time datetime="2015-07-26T07:26:14.000Z" itemprop="datePublished">2015-07-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/07/26/UIViewAnimation06/">UIViewAnimation06</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="CADisplayLink">CADisplayLink</h2><ul>
+<li>功能：可以提供一个周期性的调用我们赋给它的selector的机制，这一点类似于NSTimer</li>
+<li><p>使用方法：</p>
+<pre><code>- (<span class="keyword">void</span>)startDisplayLink
+{
+    <span class="comment">//添加要触发的操作</span>
+    <span class="keyword">self</span><span class="variable">.displayLink</span> = [<span class="built_in">CADisplayLink</span> displayLinkWithTarget:<span class="keyword">self</span> selector:<span class="keyword">@selector</span>(handleDisplayLink:)];
+    [<span class="keyword">self</span><span class="variable">.displayLink</span> addToRunLoop:[<span class="built_in">NSRunloop</span> currentLoop] forMode:<span class="built_in">NSDefaultRunLoopMode</span>];
+}
+
+- (<span class="keyword">void</span>)handleDisplayLink:(<span class="built_in">CADisplayLink</span> *)displayLink
+{
+    <span class="comment">//这里是要循环执行的操作</span>
+}
+
+- (<span class="keyword">void</span>)stopDisplayLink{
+    <span class="comment">//停止runloop调用</span>
+    [<span class="keyword">self</span><span class="variable">.displayLink</span> invalidate];
+    <span class="keyword">self</span><span class="variable">.displayLink</span> = <span class="literal">nil</span>;
+}
+</code></pre></li>
+</ul>
+<h2 id="特性，与NSTimer进行比较">特性，与NSTimer进行比较</h2><ul>
+<li>原理<ul>
+<li>CADisplayLink是一个能让我们以和屏幕刷新率同步的频率将特定的内容画到屏幕上的定时器类别。CADisplayLink以特定模式注册到runloop后，每当屏幕显示内容刷新结束的时候，runloop就会向CADisplayLink指定的target发送一次指定的selector消息，CADisplayLink类对应的selector就会被调用一次</li>
+<li>NSTimer以指定的模式注册到runloop后，每当设定的周期时间到达后，runloop会向指定的target发送一次指定的selector消息</li>
+</ul>
+</li>
+<li>周期设置方式不同<ul>
+<li>iOS设备的屏幕刷新频率(FPS)是60Hz，因此CADisplayLink的selector默认调用周期是每秒60次，这个周期可以通过frameInterval属性设置，CADisplayLink的selector每秒带调用次数=60/frameInterval；比如当frameInerval设为2，每秒调用就变成30次；因此，CADisplayLink周期的设置方式略显不便</li>
+<li>NSTimer的selector调用周期可以在初始化时直接设定，相对而言会更加的灵活</li>
+</ul>
+</li>
+<li>精确度<ul>
+<li>iOS设备的屏幕刷新频率是固定的，CADisplayLink在正常情况下会在每次刷新结束被调用，经确定相当高</li>
+<li>NSTimer的精确度就显得低了点，比如NSTimer的触发时间到的时候，runloop如果鳗鱼别的调用，触发时间就会推迟到下一个runloop周期；在OSX10.9之后为了尽量避免在NSTimer触发调用时间到了而去中断当前处理的任务，NSTimer新增了tolerance属性，让用户能够设置可以容忍的触发的时间范围</li>
+</ul>
+</li>
+<li>使用场合<ul>
+<li>CADisplayLink使用场合相对专一，适合做界面的不停重绘，比如视频播放的时候需要不停的获取下一帧用于界面渲染或者是用来处理动画效果的渲染</li>
+<li>NStimer的使用范围比较广泛，各种需要单次或者循环定时处理的任务都可以使用</li>
+</ul>
+</li>
+</ul>
+<h2 id="重要的属性">重要的属性</h2><ul>
+<li>frameInterval<ul>
+<li>可读可写的NSInteger整型，标识间隔多少帧调用一次selector方法，默认值是1，即每帧都调用一次；官方文档强调，当该值被设定小于1时，结果是不可预知的</li>
+</ul>
+</li>
+<li>duration<ul>
+<li>只读的CFTimeInterval值，表示两次屏幕刷新之间的时间间隔。需要注意的是，该属性在target的selector被首次调用以后才会被赋值；selector的调用时间计算范式是：时间=duration x frameInerval</li>
+<li>现存的iOS设备屏幕的FPS都是60Hz，但是尽管如此，无法保证之后苹果不会改变FPS，所以出于安全考虑，可以根据duration判断屏幕的FPS再去使用CADisplayLink</li>
+</ul>
+</li>
+<li>timestamp<ul>
+<li>只读的CFRimeInterval值，表示屏幕显示的上一帧的时间戳，这个属性通常被target用来计算下一帧中应该显示的内容    </li>
+<li>虽然名为时间戳，但是和常见的unix时间戳差异很大，事实上这是CoreAnimation使用的时间格式。每个CALayer都有一个本地时间</li>
+</ul>
+</li>
+</ul>
+<h2 id="注意">注意</h2><ul>
+<li>iOS并不能保证能以每秒60次的频率调用回调方法，这个取决于以下两个要素<ul>
+<li>CPU的空闲程序<ul>
+<li>如果CPU忙于其他计算，就没法保证以60HZ执行屏幕的绘制动作，结果导致跳过若干次调用回调方法的机会，跳过的次数取决于CPU的忙碌程度</li>
+</ul>
+</li>
+<li>执行回调方法所用的时间<ul>
+<li>如果执行回调时间大于重绘每帧的间隔时间，就会导致跳过若干次回调调用时间，这取决于回调执行时间的长短</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="动画的实质">动画的实质</h2><ul>
+<li>其实就是设置终点坐标与起点坐标，然后在移动的期间加上动画效果，效果无非就是平滑的移动，或者是弹簧效果之类，然后配上动画的时间就搞定了；加上控制点是为了让控制点动画可以更加的可定制化，其实要做出果冻的效果非常的简单，只要做出合适的控制点，然后在各个控制带来移向终点的时候加上弹簧效果便可</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/07/26/UIViewAnimation06/" data-id="cide3e7iw002efugzdum4mn3i" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-UIViewAnimation05" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/07/25/UIViewAnimation05/" class="article-date">
@@ -102,7 +305,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/07/25/UIViewAnimation05/" data-id="cidddtej9002cgggzjuxvhimn" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/07/25/UIViewAnimation05/" data-id="cide3e7j0002gfugzcu8boz33" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -154,7 +357,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/07/25/Swift小问题汇总/" data-id="cidddtejs002vgggzfgvwia8t" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/07/25/Swift小问题汇总/" data-id="cide3e7jl002zfugz17socesc" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -301,7 +504,7 @@ t2</code><br><img src="https://dn-arthury.qbox.me/一次曲线.png" alt="效果�
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/07/24/UIViewAnimation04/" data-id="cidddtejc002egggzd3komwg9" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/07/24/UIViewAnimation04/" data-id="cide3e7j2002ifugziil2c6h6" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -453,7 +656,7 @@ t2</code><br><img src="https://dn-arthury.qbox.me/一次曲线.png" alt="效果�
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/07/24/Pyspider01/" data-id="cidddtek6003egggz40kj4vv0" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/07/24/Pyspider01/" data-id="cide3e7jz003ifugz7ggwv7gk" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -503,7 +706,7 @@ t2</code><br><img src="https://dn-arthury.qbox.me/一次曲线.png" alt="效果�
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/07/24/Linux命令备忘录/" data-id="cidddteks0047gggzb5x7lgb2" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/07/24/Linux命令备忘录/" data-id="cide3e7kv004bfugz381yn4t0" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -714,7 +917,7 @@ t2</code><br><img src="https://dn-arthury.qbox.me/一次曲线.png" alt="效果�
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/07/24/Crawler01/" data-id="cidddtel7004ngggz7q4rgqhx" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/07/24/Crawler01/" data-id="cide3e7m9004rfugz02ajsjyd" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -796,7 +999,7 @@ t2</code><br><img src="https://dn-arthury.qbox.me/一次曲线.png" alt="效果�
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/07/24/UIViewAnimation03/" data-id="cidddteje002ggggzvunnefpq" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/07/24/UIViewAnimation03/" data-id="cide3e7j4002kfugz5xx302vy" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -955,222 +1158,7 @@ UIImage<span class="list">(<span class="keyword">name:</span><span class="string
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/07/24/UIViewAnimation02/" data-id="cidddtejg002igggzgh0nxp5d" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Event-Loop" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/07/23/Event-Loop/" class="article-date">
-  <time datetime="2015-07-23T08:30:00.000Z" itemprop="datePublished">2015-07-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/23/Event-Loop/">Event Loop</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="理解进程与线程">理解进程与线程</h2><ul>
-<li><a href="http://www.ruanyifeng.com/blog/2013/04/processes_and_threads.html" target="_blank" rel="external">参考阮一峰的博客</a></li>
-<li>简单的比喻就是cpu是供电厂，来给每一个工厂供电，一个cpu一次只能给一个工厂供电，进程就是工厂里面的车间，它代表cpu能够处理的单个任务，cpu一次只能运行一个进程，其他进程处于非运行状态</li>
-<li>线程就是车间里面的工人，它们协同完成一个任务</li>
-</ul>
-<h2 id="为什么javascript是单线程？">为什么javascript是单线程？</h2><ul>
-<li><a href="http://www.ruanyifeng.com/blog/2014/10/event-loop.html" target="_blank" rel="external">参考阮一峰博客</a></li>
-<li>javascript是单线程的，这就表示一个车间里面只有一个工人，靠这个工人一个人来完成任务(使用直觉想象成图像来理解就非常容易理解了)</li>
-<li>这个是由于由其用途决定的，作为浏览器的脚本语言，主要用来与用户互动，以及操作DOM，于是就被设计成单线程的，假设有两个线程，一个线程把罐子打开了，另一个工人又把罐子开了，这时浏览器无法判断以哪一个线程为准(其实如果能解决好这个同步问题，javascript说不定会比现在强大的更多)</li>
-<li>这里有一个关于本质的例子，为了利用多核cpu的计算能力，html5提出web worker标准，允许javascript脚本创建多个线程，然后子线程完全受主线程控制，且不得操作dom，也就是子线程的做的所有事情都需要经过主线程的亲自审核才可以，并没有什么卵用，javascript的本质就是单线程，通过再牛逼的标准也改变不了这个事实</li>
-</ul>
-<h2 id="任务队列的理解">任务队列的理解</h2><ul>
-<li>单线程意味着只有一个工人，这个工人拿到任务清单，就会一个一个去执行，上一个任务没有执行完之前，下一个任务就不会执行，如果前面一个任务耗时很长，后面一个任务就不得不一直等着</li>
-<li>任务执行时间长并不代表此时cpu在高速运转，有时候在等在io设备的回应，这段时间cpu完全就是闲着的，就像等着水烧开才能够开始煮面一样，不得不等着水烧开，再进行下一个任务(这个时候电量浪费了，工人可以先去做其他任务，把电给用起来)</li>
-<li>javascript语言的设计者觉得，这个时候主线程可以不管IO设备(工人可以不用一直干等着水烧开)，挂起处于等待中的任务(让开水自己烧着)，工人先去执行剩下的任务，比如洗菜；等到水烧开了，再回头把面放进去</li>
-<li>因此任务可以分为两种，一种是同步任务(synchronous)，另一种是异步任务(asynchronous)；同步任务就是那种要让工人(主线程)一直不停工作的类型，比如洗菜，这个时候不可能分身再去做其他事情，这样的任务只能得到上一个执行完了之后再执行下一个；异步任务是指烧水这样的任务，烧水期间工人可以分身去做其他事情，等到水烧开开水壶提醒的时的候，工人才会去下面(主线程才回去执行这个任务)</li>
-<li>其实煮面这个异步任务可以拆解成烧水与下面这两个同步任务来执行，同步任务可以理解为特殊的异步任务，没有等待阶段的异步任务</li>
-<li>异步任务的运行机制(这样的设计真的合理吗？)<ul>
-<li>拿到任务清单，就会形成一个执行栈(execution context stack)，开始一个一个的执行任务</li>
-<li>当遇到异步任务进入到一个等到阶段之后，这个任务就会被直接挂起，然后工人会直接跳到下一个任务的执行</li>
-<li>当异步任务的一个等待阶段结束之后，就会发出一个通知，这个通知(消息)由一个叫做任务队列(task queue)的清单记录，当前一轮下来把执行栈里面的任务全部都过一边之后，工人(主线程)就会回头去看这个任务队列，看一下哪些异步任务的可以接下去做了，越是有开始了一个执行栈，开始执行任务，不断循环重复，指导把全部的任务都执行完</li>
-</ul>
-</li>
-<li>只要主线程空了，就回去读取任务队列，这就是javascript的运行机制，这个过程会不断的重复</li>
-</ul>
-<h2 id="事件与回调函数">事件与回调函数</h2><ul>
-<li>任务队列是一个时间的队列，一个异步任务的一个等待阶段结束之后，就会发出通知，这个通知就是下一个阶段那个任务已经可以执行了，比如烧水结束之后，就会得到一个通知，就是下面这个任务可以执行了，主线程回来读的时候就是在读需要执行哪些任务</li>
-<li>回调函数(call back)就是指异步任务上一个阶段指定下一个阶段要完成的任务，比如上一个阶段是烧水，那么烧水阶段指定的下一个阶段的任务就是下面，这个下面就是烧水阶段的回调函数，当工人回头执行任务队列当中的任务时，执行的就是这个回调函数</li>
-<li>在iOS开发当中就是像链接服务器刷新tableview的一个异步任务，向服务器发送请求，在等待服务器返回数据期间，工人在执行的任务就是显示一个HDU，等到服务器的数据请求回来之后，执行的任务就是刷新列表与关闭HDU，具体细节记得不是很清楚了</li>
-</ul>
-<h2 id="Event_Loop">Event Loop</h2><ul>
-<li>工人不断重复读取任务队列中的事件，这个不断循环的过程就称之为Event Loop(事件循环)<br><img src="https://dn-arthury.qbox.me/eventloop.png" alt="示意图"></li>
-<li>如图所示，stack(栈)里面有一系列的函数(任务)被调用，它们去调用web的api或者是其他的api，是同步任务就指定到底，是异步就挂起跳过，异步事件的一个等待阶段结束之后，就会把回调函数放到callbackqueue里面，重新装入stack里面，就是这样一个循环的过程</li>
-<li>注意，执行栈里面的任务是优先执行的，就算执行栈里面的任务还没执行完，前面挂起的异步任务有了回应，工人也不会中断当前的任务跑去执行队列里面的任务，而是等到清空stack里面的任务之后，才会把任务队列里面的任务装到stack里面进行新一轮的循环，也就是新一轮的Event Loop</li>
-</ul>
-<h2 id="定时器">定时器</h2><ul>
-<li>任务队列当中除了放置定时事件，即指定某些代码在执行多少时间</li>
-<li>如果给某一个任务指定了定时器，那么这个任务在被工人执行的时候，就会被直接挂起，然后在定时的时间到了之后，回调就会被放到task queue里面，然后装到satck里面去执行，这个定时的时间并不是指倒计时一结束，这个方法就会被立刻执行</li>
-<li><p>如果设置的倒计时是0，那么工人在执行这个任务的时候，这个任务会直接被送到task queue里面，并不会直接执行回调函数，还是要等到stack一轮结束之后才会执行</p>
-<pre><code>console.<span class="built_in">log</span>(<span class="number">1</span>);
-setTimeout(function({console.<span class="built_in">log</span>(<span class="number">2</span>);},<span class="number">1000</span>);
-console.<span class="built_in">log</span>(<span class="number">3</span>);
-</code></pre></li>
-<li>上面代码的执行结果是1，3，2，因为console.log(1)、console.log(3)、setTimeout这三个函数是同一轮的任务，而console.log(2)是属于下一轮的任务</li>
-<li>小知识：HTML5标准规定了setTimeout()的第二个参数的最小值（最短间隔），不得低于4毫秒，如果低于这个值，就会自动增加。在此之前，老版本的浏览器都将最短间隔设为10毫秒。另外，对于那些DOM的变动（尤其是涉及页面重新渲染的部分），通常不会立即执行，而是每16毫秒执行(加入到task queue)一次。这时使用requestAnimationFrame()的效果要好于setTimeout())</li>
-</ul>
-<h2 id="Node-js的Event_Loop">Node.js的Event Loop</h2><ul>
-<li>Node.js也是单线程的Event Loop，但是它的运行机制不同于浏览器环境<br><img src="https://dn-arthury.qbox.me/nodejs.jpg" alt="效果图"></li>
-<li>运行机制解析<ul>
-<li>V8引擎解析JS脚本，类似于一个解释器</li>
-<li>解析后的代码，调用Node API</li>
-<li>libuv库负责Node API的执行，将任务分配给线程去执行，形成一个Event Loop，以异步的方式(阶段性的)将任务执行结果返回给v8引擎</li>
-<li>v8引擎再将结果返回给用户</li>
-</ul>
-</li>
-</ul>
-<h2 id="process-nextTick、setImmediate与setTimeout">process.nextTick、setImmediate与setTimeout</h2><ul>
-<li><code>process.nextTick</code>是将回调直接放到当前这一次stack的底部，也就是不用等到下一轮的event loop</li>
-<li><code>setImmediate</code>是将回调放到当前任务队列的尾部，也就是放到下一轮的Event Loop进行</li>
-<li><code>setTimeout(fn,0)</code>是将回调插入到当前任务队列当中，不一定是在末尾，这个不同node的版本，实现的原理都不一样，简直就是糟糕的设计，这么模糊不清</li>
-<li>最新版的node不推荐使用<code>prcess.nextTick</code>，推荐使用<code>setImmediate</code>，原因在于nextTick会阻断连续的IO操作</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/07/23/Event-Loop/" data-id="cidddteky004cgggz6dt67wjx" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/System/">System</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-UIViewAnimation01" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/07/23/UIViewAnimation01/" class="article-date">
-  <time datetime="2015-07-22T17:48:50.000Z" itemprop="datePublished">2015-07-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/23/UIViewAnimation01/">UIViewAnimation01</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="自带动画效果的属性变化">自带动画效果的属性变化</h2><ul>
-<li>center</li>
-<li>bounds</li>
-<li>frames</li>
-<li>alpaha</li>
-<li>transform</li>
-<li>contentStretch</li>
-<li>backgroundColor</li>
-<li><p>以上的属性的改变会自带动画效果，只需要指定好动画执行的时间便可</p>
-<pre><code>myView.center = CGPoint(x:<span class="number">60</span>, y:<span class="number">60</span>)
-UIView.animateWithDuration(<span class="number">1.2</span>, animations: {
-    self.animateView.center = CGPointMake(<span class="number">300</span>, <span class="number">300</span>)
-})
-</code></pre></li>
-<li><p>非常简单的动画效果</p>
-</li>
-<li>上面那个api是选项最少的一个，更多选项版的可以直接根据代码提示去选择</li>
-</ul>
-<h2 id="Spring效果">Spring效果</h2><ul>
-<li><p>提供的api</p>
-<pre><code>UIView.animateWithDuration(<span class="string">_:</span>,<span class="string">delay:</span>,<span class="string">usingSpringWithDamping:</span>,<span class="string">initialSpringVelocity:</span>,<span class="string">options:</span>,<span class="string">animations:</span>,<span class="string">completion:</span>)
-</code></pre></li>
-<li><p>实现的是一个阻尼效应(弹簧效果)，上下波动，最后消失，对应到移动的动画效果就是不停震动，最后稳定；对应到透明度变化的动画效果就是不停地闪烁，最后稳定，其中<code>usingSpringWithDampin</code>就是类似阻尼系数(0~1)，数字越小阻尼效果越明显，回弹越剧烈，幅度越大</p>
-</li>
-<li><code>optional</code>参数不能为nil，否则会报错</li>
-<li><code>initialSpringVelocity</code>表示初始速度，数值越大一开始移动越快，初始速度取值较高而时间取值短时，会出现反弹效果</li>
-</ul>
-<h2 id="Transitions">Transitions</h2><ul>
-<li>与transition有关的属性与方法<ul>
-<li>hidden</li>
-<li>addSubview()</li>
-<li>removeFromParent()</li>
-</ul>
-</li>
-<li><p>相关的api</p>
-<pre><code>UIView.transitionFromView(<span class="string">_:</span>,<span class="string">toView:</span>,<span class="string">duration:</span>,<span class="string">options:</span>,<span class="string">completion:</span>)
-UIView.transitionWithView(<span class="string">_:</span>,<span class="string">duration:</span>,<span class="string">options:</span>,<span class="string">animations:</span>,completion)
-</code></pre></li>
-<li>效果就是让视图出现的时候带有一些转场动画</li>
-<li><img src="https://dn-arthury.qbox.me/transition.gif" alt="效果图"></li>
-<li>在storyboard中点简单配置</li>
-<li><p><img src="https://dn-arthury.qbox.me/transitionsb.png" alt="效果图"></p>
-<pre><code><span class="annotation">@IBAction</span> func loginBtnClick(<span class="string">sender:</span> AnyObject) {
-UIView.animateWithDuration(<span class="number">1.0</span>, <span class="string">delay:</span> <span class="number">0.0</span>, <span class="string">usingSpringWithDamping:</span> <span class="number">1.0</span>, <span class="string">initialSpringVelocity:</span> <span class="number">0.0</span>, <span class="string">options:</span> UIViewAnimationOptions.CurveEaseIn, <span class="string">animations:</span> {
-    self.loginBtn.center.y += <span class="number">50</span>
-    }, <span class="string">completion:</span> { _ <span class="keyword">in</span>
-    UIView.animateWithDuration(<span class="number">2.0</span>, <span class="string">delay:</span> <span class="number">0.0</span>, <span class="string">usingSpringWithDamping:</span> <span class="number">0.5</span>, <span class="string">initialSpringVelocity:</span> <span class="number">0.0</span>, <span class="string">options:</span> UIViewAnimationOptions.CurveEaseIn, <span class="string">animations:</span> {
-    self.loginBtn.bounds.origin = CGPointMake(self.loginBtn.bounds.origin.x - <span class="number">20.0</span>, self.loginBtn.bounds.origin.y)
-    self.loginBtn.titleLabel?.alpha = 0.8
-    }, completion: { _ <span class="keyword">in</span>
-    <span class="comment">//这里就是一个翻页的动画</span>
-    UIView.transitionWithView(self.banner, <span class="string">duration:</span> <span class="number">2.0</span>, <span class="string">options:</span> UIViewAnimationOptions.TransitionCurlDown, <span class="string">animations:</span> {
-    <span class="comment">//只需要修改一下隐藏属性便可</span>
-    <span class="comment">//既然有更好的设计，那么糟糕的设计直接就可以抛弃了</span>
-    self.banner.hidden = <span class="literal">false</span>
-    }, <span class="string">completion:</span> nil)
-})})}
-</code></pre></li>
-</ul>
-<h2 id="小技巧">小技巧</h2><ul>
-<li>通过代码提示来看所选的属性是什么类型的，就可以指导后面要给属性赋值的时候写什么了<br><img src="https://dn-arthury.qbox.me/hit.png" alt="效果图"></li>
-<li>如果指导都有哪几个选项，不如这个例子里我知道有center这个选项，我就可以直接使用<code>alertLabel.textAlignment = .Center</code>的形式来进行的</li>
-</ul>
-<h2 id="关于debug的一点小感悟">关于debug的一点小感悟</h2><ul>
-<li>越往底层去学，就可以从越是底层的角度去debug，去发现bug；如果我知道SB背后的实现原理以及代码的调用流程，那么出现奇怪的现象我就可以直接去看执行过程中调用了什么不合适的代码，然后去分析原因，而不是通过注释代码与log来退成bug会出错的可能性</li>
-</ul>
-<h2 id="给StroyBoard中的元素指定父视图">给StroyBoard中的元素指定父视图</h2><ul>
-<li>在StroyBoard里面的控件没有选择自己父视图的选项，这个可以通过代码来实现，也就是在获得控件的Outlet引用之后，可以在代码里面使用<code>addSubview</code>的方法来实现指定父视图</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/07/23/UIViewAnimation01/" data-id="cidddtejj002kgggz56prh8mo" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/07/24/UIViewAnimation02/" data-id="cide3e7j6002mfugzrn6m2scq" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -1200,7 +1188,7 @@ UIView.animateWithDuration(<span class="number">1.0</span>, <span class="string"
   <div class="widget-wrap">
     <h3 class="widget-title">標簽</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Observer/">Observer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunLoop/">RunLoop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Security/">Security</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS多线程/">iOS多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/keychain/">keychain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/warning/">warning</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解读/">源码解读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Observer/">Observer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunLoop/">RunLoop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Security/">Security</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS多线程/">iOS多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/keychain/">keychain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pattern/">pattern</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/warning/">warning</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解读/">源码解读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -1209,7 +1197,7 @@ UIView.animateWithDuration(<span class="number">1.0</span>, <span class="string"
   <div class="widget-wrap">
     <h3 class="widget-title">標簽雲</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 13.33px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 10px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/Observer/" style="font-size: 10px;">Observer</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/Security/" style="font-size: 13.33px;">Security</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/iOS多线程/" style="font-size: 10px;">iOS多线程</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 13.33px;">tips</a> <a href="/tags/warning/" style="font-size: 10px;">warning</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/源码解读/" style="font-size: 10px;">源码解读</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
+      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 13.33px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 10px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/Observer/" style="font-size: 10px;">Observer</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/Security/" style="font-size: 13.33px;">Security</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/iOS多线程/" style="font-size: 10px;">iOS多线程</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/pattern/" style="font-size: 10px;">pattern</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 16.67px;">tips</a> <a href="/tags/warning/" style="font-size: 10px;">warning</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/源码解读/" style="font-size: 10px;">源码解读</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
     </div>
   </div>
 
@@ -1218,7 +1206,7 @@ UIView.animateWithDuration(<span class="number">1.0</span>, <span class="string"
   <div class="widget-wrap">
     <h3 class="widget-title">歸檔</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">41</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">43</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
     </div>
   </div>
 
@@ -1230,6 +1218,14 @@ UIView.animateWithDuration(<span class="number">1.0</span>, <span class="string"
       <ul>
         
           <li>
+            <a href="/2015/08/16/单例模式/">单例模式</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/16/iOS开发的小技巧01/">iOS开发的小技巧01</a>
+          </li>
+        
+          <li>
             <a href="/2015/08/16/观察者模式01/">观察者模式01</a>
           </li>
         
@@ -1239,14 +1235,6 @@ UIView.animateWithDuration(<span class="number">1.0</span>, <span class="string"
         
           <li>
             <a href="/2015/08/15/解读爱卡源码有感01/">解读爱卡源码有感01</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/15/DLog的使用/">DLog的使用</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/15/CocoaSecurity/">CocoaSecurity</a>
           </li>
         
       </ul>

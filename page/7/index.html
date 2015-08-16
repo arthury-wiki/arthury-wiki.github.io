@@ -68,6 +68,221 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-Event-Loop" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/07/23/Event-Loop/" class="article-date">
+  <time datetime="2015-07-23T08:30:00.000Z" itemprop="datePublished">2015-07-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/07/23/Event-Loop/">Event Loop</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="理解进程与线程">理解进程与线程</h2><ul>
+<li><a href="http://www.ruanyifeng.com/blog/2013/04/processes_and_threads.html" target="_blank" rel="external">参考阮一峰的博客</a></li>
+<li>简单的比喻就是cpu是供电厂，来给每一个工厂供电，一个cpu一次只能给一个工厂供电，进程就是工厂里面的车间，它代表cpu能够处理的单个任务，cpu一次只能运行一个进程，其他进程处于非运行状态</li>
+<li>线程就是车间里面的工人，它们协同完成一个任务</li>
+</ul>
+<h2 id="为什么javascript是单线程？">为什么javascript是单线程？</h2><ul>
+<li><a href="http://www.ruanyifeng.com/blog/2014/10/event-loop.html" target="_blank" rel="external">参考阮一峰博客</a></li>
+<li>javascript是单线程的，这就表示一个车间里面只有一个工人，靠这个工人一个人来完成任务(使用直觉想象成图像来理解就非常容易理解了)</li>
+<li>这个是由于由其用途决定的，作为浏览器的脚本语言，主要用来与用户互动，以及操作DOM，于是就被设计成单线程的，假设有两个线程，一个线程把罐子打开了，另一个工人又把罐子开了，这时浏览器无法判断以哪一个线程为准(其实如果能解决好这个同步问题，javascript说不定会比现在强大的更多)</li>
+<li>这里有一个关于本质的例子，为了利用多核cpu的计算能力，html5提出web worker标准，允许javascript脚本创建多个线程，然后子线程完全受主线程控制，且不得操作dom，也就是子线程的做的所有事情都需要经过主线程的亲自审核才可以，并没有什么卵用，javascript的本质就是单线程，通过再牛逼的标准也改变不了这个事实</li>
+</ul>
+<h2 id="任务队列的理解">任务队列的理解</h2><ul>
+<li>单线程意味着只有一个工人，这个工人拿到任务清单，就会一个一个去执行，上一个任务没有执行完之前，下一个任务就不会执行，如果前面一个任务耗时很长，后面一个任务就不得不一直等着</li>
+<li>任务执行时间长并不代表此时cpu在高速运转，有时候在等在io设备的回应，这段时间cpu完全就是闲着的，就像等着水烧开才能够开始煮面一样，不得不等着水烧开，再进行下一个任务(这个时候电量浪费了，工人可以先去做其他任务，把电给用起来)</li>
+<li>javascript语言的设计者觉得，这个时候主线程可以不管IO设备(工人可以不用一直干等着水烧开)，挂起处于等待中的任务(让开水自己烧着)，工人先去执行剩下的任务，比如洗菜；等到水烧开了，再回头把面放进去</li>
+<li>因此任务可以分为两种，一种是同步任务(synchronous)，另一种是异步任务(asynchronous)；同步任务就是那种要让工人(主线程)一直不停工作的类型，比如洗菜，这个时候不可能分身再去做其他事情，这样的任务只能得到上一个执行完了之后再执行下一个；异步任务是指烧水这样的任务，烧水期间工人可以分身去做其他事情，等到水烧开开水壶提醒的时的候，工人才会去下面(主线程才回去执行这个任务)</li>
+<li>其实煮面这个异步任务可以拆解成烧水与下面这两个同步任务来执行，同步任务可以理解为特殊的异步任务，没有等待阶段的异步任务</li>
+<li>异步任务的运行机制(这样的设计真的合理吗？)<ul>
+<li>拿到任务清单，就会形成一个执行栈(execution context stack)，开始一个一个的执行任务</li>
+<li>当遇到异步任务进入到一个等到阶段之后，这个任务就会被直接挂起，然后工人会直接跳到下一个任务的执行</li>
+<li>当异步任务的一个等待阶段结束之后，就会发出一个通知，这个通知(消息)由一个叫做任务队列(task queue)的清单记录，当前一轮下来把执行栈里面的任务全部都过一边之后，工人(主线程)就会回头去看这个任务队列，看一下哪些异步任务的可以接下去做了，越是有开始了一个执行栈，开始执行任务，不断循环重复，指导把全部的任务都执行完</li>
+</ul>
+</li>
+<li>只要主线程空了，就回去读取任务队列，这就是javascript的运行机制，这个过程会不断的重复</li>
+</ul>
+<h2 id="事件与回调函数">事件与回调函数</h2><ul>
+<li>任务队列是一个时间的队列，一个异步任务的一个等待阶段结束之后，就会发出通知，这个通知就是下一个阶段那个任务已经可以执行了，比如烧水结束之后，就会得到一个通知，就是下面这个任务可以执行了，主线程回来读的时候就是在读需要执行哪些任务</li>
+<li>回调函数(call back)就是指异步任务上一个阶段指定下一个阶段要完成的任务，比如上一个阶段是烧水，那么烧水阶段指定的下一个阶段的任务就是下面，这个下面就是烧水阶段的回调函数，当工人回头执行任务队列当中的任务时，执行的就是这个回调函数</li>
+<li>在iOS开发当中就是像链接服务器刷新tableview的一个异步任务，向服务器发送请求，在等待服务器返回数据期间，工人在执行的任务就是显示一个HDU，等到服务器的数据请求回来之后，执行的任务就是刷新列表与关闭HDU，具体细节记得不是很清楚了</li>
+</ul>
+<h2 id="Event_Loop">Event Loop</h2><ul>
+<li>工人不断重复读取任务队列中的事件，这个不断循环的过程就称之为Event Loop(事件循环)<br><img src="https://dn-arthury.qbox.me/eventloop.png" alt="示意图"></li>
+<li>如图所示，stack(栈)里面有一系列的函数(任务)被调用，它们去调用web的api或者是其他的api，是同步任务就指定到底，是异步就挂起跳过，异步事件的一个等待阶段结束之后，就会把回调函数放到callbackqueue里面，重新装入stack里面，就是这样一个循环的过程</li>
+<li>注意，执行栈里面的任务是优先执行的，就算执行栈里面的任务还没执行完，前面挂起的异步任务有了回应，工人也不会中断当前的任务跑去执行队列里面的任务，而是等到清空stack里面的任务之后，才会把任务队列里面的任务装到stack里面进行新一轮的循环，也就是新一轮的Event Loop</li>
+</ul>
+<h2 id="定时器">定时器</h2><ul>
+<li>任务队列当中除了放置定时事件，即指定某些代码在执行多少时间</li>
+<li>如果给某一个任务指定了定时器，那么这个任务在被工人执行的时候，就会被直接挂起，然后在定时的时间到了之后，回调就会被放到task queue里面，然后装到satck里面去执行，这个定时的时间并不是指倒计时一结束，这个方法就会被立刻执行</li>
+<li><p>如果设置的倒计时是0，那么工人在执行这个任务的时候，这个任务会直接被送到task queue里面，并不会直接执行回调函数，还是要等到stack一轮结束之后才会执行</p>
+<pre><code>console.<span class="built_in">log</span>(<span class="number">1</span>);
+setTimeout(function({console.<span class="built_in">log</span>(<span class="number">2</span>);},<span class="number">1000</span>);
+console.<span class="built_in">log</span>(<span class="number">3</span>);
+</code></pre></li>
+<li>上面代码的执行结果是1，3，2，因为console.log(1)、console.log(3)、setTimeout这三个函数是同一轮的任务，而console.log(2)是属于下一轮的任务</li>
+<li>小知识：HTML5标准规定了setTimeout()的第二个参数的最小值（最短间隔），不得低于4毫秒，如果低于这个值，就会自动增加。在此之前，老版本的浏览器都将最短间隔设为10毫秒。另外，对于那些DOM的变动（尤其是涉及页面重新渲染的部分），通常不会立即执行，而是每16毫秒执行(加入到task queue)一次。这时使用requestAnimationFrame()的效果要好于setTimeout())</li>
+</ul>
+<h2 id="Node-js的Event_Loop">Node.js的Event Loop</h2><ul>
+<li>Node.js也是单线程的Event Loop，但是它的运行机制不同于浏览器环境<br><img src="https://dn-arthury.qbox.me/nodejs.jpg" alt="效果图"></li>
+<li>运行机制解析<ul>
+<li>V8引擎解析JS脚本，类似于一个解释器</li>
+<li>解析后的代码，调用Node API</li>
+<li>libuv库负责Node API的执行，将任务分配给线程去执行，形成一个Event Loop，以异步的方式(阶段性的)将任务执行结果返回给v8引擎</li>
+<li>v8引擎再将结果返回给用户</li>
+</ul>
+</li>
+</ul>
+<h2 id="process-nextTick、setImmediate与setTimeout">process.nextTick、setImmediate与setTimeout</h2><ul>
+<li><code>process.nextTick</code>是将回调直接放到当前这一次stack的底部，也就是不用等到下一轮的event loop</li>
+<li><code>setImmediate</code>是将回调放到当前任务队列的尾部，也就是放到下一轮的Event Loop进行</li>
+<li><code>setTimeout(fn,0)</code>是将回调插入到当前任务队列当中，不一定是在末尾，这个不同node的版本，实现的原理都不一样，简直就是糟糕的设计，这么模糊不清</li>
+<li>最新版的node不推荐使用<code>prcess.nextTick</code>，推荐使用<code>setImmediate</code>，原因在于nextTick会阻断连续的IO操作</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/07/23/Event-Loop/" data-id="cide3e7le004gfugz5nrstfdr" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/System/">System</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-UIViewAnimation01" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/07/23/UIViewAnimation01/" class="article-date">
+  <time datetime="2015-07-22T17:48:50.000Z" itemprop="datePublished">2015-07-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/07/23/UIViewAnimation01/">UIViewAnimation01</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="自带动画效果的属性变化">自带动画效果的属性变化</h2><ul>
+<li>center</li>
+<li>bounds</li>
+<li>frames</li>
+<li>alpaha</li>
+<li>transform</li>
+<li>contentStretch</li>
+<li>backgroundColor</li>
+<li><p>以上的属性的改变会自带动画效果，只需要指定好动画执行的时间便可</p>
+<pre><code>myView.center = CGPoint(x:<span class="number">60</span>, y:<span class="number">60</span>)
+UIView.animateWithDuration(<span class="number">1.2</span>, animations: {
+    self.animateView.center = CGPointMake(<span class="number">300</span>, <span class="number">300</span>)
+})
+</code></pre></li>
+<li><p>非常简单的动画效果</p>
+</li>
+<li>上面那个api是选项最少的一个，更多选项版的可以直接根据代码提示去选择</li>
+</ul>
+<h2 id="Spring效果">Spring效果</h2><ul>
+<li><p>提供的api</p>
+<pre><code>UIView.animateWithDuration(<span class="string">_:</span>,<span class="string">delay:</span>,<span class="string">usingSpringWithDamping:</span>,<span class="string">initialSpringVelocity:</span>,<span class="string">options:</span>,<span class="string">animations:</span>,<span class="string">completion:</span>)
+</code></pre></li>
+<li><p>实现的是一个阻尼效应(弹簧效果)，上下波动，最后消失，对应到移动的动画效果就是不停震动，最后稳定；对应到透明度变化的动画效果就是不停地闪烁，最后稳定，其中<code>usingSpringWithDampin</code>就是类似阻尼系数(0~1)，数字越小阻尼效果越明显，回弹越剧烈，幅度越大</p>
+</li>
+<li><code>optional</code>参数不能为nil，否则会报错</li>
+<li><code>initialSpringVelocity</code>表示初始速度，数值越大一开始移动越快，初始速度取值较高而时间取值短时，会出现反弹效果</li>
+</ul>
+<h2 id="Transitions">Transitions</h2><ul>
+<li>与transition有关的属性与方法<ul>
+<li>hidden</li>
+<li>addSubview()</li>
+<li>removeFromParent()</li>
+</ul>
+</li>
+<li><p>相关的api</p>
+<pre><code>UIView.transitionFromView(<span class="string">_:</span>,<span class="string">toView:</span>,<span class="string">duration:</span>,<span class="string">options:</span>,<span class="string">completion:</span>)
+UIView.transitionWithView(<span class="string">_:</span>,<span class="string">duration:</span>,<span class="string">options:</span>,<span class="string">animations:</span>,completion)
+</code></pre></li>
+<li>效果就是让视图出现的时候带有一些转场动画</li>
+<li><img src="https://dn-arthury.qbox.me/transition.gif" alt="效果图"></li>
+<li>在storyboard中点简单配置</li>
+<li><p><img src="https://dn-arthury.qbox.me/transitionsb.png" alt="效果图"></p>
+<pre><code><span class="annotation">@IBAction</span> func loginBtnClick(<span class="string">sender:</span> AnyObject) {
+UIView.animateWithDuration(<span class="number">1.0</span>, <span class="string">delay:</span> <span class="number">0.0</span>, <span class="string">usingSpringWithDamping:</span> <span class="number">1.0</span>, <span class="string">initialSpringVelocity:</span> <span class="number">0.0</span>, <span class="string">options:</span> UIViewAnimationOptions.CurveEaseIn, <span class="string">animations:</span> {
+    self.loginBtn.center.y += <span class="number">50</span>
+    }, <span class="string">completion:</span> { _ <span class="keyword">in</span>
+    UIView.animateWithDuration(<span class="number">2.0</span>, <span class="string">delay:</span> <span class="number">0.0</span>, <span class="string">usingSpringWithDamping:</span> <span class="number">0.5</span>, <span class="string">initialSpringVelocity:</span> <span class="number">0.0</span>, <span class="string">options:</span> UIViewAnimationOptions.CurveEaseIn, <span class="string">animations:</span> {
+    self.loginBtn.bounds.origin = CGPointMake(self.loginBtn.bounds.origin.x - <span class="number">20.0</span>, self.loginBtn.bounds.origin.y)
+    self.loginBtn.titleLabel?.alpha = 0.8
+    }, completion: { _ <span class="keyword">in</span>
+    <span class="comment">//这里就是一个翻页的动画</span>
+    UIView.transitionWithView(self.banner, <span class="string">duration:</span> <span class="number">2.0</span>, <span class="string">options:</span> UIViewAnimationOptions.TransitionCurlDown, <span class="string">animations:</span> {
+    <span class="comment">//只需要修改一下隐藏属性便可</span>
+    <span class="comment">//既然有更好的设计，那么糟糕的设计直接就可以抛弃了</span>
+    self.banner.hidden = <span class="literal">false</span>
+    }, <span class="string">completion:</span> nil)
+})})}
+</code></pre></li>
+</ul>
+<h2 id="小技巧">小技巧</h2><ul>
+<li>通过代码提示来看所选的属性是什么类型的，就可以指导后面要给属性赋值的时候写什么了<br><img src="https://dn-arthury.qbox.me/hit.png" alt="效果图"></li>
+<li>如果指导都有哪几个选项，不如这个例子里我知道有center这个选项，我就可以直接使用<code>alertLabel.textAlignment = .Center</code>的形式来进行的</li>
+</ul>
+<h2 id="关于debug的一点小感悟">关于debug的一点小感悟</h2><ul>
+<li>越往底层去学，就可以从越是底层的角度去debug，去发现bug；如果我知道SB背后的实现原理以及代码的调用流程，那么出现奇怪的现象我就可以直接去看执行过程中调用了什么不合适的代码，然后去分析原因，而不是通过注释代码与log来退成bug会出错的可能性</li>
+</ul>
+<h2 id="给StroyBoard中的元素指定父视图">给StroyBoard中的元素指定父视图</h2><ul>
+<li>在StroyBoard里面的控件没有选择自己父视图的选项，这个可以通过代码来实现，也就是在获得控件的Outlet引用之后，可以在代码里面使用<code>addSubview</code>的方法来实现指定父视图</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/07/23/UIViewAnimation01/" data-id="cide3e7j8002ofugzt3ffyst1" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-leiningen" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/05/16/leiningen/" class="article-date">
@@ -101,7 +316,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/05/16/leiningen/" data-id="cidddtehw001bgggzxfjgpdwt" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/05/16/leiningen/" data-id="cide3e7ho001dfugzno7hys5t" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -798,7 +1013,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/05/13/Clojure/" data-id="cidddteli0051gggzdbhtw61q" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/05/13/Clojure/" data-id="cide3e7n30055fugz2ggtmkgd" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -838,7 +1053,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/05/13/Matlab/" data-id="cidddtekk003ygggzums50xso" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/05/13/Matlab/" data-id="cide3e7kl0042fugzthyl4uet" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -956,7 +1171,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/05/11/iOS7-8/" data-id="cidddteig001lgggz3it5aq21" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/05/11/iOS7-8/" data-id="cide3e7i2001pfugzidwvi1y0" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -996,7 +1211,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/05/09/Docker/" data-id="cidddtel3004igggz6uaukg7f" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/05/09/Docker/" data-id="cide3e7m1004mfugzyr1vxka0" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -1170,7 +1385,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/05/09/Entrepreneurial-insight/" data-id="cidddtekz004fgggzkpmqfv85" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/05/09/Entrepreneurial-insight/" data-id="cide3e7ls004jfugzy00ptep8" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -1213,7 +1428,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/05/06/Github/" data-id="cidddtekv004bgggzgdyecoin" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/05/06/Github/" data-id="cide3e7la004ffugzb8ju2xyp" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -1262,171 +1477,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/05/03/Minecraft-command/" data-id="cidddteki003xgggz4w8jo3qe" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Vim" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/04/29/Vim/" class="article-date">
-  <time datetime="2015-04-29T15:02:21.000Z" itemprop="datePublished">2015-04-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/04/29/Vim/">Vim</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="现在切换到vim模式下不适应的地方">现在切换到vim模式下不适应的地方</h2><ul>
-<li>不支持tab的缩进</li>
-<li>不能进入M-x模式，这一点可以通过修改map模式的键盘映射来搞定</li>
-<li>误区<ul>
-<li>leader模式是要配合自己定义的,来使用的，而不是按下esc之后就可以调用<br>的，这一点要注意，不要再犯傻</li>
-</ul>
-</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/04/29/Vim/" data-id="cidddtej10026gggzugrm9tsn" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Linux" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/04/28/Linux/" class="article-date">
-  <time datetime="2015-04-28T15:54:26.000Z" itemprop="datePublished">2015-04-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/04/28/Linux/">Linux</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="环境变量">环境变量</h2><ul>
-<li>linux允许多用户的存在，每一个用户都有自己的专用运行环境，这个环境是<br>由一组变量所定义的，注意这里是通过变量定义的，这些变量就是环境变量</li>
-<li>用户可以通过对环境变量的修改来达到对环境的要求</li>
-<li>环境变量是通过shell命令来设置的，可以被当前运行的程序所使用</li>
-<li>对于bash来说，可以通过变量来访问相应的环境变量</li>
-<li><p>对环境变量的基本操作</p>
-<ul>
-<li><p>环境变量其实就像是普通的变量，定义之后对其进行正常的赋值</p>
-<p>$ export NAME = “Example”</p>
-</li>
-<li><p>显示：可以使用env或者printenv命令来查看所有的环境变量，使用一个<br>echo命令来输出一个特定的环境变量</p>
-<p>$ echo $HOME</p>
-</li>
-<li><p>使用unset来清除特定的环境变量</p>
-<p>$ unset NAME</p>
-</li>
-<li><p>可以使用readonly命令来设置只读变量(设置只读属性后，其值将不可变，<br>直到进程结束)</p>
-<p>$ export NAME=”example”<br>$ readonly NAME</p>
-</li>
-<li><p>在C语言当中也可以访问与设置环境变量</p>
-<ul>
-<li><a href="http://www.cnblogs.com/cxz2009/archive/2010/11/04/1868987.html" target="_blank" rel="external">传送门</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>修改系统配置文件</p>
-<blockquote>
-<p>通过修改一些相关的环境定义文件来修改环境变量，与环境相关的文件有<br>/etc/profile（root用户）和~/.bash_profile（普通用户，在自己的目录下，<br>隐藏文件，如果没有可以新建）等。修改完毕后重新登录一次或运行命令source<br>xxx就生效了。</p>
-</blockquote>
-</li>
-<li><p>常见的环境变量</p>
-<ul>
-<li>PATH 决定了shell将到哪些目录中寻找命令或程序</li>
-<li>HOME 当前用户主目录</li>
-<li>TERM 终端的类型</li>
-<li>UID 当前用户的识别字，取值是由数字构成的字符</li>
-<li>PWD 当前工作目录的绝对路径名，这个取值会随着当前路径的变化而变化</li>
-<li>HISTIZE 历史记录数</li>
-<li>LOGNAME 当前用户的登录名</li>
-<li>HOSTNAME 当前主机的名称</li>
-<li>SHELL 当前用户的Shell类型</li>
-<li>LANGUGE 语言相关的环境变量，多语言可以修改此环境变量</li>
-<li>MAIL 当前用户的邮件存放目录</li>
-<li>PS1 shell命令行基本提示符，对于root用户是#，对于普通用户是$</li>
-<li>PS2 附属提示符，默认是”&gt;”</li>
-</ul>
-</li>
-<li><p>标准输入与输出</p>
-<ul>
-<li><a href="http://blog.chinaunix.net/uid-20671208-id-3588619.html" target="_blank" rel="external">Linux Shell 文件描述符 及 stdin stdout stderr 重定向</a></li>
-</ul>
-</li>
-<li><p>screen的使用</p>
-<ul>
-<li>介绍：可以使用screen来在服务器上跑多个任务，因为服务器上面并没有多窗口这种东西，另外多窗口其实并不好管理，然而使用screen就可以非常方便的解决这个问题了，screen可以非常方便的解决这个问题</li>
-<li>具体的实现原理：类似于开启多个终端一样，然后可以通过快捷键进入或者退出一个终端</li>
-<li><p>具体的操作命令</p>
-<pre><code>screen -S <span class="string">"服务名"</span> <span class="comment">//开启一个新的服务</span>
-screen -r <span class="comment">//进入上一次开启的服务的进程</span>
-screen -r -<span class="keyword">d</span> id号 <span class="comment">//恢复指定id号的服务进程，在开启多个服务进程的时候使用</span>
-<span class="keyword">exit</span> <span class="comment">//退出当前的进程，注意就算服务崩了，也要进去正常退出，对应的screen才会正常的关闭</span>
-control + a + <span class="keyword">d</span> <span class="comment">//离开当前screen进程</span>
-</code></pre></li>
-<li><p>出现的错误汇总</p>
-<ul>
-<li>使用screen -r 的时候出现 inside a screen? 这说明目前就在一个screen进程里面了，可以选择exit退出，也可以选择在这个进程里面自己把服务给跑起来</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="chmod命令">chmod命令</h2><ul>
-<li>自己写的一些脚本直接可以使用这个命令来变成可执行文件，放到\bin文件夹下，执行<code>chmod +x 文件名</code>，这样就可以在任意位置执行命令了，在配合alias就可以给命令写缩写了</li>
-<li>不仅支持linux的shell脚本，还支持python写的py脚本，非常的方便</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/04/28/Linux/" data-id="cidddteku004agggzirzkc4uu" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/05/03/Minecraft-command/" data-id="cide3e7ki0041fugz63wwha1q" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -1454,7 +1505,7 @@ control + a + <span class="keyword">d</span> <span class="comment">//离开当�
   <div class="widget-wrap">
     <h3 class="widget-title">標簽</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Observer/">Observer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunLoop/">RunLoop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Security/">Security</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS多线程/">iOS多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/keychain/">keychain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/warning/">warning</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解读/">源码解读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Observer/">Observer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunLoop/">RunLoop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Security/">Security</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS多线程/">iOS多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/keychain/">keychain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pattern/">pattern</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/warning/">warning</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解读/">源码解读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -1463,7 +1514,7 @@ control + a + <span class="keyword">d</span> <span class="comment">//离开当�
   <div class="widget-wrap">
     <h3 class="widget-title">標簽雲</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 13.33px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 10px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/Observer/" style="font-size: 10px;">Observer</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/Security/" style="font-size: 13.33px;">Security</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/iOS多线程/" style="font-size: 10px;">iOS多线程</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 13.33px;">tips</a> <a href="/tags/warning/" style="font-size: 10px;">warning</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/源码解读/" style="font-size: 10px;">源码解读</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
+      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 13.33px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 10px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/Observer/" style="font-size: 10px;">Observer</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/Security/" style="font-size: 13.33px;">Security</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/iOS多线程/" style="font-size: 10px;">iOS多线程</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/pattern/" style="font-size: 10px;">pattern</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 16.67px;">tips</a> <a href="/tags/warning/" style="font-size: 10px;">warning</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/源码解读/" style="font-size: 10px;">源码解读</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
     </div>
   </div>
 
@@ -1472,7 +1523,7 @@ control + a + <span class="keyword">d</span> <span class="comment">//离开当�
   <div class="widget-wrap">
     <h3 class="widget-title">歸檔</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">41</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">43</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
     </div>
   </div>
 
@@ -1484,6 +1535,14 @@ control + a + <span class="keyword">d</span> <span class="comment">//离开当�
       <ul>
         
           <li>
+            <a href="/2015/08/16/单例模式/">单例模式</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/16/iOS开发的小技巧01/">iOS开发的小技巧01</a>
+          </li>
+        
+          <li>
             <a href="/2015/08/16/观察者模式01/">观察者模式01</a>
           </li>
         
@@ -1493,14 +1552,6 @@ control + a + <span class="keyword">d</span> <span class="comment">//离开当�
         
           <li>
             <a href="/2015/08/15/解读爱卡源码有感01/">解读爱卡源码有感01</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/15/DLog的使用/">DLog的使用</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/15/CocoaSecurity/">CocoaSecurity</a>
           </li>
         
       </ul>
