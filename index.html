@@ -200,9 +200,38 @@
     <span class="keyword">return</span> <span class="keyword">self</span>;
 }
 </code></pre></li>
-<li><p>在上面的方法中调用了<code>dispatch_once</code>方法就可以确保ARCSingleton只被实例化一次。并且该方法是线程安全的，我们不用担心在不同的线程中，会获得不同的实例(当然这个方法同样不能保证该单例中所有方法的调用都是线程安全的)；这个写法我在</p>
+<li><p>在上面的方法中调用了<code>dispatch_once</code>方法就可以确保ARCSingleton只被实例化一次。并且该方法是线程安全的，我们不用担心在不同的线程中，会获得不同的实例(当然这个方法同样不能保证该单例中所有方法的调用都是线程安全的)；这个写法我在SDWebImage里面到时候经常看到，原来是单例模式，保证了线程安全</p>
 </li>
-<li>不用GCD</li>
+<li><p>在ARC中，同样可以不使用GCD做到线程安全，这与之前的非ARC代码中使用@synchronized一样</p>
+<pre><code><span class="comment">//不使用GCD，通过@synchronized来实现</span>
+<span class="keyword">@synchronized</span>(<span class="keyword">self</span>)
+{
+    <span class="keyword">if</span>(sharedInstance == <span class="literal">nil</span>){
+        sharedInstance = [[<span class="keyword">self</span> alloc] init];
+    }
+}
+</code></pre></li>
+<li><p>为了简化使用ARC+GCD来创建单例，可以定义下面这样一个宏：</p>
+<pre><code><span class="preprocessor">#define DEFINE_SHARED_INSTANCE_USING_BLOCK(block)</span>
+<span class="keyword">static</span> <span class="built_in">dispatch_once_t</span> onceTolen = <span class="number">0</span>;
+__<span class="keyword">strong</span> <span class="keyword">static</span> <span class="keyword">id</span> sharedInstance = <span class="literal">nil</span>;
+<span class="built_in">dispatch_once</span>(&amp;amp;onceTolen,^{
+    sharedInstance = block();
+})
+<span class="keyword">return</span> sharedInstance;
+</code></pre></li>
+<li><p>然后可以将GCD的方法进行如下所示的实现：</p>
+<pre><code>+ (ARCSingleton *)sharedInstance{
+    <span class="comment">//就是这么酸酸</span>
+    DEFINE_SHARED_I<span class="built_in">NSTANCE_USING_BLOCK</span>(^{
+        <span class="keyword">return</span> [[<span class="keyword">self</span> alloc] init];
+    });
+}
+</code></pre></li>
+<li><p>使用demo，可以在代码的任意地方使用这些东西，非常简单</p>
+<pre><code>[<span class="name">NonARCSingleton</span> <span class="atom">sharedInstance</span>].<span class="atom">tempProperty</span> = @<span class="string">"非ARC单例的实现"</span>;
+[<span class="name">ARCSingleton</span> <span class="atom">sharedInstance</span>].<span class="atom">tempProperty</span> = @<span class="string">"ARC单例的实现"</span>;
+</code></pre></li>
 </ul>
 
       
