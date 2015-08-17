@@ -68,6 +68,269 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-百度地图SDK使用指南" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/17/百度地图SDK使用指南/" class="article-date">
+  <time datetime="2015-08-17T09:07:21.000Z" itemprop="datePublished">2015-08-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/17/百度地图SDK使用指南/">百度地图SDK使用指南</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>## </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/08/17/百度地图SDK使用指南/" data-id="cidg0hnhj000bkggzohinnsio" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SDK/">SDK</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-爱卡源码学习篇之网络请求封装" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/17/爱卡源码学习篇之网络请求封装/" class="article-date">
+  <time datetime="2015-08-17T08:45:48.000Z" itemprop="datePublished">2015-08-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/17/爱卡源码学习篇之网络请求封装/">爱卡源码学习篇之网络请求封装</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/08/17/爱卡源码学习篇之网络请求封装/" data-id="cidg0hnhm000ekggzof4sgh39" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/NetWork/">NetWork</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-FMDB01" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/17/FMDB01/" class="article-date">
+  <time datetime="2015-08-17T08:33:01.000Z" itemprop="datePublished">2015-08-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/17/FMDB01/">FMDB01</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="简单介绍">简单介绍</h2><ul>
+<li>FMDB是对SQLite的封装</li>
+</ul>
+<h2 id="How_to_use?">How to use?</h2><ul>
+<li>三个主要的类<ul>
+<li>FMDatabase – 表示一个单独的SQLite数据库。 用来执行SQLite的命令</li>
+<li>FMResultSet – 表示FMDatabase执行查询后结果集</li>
+<li>FMDatabaseQueue – 如果你想在多线程中执行多个查询或更新，你应该使用该类。这是线程安全的</li>
+</ul>
+</li>
+<li>数据库的创建<ul>
+<li>创建FMDatabase对象时参数为SQLite数据库文件路径。该路径可以是以下三种之一：<ul>
+<li>第一种是文件路径，该文件路径无需真实存在，因为不存在则会被自动创建</li>
+<li>第二种是空字符串(@””)，这个会在临时目录(temp)下创建一个空的数据库，当FMDatabase链接关闭的时候，文件也会被删除，也就是一次性的数据库</li>
+<li>NULL，这将会创建一个内在的数据库，同样的，当FMDatabase连接关闭时，数据就会被销毁，这一点有点类似于临时数据库</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>打开数据库</p>
+<ul>
+<li><p>在和数据库交互之前，数据库必须是打开的。如果资源或权限不足无法打开或创建数据库，都会导致打开失败，这里就要捕获异常了</p>
+<pre><code><span class="keyword">if</span> (![<span class="keyword">db</span> <span class="keyword">open</span>]) {
+    [<span class="keyword">db</span> release];
+    <span class="keyword">return</span>;
+}
+</code></pre></li>
+</ul>
+</li>
+<li><p>执行更新</p>
+<ul>
+<li>一切不是SELECT命令的命令都视为更新。这包括  CREATE, UPDATE, INSERT,ALTER,COMMIT, BEGIN, DETACH, DELETE, DROP, END, EXPLAIN, VACUUM, and REPLACE等等；简单来说，只要不是以SELECT开头的命令都是UPDATE命令</li>
+<li>执行更新返回一个BOOL值。YES表示执行成功，否则表示有那些错误 。你可以调用 -lastErrorMessage 和 -lastErrorCode方法来得到更多信息；这里可以写一个类来管理错误信息</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/08/17/FMDB01/" data-id="cidg0hnlt004rkggz2ukd004c" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据存储/">数据存储</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-tag的使用" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/16/tag的使用/" class="article-date">
+  <time datetime="2015-08-16T13:17:48.000Z" itemprop="datePublished">2015-08-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/16/tag的使用/">tag的使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="使用tag让UIButton在两种状态之间切换(就是使用tag来判断当前UIButton的状态)">使用tag让UIButton在两种状态之间切换(就是使用tag来判断当前UIButton的状态)</h2><ul>
+<li><p>这种方案有很多，现在介绍一种使用tag来实现的方法</p>
+<pre><code>switchBth<span class="built_in">.</span><span class="built_in">tag</span> = <span class="number">1</span>;
+<span class="attribute">...</span>
+<span class="keyword">if</span>(sender<span class="built_in">.</span><span class="built_in">tag</span> == <span class="number">1</span>){
+    <span class="comment">//do something</span>
+}<span class="keyword">else</span>{
+    <span class="comment">//do something</span>
+}
+<span class="comment">//使用1去减就可以让tag在0与1之间变化</span>
+sender<span class="built_in">.</span><span class="built_in">tag</span> = <span class="number">1</span> - sender<span class="built_in">.</span><span class="built_in">tag</span>
+</code></pre></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/08/16/tag的使用/" data-id="cidg0hnii001dkggz5i924tzf" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tips/">tips</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-dispatch-once01" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/16/dispatch-once01/" class="article-date">
+  <time datetime="2015-08-16T08:28:57.000Z" itemprop="datePublished">2015-08-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/16/dispatch-once01/">dispatch_once01</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="参考资料">参考资料</h2><ul>
+<li><a href="http://www.dreamingwish.com/article/gcd-guide-dispatch-once-1.html" target="_blank" rel="external">GCD外传：dispatch_once(上)</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/08/16/dispatch-once01/" data-id="cidg0hnjp0028kggz8qoktx76" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GCD/">GCD</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-单例模式" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/08/16/单例模式/" class="article-date">
@@ -238,7 +501,7 @@ __<span class="keyword">strong</span> <span class="keyword">static</span> <span 
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/16/单例模式/" data-id="cide3e7hb000xfugzz629kynm" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/16/单例模式/" data-id="cidg0hnib0014kggzmdd26l6g" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -291,7 +554,7 @@ __<span class="keyword">strong</span> <span class="keyword">static</span> <span 
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/16/iOS开发的小技巧01/" data-id="cide3e7hw001kfugz5p9koqa5" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/16/iOS开发的小技巧01/" data-id="cidg0hnj4001skggzb5uwwenx" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -355,7 +618,7 @@ __<span class="keyword">strong</span> <span class="keyword">static</span> <span 
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/16/观察者模式01/" data-id="cide3e7gg0003fugz8jsm0n5z" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/16/观察者模式01/" data-id="cidg0hnhd0004kggz0buakfa8" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -408,7 +671,7 @@ __<span class="keyword">strong</span> <span class="keyword">static</span> <span 
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/15/烦人的警告-Warning/" data-id="cide3e7gt000afugz8z80kjm7" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/15/烦人的警告-Warning/" data-id="cidg0hnhn000hkggzlbra238a" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -455,289 +718,13 @@ __<span class="keyword">strong</span> <span class="keyword">static</span> <span 
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/15/解读爱卡源码有感01/" data-id="cide3e7f50000fugzs3mzun7q" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/15/解读爱卡源码有感01/" data-id="cidg0hnh20001kggzcsviruf9" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
 
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/源码解读/">源码解读</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-DLog的使用" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/08/15/DLog的使用/" class="article-date">
-  <time datetime="2015-08-15T07:16:07.000Z" itemprop="datePublished">2015-08-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/15/DLog的使用/">DLog的使用</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="NSLog的替代品">NSLog的替代品</h2><ul>
-<li>NSLog虽然方便，但是无法吓死打印的结果放在哪一个类里面，或者是具体在哪一个行打印的等等，这就需要一个可以实现以上方法的Log</li>
-<li><p>DLog就可以用来替代NSLog，并且满足以上的需求，实现的原理是通过宏替换来做的，可以输出类名，方法名和行号，具体代码如下：</p>
-<pre><code><span class="preprocessor">#<span class="keyword">ifdef</span> DEBUG</span>
-<span class="preprocessor">#<span class="keyword">define</span> DLog(fmt, ...) NSLog((@<span class="string">"%s [Line %d] "</span> fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);</span>
-<span class="preprocessor">#<span class="keyword">else</span></span>
-<span class="preprocessor">#<span class="keyword">define</span> DLog(...)</span>
-<span class="preprocessor">#<span class="keyword">endif</span></span>
-</code></pre></li>
-<li><p>将以上代码写到prefix.pch文件中，并且在工程Build Setting的other C Flags的Debug中加入-DEBUG就可以在代码中的任何位置使用DLog</p>
-</li>
-<li>因为是在Debug模式下加入DLog，所以在Release版本中不会加入DLog代码</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/08/15/DLog的使用/" data-id="cide3e7m7004pfugzxr2byco1" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tips/">tips</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-CocoaSecurity" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/08/15/CocoaSecurity/" class="article-date">
-  <time datetime="2015-08-15T06:23:54.000Z" itemprop="datePublished">2015-08-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/15/CocoaSecurity/">CocoaSecurity</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前言">前言</h2><ul>
-<li>一些比较敏感的数据，比如说用户名和密码之类的东西，就需要加密之后再进行传输，当然更加的安全的方法是加入一些一次性的数据，这样是的</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/08/15/CocoaSecurity/" data-id="cide3e7mx0050fugz3t865h2z" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Security/">Security</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-sskeychain01" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/08/15/sskeychain01/" class="article-date">
-  <time datetime="2015-08-15T05:49:56.000Z" itemprop="datePublished">2015-08-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/15/sskeychain01/">sskeychain01</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前言">前言</h2><ul>
-<li>在明白客户端app的安全相关问题之后，我认识到了在客户端保存敏感信息的安全性由多么的重要，因此现在会开始学习这个轻量级的keychain框架，来保存自己本地的数据，当然仅仅是保存到keychain里面还是不可以高枕无忧的，还需要进行加密，这个在CocoaSecurity中会提到这个问题</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/08/15/sskeychain01/" data-id="cide3e7hi0016fugz40x4668r" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/keychain/">keychain</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-iOS的安全相关01" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/08/15/iOS的安全相关01/" class="article-date">
-  <time datetime="2015-08-14T16:13:19.000Z" itemprop="datePublished">2015-08-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/15/iOS的安全相关01/">iOS的安全相关01</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="关于移动端数据传输接口的设计">关于移动端数据传输接口的设计</h2><ul>
-<li>比如在移动端传输的用户名和密码是通过明文传输的，那么就会有很大的问题，我记得原来做云印的时候就是传输用户名和明码就是通过明文传输的，这样只要设置一个wifi热点，就可以直接看到app传输的数据，明码账号全部都将会一目了然，是在是非常的危险，现在想想当时的做法真是令人汗颜</li>
-<li>虽然第一次登陆之后用的是token，但是第一次登陆的时候却是很危险，这样开来基本上所有app的接口都可以使用一些代理工具来获取，比如Charles之类的</li>
-</ul>
-<h2 id="应用类支付">应用类支付</h2><ul>
-<li>Apple的应用内支付框架设计上为了保护用户的隐私，所以购买成功之后会生成一个凭证，这个凭证只能代表你购买成功了，但是无法在里面获取到关于用户的任何信息，所以如果这个购买凭证被截取了，那么完全可以用来进行二次销售或者是其他的事情，因为服务器只能判断这个凭证是真还是假的，但是无法判断是谁买的，因此在这一点上是比较危险的</li>
-</ul>
-<h2 id="如何防范网络攻击？">如何防范网络攻击？</h2><ul>
-<li>密码可以加密之后再传输，服务器在加密(客户端配一个公钥加密，服务器有一个私钥来解密)，加密算法最好是去采用一些业内的标准，比如MD5加密之类的，这个一般要比自己想出来的要强</li>
-<li>使用一些二进制协议，而不是使用json</li>
-<li>对于登陆账号密码这样的敏感数据，一定要加入一些一次性的数据进去，也就是Nonce<ul>
-<li>比如在登陆之前，先从服务端请求一些一次性的数据，然后客户端加上密码在进行MD5运算，然后再进行传输，这样服务端在接收到数据的时候可以进行解密，然后把一次性数据给分离出来，然后与自己本地存储的已经发出的一次性数据进行比对，如果请求是重复的，那么这个请求就将会失效，简直nice；这样的处理后台的负担会增加，所以要根据相应的场景去选择需要这样去处理的请求</li>
-</ul>
-</li>
-<li>客户点一定要有相应的安全机制，一定要在服务器做一些安全的控制机制</li>
-</ul>
-<h2 id="本地数据的安全">本地数据的安全</h2><ul>
-<li>ipa解压之后的文件关注</li>
-<li>SQLite的本地数据可以通过一些工具来查看，这就需要保证能够被看到的数据尽量安全</li>
-<li>CoreData</li>
-<li>app内部的插件更要注意</li>
-<li>游戏就更加严重，可能会被轻易的修改游戏的数据，比如简单的作弊，或者是其他更糟糕的操作</li>
-<li>有一个利用漏掉形成的黑色产业链</li>
-<li>写出优秀的原创博客也是可以吸引猎头的</li>
-<li>如何防备？<ul>
-<li>加密本地数据</li>
-<li>checksum</li>
-<li>利用keychain(如果越狱，那么keychain也是不安全的，可以加密之后再存进去)</li>
-<li>看来我原来使用NSUserDefault实在是太蠢了</li>
-</ul>
-</li>
-</ul>
-<h2 id="代码安全">代码安全</h2><ul>
-<li>IDA的反汇编代码其实可以非常的容易的阅读，这一点要记下来，今后看到好的app想要去处理的时候可以好好学习一下</li>
-<li>怎么防反汇编？<ul>
-<li>使用宏替换</li>
-<li>最关键的底层全部用纯C来写，做成框架来用</li>
-</ul>
-</li>
-</ul>
-<h2 id="关于Server端应该要做的事情">关于Server端应该要做的事情</h2><ul>
-<li>要有一个安全机制，可以去区分到底目前访问api的设备是合法的，还是非法的，也就是攻击者的活着是其他的访问</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/08/15/iOS的安全相关01/" data-id="cide3e7hu001hfugzc4sbqdk1" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Security/">Security</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Mac使用小技巧" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/08/14/Mac使用小技巧/" class="article-date">
-  <time datetime="2015-08-14T14:10:55.000Z" itemprop="datePublished">2015-08-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/14/Mac使用小技巧/">Mac使用小技巧</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="CpuLimit">CpuLimit</h2><ul>
-<li>想要限制某一个程序Cpu使用率的时候，可以利用这个小工具</li>
-<li>先用活动监测器查看想要限制的应用程序的pid，然后在使用命令</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/08/14/Mac使用小技巧/" data-id="cide3e7kp0046fugz48vepipb" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
 
     </footer>
   </div>
@@ -759,27 +746,27 @@ __<span class="keyword">strong</span> <span class="keyword">static</span> <span 
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">标签</h3>
+    <h3 class="widget-title">標簽</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Observer/">Observer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunLoop/">RunLoop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Security/">Security</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS多线程/">iOS多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/keychain/">keychain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pattern/">pattern</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/warning/">warning</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解读/">源码解读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Observer/">Observer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunLoop/">RunLoop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDK/">SDK</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Security/">Security</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS多线程/">iOS多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/keychain/">keychain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pattern/">pattern</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/warning/">warning</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据存储/">数据存储</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解读/">源码解读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">标签云</h3>
+    <h3 class="widget-title">標簽雲</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/CoreGraphics/" style="font-size: 13.33px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 16.67px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 13.33px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 10px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 13.33px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/Observer/" style="font-size: 10px;">Observer</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 13.33px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 13.33px;">RegularExpressions</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/Security/" style="font-size: 13.33px;">Security</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 13.33px;">git</a> <a href="/tags/iOS/" style="font-size: 13.33px;">iOS</a> <a href="/tags/iOS多线程/" style="font-size: 10px;">iOS多线程</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/pattern/" style="font-size: 10px;">pattern</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 16.67px;">tips</a> <a href="/tags/warning/" style="font-size: 10px;">warning</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/源码解读/" style="font-size: 10px;">源码解读</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
+      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/CoreGraphics/" style="font-size: 12.5px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 15px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 12.5px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 12.5px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 12.5px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/Observer/" style="font-size: 10px;">Observer</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 12.5px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 12.5px;">RegularExpressions</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/SDK/" style="font-size: 10px;">SDK</a> <a href="/tags/Security/" style="font-size: 12.5px;">Security</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/iOS/" style="font-size: 12.5px;">iOS</a> <a href="/tags/iOS多线程/" style="font-size: 10px;">iOS多线程</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/pattern/" style="font-size: 10px;">pattern</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 17.5px;">tips</a> <a href="/tags/warning/" style="font-size: 10px;">warning</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/数据存储/" style="font-size: 10px;">数据存储</a> <a href="/tags/源码解读/" style="font-size: 10px;">源码解读</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
     </div>
   </div>
 
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">归档</h3>
+    <h3 class="widget-title">歸檔</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">43</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">48</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
     </div>
   </div>
 
@@ -791,23 +778,23 @@ __<span class="keyword">strong</span> <span class="keyword">static</span> <span 
       <ul>
         
           <li>
-            <a href="/2015/08/16/单例模式/">单例模式</a>
+            <a href="/2015/08/17/百度地图SDK使用指南/">百度地图SDK使用指南</a>
           </li>
         
           <li>
-            <a href="/2015/08/16/iOS开发的小技巧01/">iOS开发的小技巧01</a>
+            <a href="/2015/08/17/爱卡源码学习篇之网络请求封装/">爱卡源码学习篇之网络请求封装</a>
           </li>
         
           <li>
-            <a href="/2015/08/16/观察者模式01/">观察者模式01</a>
+            <a href="/2015/08/17/FMDB01/">FMDB01</a>
           </li>
         
           <li>
-            <a href="/2015/08/15/烦人的警告-Warning/">烦人的警告(Warning)</a>
+            <a href="/2015/08/16/tag的使用/">tag的使用</a>
           </li>
         
           <li>
-            <a href="/2015/08/15/解读爱卡源码有感01/">解读爱卡源码有感01</a>
+            <a href="/2015/08/16/dispatch-once01/">dispatch_once01</a>
           </li>
         
       </ul>
@@ -817,7 +804,7 @@ __<span class="keyword">strong</span> <span class="keyword">static</span> <span 
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">友情链接</h3>
+    <h3 class="widget-title">友情鏈接</h3>
     <div class="widget">
       <ul>
         
@@ -858,7 +845,7 @@ __<span class="keyword">strong</span> <span class="keyword">static</span> <span 
 </nav>
   <!-- totop start -->
 <div id="totop">
-<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+<a title="返回頂部"><img src="/img/scrollup.png"/></a>
 </div>
 
 <!-- totop end -->
