@@ -68,6 +68,310 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-编译器02" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/20/编译器02/" class="article-date">
+  <time datetime="2015-08-20T14:52:53.000Z" itemprop="datePublished">2015-08-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/20/编译器02/">编译器02</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/08/20/编译器02/" data-id="cidkbvpsq0007bogzd91agf5n" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/d/">d</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-编译器01" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/20/编译器01/" class="article-date">
+  <time datetime="2015-08-20T10:22:42.000Z" itemprop="datePublished">2015-08-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/20/编译器01/">编译器01</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="语言的实现手段">语言的实现手段</h2><ul>
+<li>一种是通过编译器，另一种是通过解释器</li>
+<li>编译器就是接受源程序代码以及数据作为输入，然后直接输出结果；可以看成是一种在线的方式</li>
+<li>编译器就是接受源程序代码作为输入，然后输出另一种形式的源程序代码，可能是汇编代码、，也可能是字节码；然后在将这一步得到的源程序代码与数据结合，得出输出结果；可以看成是一种离线的方式；编译器的本质是预处理，生成可执行文件，然后将这个可执行文件在不同的数据集上面执行</li>
+</ul>
+<h2 id="编译器的发展史">编译器的发展史</h2><ul>
+<li>Speedcoding阶段，这是解释器的早些时候的形态<ul>
+<li>优点是使得程序猿的生产效率提高了</li>
+<li>缺点是写出来的程序执行速度变慢了，速度不如原来的汇编码或者是编译器生成的语言，因为是边解释边运行</li>
+</ul>
+</li>
+<li>FORTRAN I，编译器语言的早期情况<ul>
+<li>这个阶段编译器的运行步骤：<ul>
+<li>词法分析</li>
+<li>语法分析(这两个阶段共同处理了语法分析的阶段)</li>
+<li>语义分析</li>
+<li>代码优化</li>
+<li>代码生成阶段，可能生成机器码、某种虚拟机的字节码或者是某一种高级语言</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="词法分析">词法分析</h2><ul>
+<li>分析程序代码就像是分析英文单词一样，一个一个进行分析，当然还有空格，标点符号以及大小写等等</li>
+<li>分析的时候希望可以抓住一些关键字，也就是token，比如if、else、then</li>
+<li>还有一些操作符是需要分析的，如何做到分析这些操作符的含义的呢？</li>
+</ul>
+<h2 id="语法分析">语法分析</h2><ul>
+<li>这一阶段就是分析句子结构的时候了</li>
+<li>这里有一棵抽象语法树</li>
+<li>语法分析首先是分析每一个单词在句子中的角色，比如主谓宾之类的</li>
+<li>由各个小角色组合成一个更大的角色，比如一个名词性短语之类的，然后由这些组合成一个完整的句子</li>
+<li>解析一个程序句子也是类似的情况，一个程序语句由谓词，then与else组成</li>
+<li>如图所示，就是一个抽象语法树<br><img src="https://dn-arthury.qbox.me/parnTree.png" alt="效果图"></li>
+<li>一旦理解了句子的结构之后，下一步就是去理解句子的意思了，这一步很难，我们根本就不知道人类是如何去理解语句的，说我们只能够去模拟这样一个行为</li>
+<li>理解对于编译器来说太困难了，编译器只能够做非常有限的几种类型的语义分析</li>
+<li>编译器大致在做的事情就是捕获矛盾，所以如果程序自相矛盾，那么编译器就会发现这些错误并且报告，它其实不知道程序想要做什么</li>
+</ul>
+<h2 id="编程经济学">编程经济学</h2><ul>
+<li>为什么会有这么多的编程语言？<ul>
+<li>创建程序通常会有各种各样独特的以及冲突的要求，所以很难去使用一种语言来满足所有的需求</li>
+<li>比如科学计算，需要很好地浮点型支持，需要很多好的数组支持，需要很好的并发性支持，代表语言是Fortran</li>
+<li>比如商业性应用，需要持久性，需要日志生成，需要数据分析，代表语言是SQL</li>
+<li>比如系统应用，需要能够控制底层的硬件，高速，代表语言是C/C++</li>
+</ul>
+</li>
+<li>为什么会有新的编程语言？<ul>
+<li>广泛使用的语言要改变是很慢的，因为要花很大的成本，使用的人很多，用来做的项目也很多了</li>
+<li>开始一个新语言是很简单的，没有那么高的教学成本</li>
+<li>程序语言被采用来填补空白</li>
+<li>新的语言往往是借鉴旧的语言进行开发的，一方面是完全创造一种新的语言是很困难的，另一方面是可以减少学习新语言的成本，就好像Java看起来很像C++一样</li>
+</ul>
+</li>
+<li>什么是好的编程语言？<ul>
+<li>语言的设计并没有公认的标准</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/08/20/编译器01/" data-id="cidkbvpss000abogztxbmjap3" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Complier/">Complier</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-UXDesign" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/20/UXDesign/" class="article-date">
+  <time datetime="2015-08-20T09:24:05.000Z" itemprop="datePublished">2015-08-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/20/UXDesign/">UXDesign01</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="What_is_UX?">What is UX?</h2><ul>
+<li>用户体验设计，为的是让用户能够有更好的体验以及让产品拥有更高的效率，这就是用户体验的精髓，这样的设计涵盖在各个领域，可以是一个用户体验良好的网站，也可以是一个然后用户能够高效工作的桌子，等等等等，都是可能的</li>
+<li>几个里程碑式的东西？<ul>
+<li>Xerox PARC</li>
+<li>User centered design(UCD)</li>
+<li>Apple Computers(首次引入这些设计)</li>
+</ul>
+</li>
+</ul>
+<h2 id="UCD">UCD</h2><ul>
+<li>UCD必须要回答的问题？<ul>
+<li>用户是谁？</li>
+<li>用户的目标和任务是什么？</li>
+<li>用户的体验等级是什么？</li>
+<li>用户需要什么样的信息和功能？</li>
+<li>用户认为产品应该怎样工作？</li>
+</ul>
+</li>
+</ul>
+<h2 id="如何拥有一个好的UX？">如何拥有一个好的UX？</h2><ul>
+<li>你需要考虑问题、解决方案、角色等等，知道要如何去组合这些东西才会创造出优秀的UX</li>
+</ul>
+<h2 id="现在是体验的年代">现在是体验的年代</h2><h2 id="设计师的基本原则">设计师的基本原则</h2><ul>
+<li>视觉设计</li>
+<li>信息结构</li>
+<li>内容策略(Content Strategy)</li>
+<li>交互设计</li>
+<li>可用性</li>
+<li>用户调查</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/08/20/UXDesign/" data-id="cidkbvpvf002ubogza9pwgar9" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/design/">design</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-NSFileManager" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/17/NSFileManager/" class="article-date">
+  <time datetime="2015-08-17T15:08:16.000Z" itemprop="datePublished">2015-08-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/17/NSFileManager/">NSFileManager</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="作用">作用</h2><ul>
+<li>可以用来创建文件、目录、删除以及遍历目录等等的操作。</li>
+<li><a href="http://blog.csdn.net/totogo2010/article/details/7671144" target="_blank" rel="external">参考资料</a></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/08/17/NSFileManager/" data-id="cidkbvpwr004nbogzcm75lwtw" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/文件操作/">文件操作</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-支付宝SDK使用指南01" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/17/支付宝SDK使用指南01/" class="article-date">
+  <time datetime="2015-08-17T14:25:15.000Z" itemprop="datePublished">2015-08-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/17/支付宝SDK使用指南01/">支付宝SDK使用指南01</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>## </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/08/17/支付宝SDK使用指南01/" data-id="cidkbvpti000vbogzjmxbnk2i" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SDK/">SDK</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-百度地图SDK使用指南" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/08/17/百度地图SDK使用指南/" class="article-date">
@@ -96,7 +400,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/17/百度地图SDK使用指南/" data-id="cidg0hnhj000bkggzohinnsio" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/17/百度地图SDK使用指南/" data-id="cidkbvpsx000hbogz03xfl7w1" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -138,7 +442,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/17/爱卡源码学习篇之网络请求封装/" data-id="cidg0hnhm000ekggzof4sgh39" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/17/爱卡源码学习篇之网络请求封装/" data-id="cidkbvpt0000kbogz1geeya6a" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -210,13 +514,93 @@
 <li>执行更新返回一个BOOL值。YES表示执行成功，否则表示有那些错误 。你可以调用 -lastErrorMessage 和 -lastErrorCode方法来得到更多信息；这里可以写一个类来管理错误信息</li>
 </ul>
 </li>
+<li><p>执行查询</p>
+<ul>
+<li>SELECT命令就是查询，执行查询的方法是以 -excuteQuery开头的</li>
+<li>执行查询时，如果成功返回FMResultSet对象，错误返回nil. 与执行更新相当，支持使用 NSError**参数。同时，你也可以使用 -lastErrorCode和-lastErrorMessage获知错误信息。</li>
+<li><p>为了遍历查询结果，你可以使用while循环。你还需要知道怎么跳到下一个记录。使用FMDB，很简单实现，就像这样：</p>
+<pre><code><span class="constant">FMResultSet </span>*s = [db <span class="symbol">executeQuery:</span>@<span class="string">"SELECT * FROM myTable"</span>];
+<span class="keyword">while</span> ([s <span class="keyword">next</span>]) {
+    <span class="regexp">//retrieve</span> values <span class="keyword">for</span> each record
+}
+</code></pre></li>
+<li><p>你必须一直调用-[FMResultSet next]，在你的访问查询返回值之前，甚至你只想要一个记录：</p>
+<pre><code>FMResultSet *s = [db <span class="string">executeQuery:</span>@<span class="string">"SELECT COUNT(*) FROM myTable"</span>];
+<span class="keyword">if</span> ([s next]) {
+    <span class="typename">int</span> totalCount = [s <span class="string">intForColumnIndex:</span><span class="number">0</span>];
+}
+</code></pre></li>
+</ul>
+</li>
+<li><p>FMResultSet提供了很多方法来获得所需的格式的值：</p>
+<pre><code><span class="label">intForColumn:</span>
+<span class="label">longForColumn:</span>
+<span class="label">longLongIntForColumn:</span>
+<span class="label">boolForColumn:</span>
+<span class="label">doubleForColumn:</span>
+<span class="label">stringForColumn:</span>
+<span class="label">dataForColumn:</span>
+<span class="label">dataNoCopyForColumn:</span>
+<span class="label">UTF8StringForColumnIndex:</span>
+<span class="label">objectForColumn:</span>
+</code></pre></li>
+<li><p>关闭数据库</p>
+<ul>
+<li><p>当使用完数据库，你应该 -close 来关闭数据库连接来释放SQLite使用的资源</p>
+<pre><code><span class="title">[db close]</span><span class="comment">;</span>
+</code></pre></li>
+</ul>
+</li>
+</ul>
+<h2 id="事务">事务</h2><ul>
+<li>FMDatabase支持事务的(什么叫做支持事务？)</li>
+<li><p>数据净化(数据格式化)</p>
+<ul>
+<li><p>使用FMDB插入数据之前，你不要花时间审查你的数据，你可以使用标准的SQLite数据绑定语法</p>
+<pre><code><span class="operator"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> myTable <span class="keyword">VALUES</span> (?, ?, ?) </span>
+</code></pre></li>
+</ul>
+</li>
+<li><p>使用FMDatabaseQueue及线程安全</p>
+<ul>
+<li>在多个线程中同时使用一个FMDatabase实例是不明智的，现在你可以为每一个线程创建一个FMDatabase对象。不要让多个线程分享同一个实例，它无法在多个线程中同时使用。若此，还是会经常发生，程序会时不时崩溃，或者报告异常；所以，不要初始化FMDatabase对象，然后在多个线程中使用。请使用 FMDatabaseQueue，它是你的朋友而且会帮助你。以下是使用方法：</li>
+<li><p>首先创建队列：</p>
+<pre><code>FMDatabaseQueue *<span class="built_in">queue</span> = [FMDatabaseQueue databaseQueueWithPath:aPath]; 
+</code></pre></li>
+<li><p>这样使用：</p>
+<pre><code><span class="collection">[queue inDatabase:^<span class="list">(<span class="keyword">FMDatabase</span> *db)</span> <span class="collection">{
+    <span class="collection">[db executeUpdate:@<span class="string">"INSERT INTO myTable VALUES (?)"</span>, <span class="collection">[NSNumber numberWithInt:1]</span>]</span><span class="comment">;</span>
+    <span class="collection">[db executeUpdate:@<span class="string">"INSERT INTO myTable VALUES (?)"</span>, <span class="collection">[NSNumber numberWithInt:2]</span>]</span><span class="comment">;</span>
+    <span class="collection">[db executeUpdate:@<span class="string">"INSERT INTO myTable VALUES (?)"</span>, <span class="collection">[NSNumber numberWithInt:3]</span>]</span><span class="comment">;</span>
+    FMResultSet *rs = <span class="collection">[db executeQuery:@<span class="string">"select * from foo"</span>]</span><span class="comment">;</span>
+    while<span class="list">(<span class="collection">[rs next]</span>)</span> <span class="collection">{
+    }</span>
+}</span>]</span><span class="comment">; </span>
+</code></pre></li>
+<li><p>像这样，轻松的把任务包装到事务当中：</p>
+<pre><code><span class="collection">[queue inTransaction:^<span class="list">(<span class="keyword">FMDatabase</span> *db, BOOL *rollback)</span> <span class="collection">{    
+            <span class="collection">[db executeUpdate:@<span class="string">"INSERT INTO myTable VALUES (?)"</span>, <span class="collection">[NSNumber numberWithInt:1]</span>]</span><span class="comment">;    </span>
+            <span class="collection">[db executeUpdate:@<span class="string">"INSERT INTO myTable VALUES (?)"</span>, <span class="collection">[NSNumber numberWithInt:2]</span>]</span><span class="comment">;    </span>
+            <span class="collection">[db executeUpdate:@<span class="string">"INSERT INTO myTable VALUES (?)"</span>, <span class="collection">[NSNumber numberWithInt:3]</span>]</span><span class="comment">;    </span>
+            if <span class="list">(<span class="keyword">whoopsSomethingWrongHappened</span>)</span> <span class="collection">{    
+                    *rollback = YES; return;    
+            }</span>   
+            // etc…    
+            <span class="collection">[db executeUpdate:@<span class="string">"INSERT INTO myTable VALUES (?)"</span>, <span class="collection">[NSNumber numberWithInt:4]</span>]</span><span class="comment">;    </span>
+    }</span>]</span><span class="comment">; </span>
+</code></pre></li>
+</ul>
+<ul>
+<li>FMDatabaseQueue  后台会建立系列化的G-C-D队列，并执行你传给G-C-D队列的块。这意味着 你从多线程同时调用调用方法，GDC也会按它接收的块的顺序来执行。谁也不会吵到谁的脚 ，每个人都幸福</li>
+</ul>
+</li>
 </ul>
 
       
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/17/FMDB01/" data-id="cidg0hnlt004rkggz2ukd004c" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/17/FMDB01/" data-id="cidkbvpx50055bogzbuo5mon7" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -271,7 +655,7 @@ sender<span class="built_in">.</span><span class="built_in">tag</span> = <span c
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/16/tag的使用/" data-id="cidg0hnii001dkggz5i924tzf" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/16/tag的使用/" data-id="cidkbvpu5001lbogzvvbpluvl" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -316,7 +700,7 @@ sender<span class="built_in">.</span><span class="built_in">tag</span> = <span c
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/08/16/dispatch-once01/" data-id="cidg0hnjp0028kggz8qoktx76" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/08/16/dispatch-once01/" data-id="cidkbvpv2002gbogz8lhko4t8" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -331,411 +715,9 @@ sender<span class="built_in">.</span><span class="built_in">tag</span> = <span c
 
 
   
-    <article id="post-单例模式" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/08/16/单例模式/" class="article-date">
-  <time datetime="2015-08-16T05:14:17.000Z" itemprop="datePublished">2015-08-16</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/16/单例模式/">单例模式</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="什么是单例模式？">什么是单例模式？</h2><ul>
-<li>单例模式是一个类在系统中只有一个实例对象，通过全局的一个入口点对这个实例对象进行访问。<br><img src="http://cdn.cocimg.com/cms/uploads/allimg/130510/4196_130510100306_1.png" alt="效果图"></li>
-<li>UML类图如下所示：<br><img src="http://cdn.cocimg.com/cms/uploads/allimg/130510/4196_130510100253_1.jpg" alt="效果图"></li>
-<li>iOS自带的SDK当中也有很多类使用了单例模式，比如UIApplication：当程序启动的时候，会调用UIApplicationMain方法，在该方法中，会实例化一个UIApplication对象，之后在程序中的任意地方调用sharedApplication方法都会返回一个与当前应用程序相关的UIApplication实例(原来如此)</li>
-</ul>
-<h2 id="When_to_use?">When to use?</h2><ul>
-<li>在app中，单例模式经常用于只希望一个类只有一个实例，而不运行一个类还有连个以上的实例，也就是第一次实例化之后，下面要用到就是采用sharedInstance的方式来共享这个实例</li>
-<li>在iOS SDK中，根据特定的需求，有些类不仅提供了单例访问的接口，还为开发者提供可实例化一个新对象的接口；举个栗子，NSFileManager可以通过defaultManager方法来共享已经创建的实例；如果需要新的NSFileManager实例对象，可以选择init方法</li>
-</ul>
-<h2 id="How_to_use?">How to use?</h2><ul>
-<li>有非ARC和ARC+GCD两种方式，可以都了解一下</li>
-<li><p>先是非ARC实现：</p>
-<pre><code><span class="preprocessor">#import UIKit</span>
-@inerface NonARCSingleton:<span class="built_in">NSObject</span>
-<span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, retain) <span class="built_in">NSString</span> *tempProperty;
-+ (NonARCSingleton *)sharedInstance;
-<span class="keyword">@end</span>
-
-<span class="class"><span class="keyword">@implementation</span> <span class="title">NonARCSingleton</span></span>
-<span class="keyword">static</span> NonARCSingleton *sharedInstance = <span class="literal">nil</span>;
-<span class="comment">//获取一个sharedInstance实例，如果有必要，实例化一个(有必要是指这个实例并没有被创建的时候吗?)</span>
-+ (NonARCSingleton *)sharedInstance {
-    <span class="keyword">if</span>(sharedInstance == <span class="literal">nil</span>){
-        <span class="comment">//在这里调用init方法进行初始化</span>
-        sharedInstance = [[<span class="keyword">super</span> allocWithZone:<span class="literal">NULL</span>] init];
-    }
-    <span class="keyword">return</span> sharedInstance;
-}
-
-<span class="comment">//当第一次使用这个单例的时候，就会调用这个init方法</span>
-- (<span class="keyword">id</span>)init{
-    <span class="keyword">self</span> = [<span class="keyword">super</span> init];
-    <span class="keyword">if</span>(<span class="keyword">self</span>){
-        <span class="comment">//通常值这里做一些相关的初始化任务</span>
-    }
-   <span class="keyword">return</span> <span class="keyword">self</span>;
-}
-
-<span class="comment">//这个dealloc方法永远都不会被调用，因为在app的生命周期中，该单例会一直存在，所以说没有必要去实现</span>
-- (<span class="keyword">void</span>)delloc{
-    [<span class="keyword">super</span> dealloc];
-}
-
-<span class="comment">//通过返回当前的sharedInstance实例，就可以防止实例化一个新的对象</span>
-+ (<span class="keyword">id</span>)alllocWithZone:(<span class="built_in">NSZone</span> *)zone{
-    <span class="keyword">return</span> [[<span class="keyword">self</span> sharedInstance] retain];
-}
-
-<span class="comment">//同样，不希望生成单例的多个拷贝</span>
-- (<span class="keyword">id</span>)copyWithZone:(<span class="built_in">NSZone</span> *)zone{
-    <span class="keyword">return</span> <span class="keyword">self</span>;
-}
-
-<span class="comment">//什么也不做，该单例并不需要一个引用计数</span>
-- (<span class="keyword">id</span>)retain{
-    <span class="keyword">return</span> <span class="keyword">self</span>;
-}
-
-<span class="comment">// 替换掉引用计数，这样就永远都不会release这个单例</span>
-- (<span class="built_in">NSUInteger</span> *)retainCount{
-    <span class="keyword">return</span> <span class="built_in">NSUIntegerMax</span>;
-}
-
-<span class="comment">//该方法是空的，不希望用户release掉这个对象</span>
-- (<span class="keyword">oneway</span> <span class="keyword">void</span>)release{
-
-}
-
-<span class="comment">//除了返回单例之外，什么都不做</span>
-- (<span class="keyword">id</span>)autorelease{
-    <span class="keyword">return</span> <span class="keyword">self</span>;
-}
-</code></pre></li>
-<li><p>上面实现单例的方法是线程不安全的，假如有多个线程同时调用sharedInstance方法获取一个实例，而sharedInstance方法需要花费1-2秒钟的时间，那么NonARCSingleton的init方法就可能会被多次调用，也就是不同线程获得的NonARCSingleton有可能不是同一个实例；那么如何解决这个线程的不安全(线程不安全就是指在多个线程中，执行的操作会造成相互的干扰，得不到与其应该得到的结果，不如一个在修改，一个在读取，或者像这样执行获取共享实例的操作，但是结果却得到了不同的实例)呢？答案是可以使用@synchronized来创建互斥锁即可，也就是当一个线程操作的时候锁住，不让其他线程进行操作(这样方法并不能保证单例中所有的调用都是线程安全的，而且加锁这样的操作并不是很推荐)</p>
-<pre><code>+ (NonARCSingleton *)sharedInstance{
-    <span class="comment">//保证实例化的时候是线程安全的</span>
-    <span class="keyword">@synchronized</span>(<span class="keyword">self</span>){
-        <span class="keyword">if</span>(sharedInstance == <span class="literal">nil</span>){
-            sharedInstance = [[<span class="keyword">super</span> allocWithZone:<span class="literal">NULL</span>] init];
-        }
-    }
-}
-</code></pre></li>
-<li><p>ARC+GCD</p>
-<pre><code><span class="class"><span class="keyword">@interface</span> <span class="title">ARCSingleton</span>:<span class="title">NSObject</span></span>
-<span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">weak</span>)<span class="built_in">NSString</span> *tempProperty;
-+ (ARCSingleton *)sharedInstance;
-<span class="keyword">@end</span>
-
-<span class="class"><span class="keyword">@implementation</span> <span class="title">ARCSingleton</span></span>
-+ (ARCSingleton)sharedInstance{
-    <span class="keyword">static</span> ARCSingleton *sharedInstance = <span class="literal">nil</span>;
-    <span class="keyword">static</span> <span class="built_in">dispatch_once_t</span> onceTolen; <span class="comment">//锁</span>
-    dispatch_one(&amp;amp;onceTolen,^{
-    <span class="comment">//最多调用一次</span>
-        sharedInstance = [[<span class="keyword">self</span> alloc] init];
-    })
-    <span class="keyword">return</span> sharedInstance;
-}
-
-<span class="comment">//当第一次使用这个单例的时候，会调用这个init方法</span>
--(<span class="keyword">id</span>)init{
-    <span class="keyword">self</span> = [<span class="keyword">super</span> init];
-
-    <span class="keyword">if</span>(<span class="keyword">self</span>){
-        <span class="comment">//通常在这里做一些相关的初始化任务</span>
-    }
-    <span class="keyword">return</span> <span class="keyword">self</span>;
-}
-</code></pre></li>
-<li><p>在上面的方法中调用了<code>dispatch_once</code>方法就可以确保ARCSingleton只被实例化一次。并且该方法是线程安全的，我们不用担心在不同的线程中，会获得不同的实例(当然这个方法同样不能保证该单例中所有方法的调用都是线程安全的)；这个写法我在SDWebImage里面到时候经常看到，原来是单例模式，保证了线程安全</p>
-</li>
-<li><p>在ARC中，同样可以不使用GCD做到线程安全，这与之前的非ARC代码中使用@synchronized一样</p>
-<pre><code><span class="comment">//不使用GCD，通过@synchronized来实现</span>
-<span class="keyword">@synchronized</span>(<span class="keyword">self</span>)
-{
-    <span class="keyword">if</span>(sharedInstance == <span class="literal">nil</span>){
-        sharedInstance = [[<span class="keyword">self</span> alloc] init];
-    }
-}
-</code></pre></li>
-<li><p>为了简化使用ARC+GCD来创建单例，可以定义下面这样一个宏：</p>
-<pre><code><span class="preprocessor">#define DEFINE_SHARED_INSTANCE_USING_BLOCK(block)</span>
-<span class="keyword">static</span> <span class="built_in">dispatch_once_t</span> onceTolen = <span class="number">0</span>;
-__<span class="keyword">strong</span> <span class="keyword">static</span> <span class="keyword">id</span> sharedInstance = <span class="literal">nil</span>;
-<span class="built_in">dispatch_once</span>(&amp;amp;onceTolen,^{
-    sharedInstance = block();
-})
-<span class="keyword">return</span> sharedInstance;
-</code></pre></li>
-<li><p>然后可以将GCD的方法进行如下所示的实现：</p>
-<pre><code>+ (ARCSingleton *)sharedInstance{
-    <span class="comment">//就是这么酸酸</span>
-    DEFINE_SHARED_I<span class="built_in">NSTANCE_USING_BLOCK</span>(^{
-        <span class="keyword">return</span> [[<span class="keyword">self</span> alloc] init];
-    });
-}
-</code></pre></li>
-<li><p>使用demo，可以在代码的任意地方使用这些东西，非常简单</p>
-<pre><code>[<span class="name">NonARCSingleton</span> <span class="atom">sharedInstance</span>].<span class="atom">tempProperty</span> = @<span class="string">"非ARC单例的实现"</span>;
-[<span class="name">ARCSingleton</span> <span class="atom">sharedInstance</span>].<span class="atom">tempProperty</span> = @<span class="string">"ARC单例的实现"</span>;
-</code></pre></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/08/16/单例模式/" data-id="cidg0hnib0014kggzmdd26l6g" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pattern/">pattern</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-iOS开发的小技巧01" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/08/16/iOS开发的小技巧01/" class="article-date">
-  <time datetime="2015-08-15T18:13:59.000Z" itemprop="datePublished">2015-08-16</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/16/iOS开发的小技巧01/">iOS开发的小技巧01</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="设置UIView的背景图片">设置UIView的背景图片</h2><ul>
-<li><p>一般的方法是拖一个UIImageView，然后在里面设置图片作为背景，因为UIView只能设置背景颜色而不能设置背景图片；但是现在又有了一个新的方法，就是通过</p>
-<pre><code><span class="built_in">UIColor</span> *bgColor = [<span class="built_in">UIColor</span> colorWithPatternImage: [<span class="built_in">UIImage</span> imageNamed:<span class="string">@"backgroundImage"</span>]];
-[<span class="keyword">self</span><span class="variable">.view</span> setBackgroundColor:bgColor];
-</code></pre></li>
-<li><p>通过UIColor的一个方法来将背景图片变回UIColor对象来实现，非常简单</p>
-</li>
-</ul>
-<h2 id="iOS7之后UIViewController的高度问题">iOS7之后UIViewController的高度问题</h2><ul>
-<li>iOS7之前的版本的</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/08/16/iOS开发的小技巧01/" data-id="cidg0hnj4001skggzb5uwwenx" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tips/">tips</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-观察者模式01" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/08/16/观察者模式01/" class="article-date">
-  <time datetime="2015-08-15T18:05:15.000Z" itemprop="datePublished">2015-08-16</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/16/观察者模式01/">观察者模式01</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="通过Nofication实现">通过Nofication实现</h2><ul>
-<li>通过这个实现观察者模式比较简单</li>
-<li><p>定义一个回调</p>
-<pre><code><span class="pp">- <span class="params">(void)</span>callBack{
-    NSLog<span class="params">(@<span class="string">"我收到通知了！"</span>)</span>;
-}</span>
-</code></pre></li>
-<li><p>其次，注册通知，就是告诉通知中心，我对什么变化感兴趣，到时候通知我</p>
-<pre><code><span class="collection">[<span class="collection">[NSNotificationCenter defaultCenter]</span> addObserver: self
-    selector: @selector<span class="list">(<span class="keyword">callBack</span>)</span>
-    name: @<span class="string">"感兴趣的变化"</span>
-    object: <span class="literal">nil</span>]</span><span class="comment">;</span>
-</code></pre></li>
-<li><p>第三，在程序任何一个地方都可以发送通知</p>
-<pre><code>- (<span class="keyword">void</span>)getNotofocation{
-    <span class="built_in">NSLog</span>(<span class="string">@"get it."</span>);
-    <span class="comment">//发出通知</span>
-    [[<span class="built_in">NSNotificationCenter</span> defaultCenter] postNotificationName:<span class="string">@"感兴趣的变化"</span> object:<span class="keyword">self</span>];
-
-}
-</code></pre></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/08/16/观察者模式01/" data-id="cidg0hnhd0004kggz0buakfa8" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Observer/">Observer</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-烦人的警告-Warning" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/08/15/烦人的警告-Warning/" class="article-date">
-  <time datetime="2015-08-15T13:20:58.000Z" itemprop="datePublished">2015-08-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/15/烦人的警告-Warning/">烦人的警告(Warning)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前言">前言</h2><ul>
-<li>在做iOS开发的时候，不可避免的会遇到一些警告，这些警告的类型各种各样，各种来源，可能来自于第三方的类库，也有可能来自己于自己的代码</li>
-<li>这里我想说的是，并不是所有的警告都是有价值的，有的警告比如是新老版本api的变更之类的，如果这个时候需要适配旧的系统，那么这样的警告就是没有价值的，应该屏蔽屏蔽掉；还有就是引入了第三方的类库，对于这样的代码，在没有看过源代码之前，是无法轻易就是去修改的，有的甚至是作者留下的FIXME，那么这样的警告在自己做开发的时候也应该直接无视的，而不是浪费时间在哪里瞎搞</li>
-</ul>
-<h2 id="全局屏蔽指定类型的警告">全局屏蔽指定类型的警告</h2><ul>
-<li><a href="http://www.cocoachina.com/ios/20141218/10678.html" target="_blank" rel="external">怎么去掉Xcode工程中的某种类型的警告</a></li>
-<li>新版Xcode我找不到里面说的东西，现在对于那种链接库找不到的错误，很可能是原来有拖进来的类库，后面被删除了，然而Target里面添加了相应的搜索路径，所以只要删除这些无效的搜索路径就可以了；至于如何找到这些路径的配置信息，直接在Target的搜索框当中输入warning里警告的第三方类库关键词便可</li>
-</ul>
-<h2 id="Pod安装的时候执行屏蔽第三方类库的警告">Pod安装的时候执行屏蔽第三方类库的警告</h2><ul>
-<li>只需要加上一句<code>inhibit_all_warnings!</code></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/08/15/烦人的警告-Warning/" data-id="cidg0hnhn000hkggzlbra238a" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/warning/">warning</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-解读爱卡源码有感01" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/08/15/解读爱卡源码有感01/" class="article-date">
-  <time datetime="2015-08-15T11:19:31.000Z" itemprop="datePublished">2015-08-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/15/解读爱卡源码有感01/">解读爱卡源码有感01</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="这类代码会存在的问题">这类代码会存在的问题</h2><ul>
-<li>项目里面带有大量的第三方类库，如果只是想要知道这些类库的用法，那么就去单独的下载官方的demo来看，千万不要一口气拖到playground里面去看效果，这样太蛋疼了，一大堆的依赖文件，而且不知道这些文件的依赖关系是什么，这样会造成非常严重的问题</li>
-<li>最好的办法是进行分离，各个击破，把每一块的文件的作用和用法搞清楚，最后再合流才是最佳方案，如果分离的时候发现与其他模块有关联就把那个关联断掉，千万不要把依赖也拖进来，这样会导致最后整个项目都被拖进去</li>
-<li>这启发了我看大型第三方框架的思路，我也可以去拆分，一个一个的拖到playground里面去看效果，甚至很的分析的更加细致，一段一段代码的去测试，最后合流，这样难度就会减低很多了，而且效率也会变得很高，简直nice，我太机智了</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://yoursite.com/2015/08/15/解读爱卡源码有感01/" data-id="cidg0hnh20001kggzcsviruf9" class="article-share-link" data-share="baidu">分享到</a>
-      
-
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/源码解读/">源码解读</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
   
 </section>
@@ -748,7 +730,7 @@ __<span class="keyword">strong</span> <span class="keyword">static</span> <span 
   <div class="widget-wrap">
     <h3 class="widget-title">標簽</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Observer/">Observer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunLoop/">RunLoop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDK/">SDK</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Security/">Security</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS多线程/">iOS多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/keychain/">keychain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pattern/">pattern</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/warning/">warning</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据存储/">数据存储</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解读/">源码解读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Complier/">Complier</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Observer/">Observer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunLoop/">RunLoop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDK/">SDK</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Security/">Security</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/d/">d</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/design/">design</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS多线程/">iOS多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/keychain/">keychain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pattern/">pattern</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/warning/">warning</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据存储/">数据存储</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文件操作/">文件操作</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解读/">源码解读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -757,7 +739,7 @@ __<span class="keyword">strong</span> <span class="keyword">static</span> <span 
   <div class="widget-wrap">
     <h3 class="widget-title">標簽雲</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/CoreGraphics/" style="font-size: 12.5px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 15px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 12.5px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 12.5px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 12.5px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/Observer/" style="font-size: 10px;">Observer</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 12.5px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 12.5px;">RegularExpressions</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/SDK/" style="font-size: 10px;">SDK</a> <a href="/tags/Security/" style="font-size: 12.5px;">Security</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/iOS/" style="font-size: 12.5px;">iOS</a> <a href="/tags/iOS多线程/" style="font-size: 10px;">iOS多线程</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/pattern/" style="font-size: 10px;">pattern</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 17.5px;">tips</a> <a href="/tags/warning/" style="font-size: 10px;">warning</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/数据存储/" style="font-size: 10px;">数据存储</a> <a href="/tags/源码解读/" style="font-size: 10px;">源码解读</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
+      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/Complier/" style="font-size: 10px;">Complier</a> <a href="/tags/CoreGraphics/" style="font-size: 12.5px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 15px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 12.5px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 12.5px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 12.5px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/Observer/" style="font-size: 10px;">Observer</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 12.5px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 12.5px;">RegularExpressions</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/SDK/" style="font-size: 12.5px;">SDK</a> <a href="/tags/Security/" style="font-size: 12.5px;">Security</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/d/" style="font-size: 10px;">d</a> <a href="/tags/design/" style="font-size: 10px;">design</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/iOS/" style="font-size: 12.5px;">iOS</a> <a href="/tags/iOS多线程/" style="font-size: 10px;">iOS多线程</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/pattern/" style="font-size: 10px;">pattern</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 17.5px;">tips</a> <a href="/tags/warning/" style="font-size: 10px;">warning</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/数据存储/" style="font-size: 10px;">数据存储</a> <a href="/tags/文件操作/" style="font-size: 10px;">文件操作</a> <a href="/tags/源码解读/" style="font-size: 10px;">源码解读</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
     </div>
   </div>
 
@@ -766,7 +748,7 @@ __<span class="keyword">strong</span> <span class="keyword">static</span> <span 
   <div class="widget-wrap">
     <h3 class="widget-title">歸檔</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">48</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">53</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
     </div>
   </div>
 
@@ -778,23 +760,23 @@ __<span class="keyword">strong</span> <span class="keyword">static</span> <span 
       <ul>
         
           <li>
-            <a href="/2015/08/17/百度地图SDK使用指南/">百度地图SDK使用指南</a>
+            <a href="/2015/08/20/编译器02/">编译器02</a>
           </li>
         
           <li>
-            <a href="/2015/08/17/爱卡源码学习篇之网络请求封装/">爱卡源码学习篇之网络请求封装</a>
+            <a href="/2015/08/20/编译器01/">编译器01</a>
           </li>
         
           <li>
-            <a href="/2015/08/17/FMDB01/">FMDB01</a>
+            <a href="/2015/08/20/UXDesign/">UXDesign01</a>
           </li>
         
           <li>
-            <a href="/2015/08/16/tag的使用/">tag的使用</a>
+            <a href="/2015/08/17/NSFileManager/">NSFileManager</a>
           </li>
         
           <li>
-            <a href="/2015/08/16/dispatch-once01/">dispatch_once01</a>
+            <a href="/2015/08/17/支付宝SDK使用指南01/">支付宝SDK使用指南01</a>
           </li>
         
       </ul>
