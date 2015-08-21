@@ -68,6 +68,257 @@
     <div class="outer">
       <section id="main">
   
+    <article id="post-python" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/04/22/python/" class="article-date">
+  <time datetime="2015-04-22T03:34:20.000Z" itemprop="datePublished">2015-04-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/04/22/python/">python</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="python整体的学习架构">python整体的学习架构</h2><p><img src="" alt="如图所示"></p>
+<h2 id="语言特性">语言特性</h2><ul>
+<li>python属于动态语言<ul>
+<li>python不需要知道数据类型，所以不用写类型声明，非常的爽，直接想要使用什么就去用什么便可</li>
+<li>虽然说python使用变量不需要声明，但是一个变量(标识符)一定要事先经过赋值才可以进行使用，否则就会出现NameError</li>
+</ul>
+</li>
+<li><p>python属于强类型语言</p>
+<ul>
+<li>变量类型一旦确定，就不会出现进行自动转换，比如int自动转换成float并不会进行，也就是所谓的隐式转换，那么在弱类型语言里面int类型的变量什么时候会隐式转换成float</li>
+<li><p>隐式转换(在C语言中)</p>
+<ul>
+<li>不同类型的数据在运算时计算机会先自动将其转换成同一类型之后再进行计算，主要是char-&gt;int-&gt;double&lt;-float，这几个类型在几乎在所有类型的语言里面都是存在的</li>
+<li><p>隐式转换并不会改变变量的数据类型，变量的数据类型一旦确定下来，如果是在C语言当中，是没有办法再进行修改的，但是在python当中仍然是可以进行修改，因为python是解释运行的，每遇到一条代码命令，就进行编译，对于同一个变量，进行多次不同类型数据的赋值，是会被解释成不同的数据类型</p>
+<p>a = 1<br>a = “c”<br>a = 3.7</p>
+</li>
+<li><p>如上代码最后a的类型是float</p>
+</li>
+<li>如此看来隐式转换只是针对于变量里面的数据，而不是这个变量，所以改变类型的只是数据，而不是变量本身；这样看来无论是显示(强制)转换与隐式(自动)转换都是针对于数据而言，而不是针对于变量而言</li>
+<li></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="列表与数组">列表与数组</h2><ul>
+<li>列表看起来就像是打了鸡血的数组，因为比数组要强大<ul>
+<li>列表可以通过方法进行动态伸缩</li>
+<li>列表本身同样可以作为列表的元素</li>
+<li>列表允许混合数据 </li>
+<li>往一个列表里面插入数据有两种方法，一种是使用insert方法，另一种是重新创建列表；无论是哪一种方法都会有适应的场景</li>
+</ul>
+</li>
+<li>列表分别有可变与不可变的两种情况，一种是使用[]来创建，这一种是可变的；另一种是用()来创建，这一种是不可变的，也叫做元组(tuple)，怎么与swift这么像，注意元组是不可变的列表</li>
+</ul>
+<h2 id="python当中的转义字符">python当中的转义字符</h2><ul>
+<li>无论是单引号还是双引号，都可以用来创建一个字符串，只要注意不可以混合使用便可</li>
+<li>同样与其他的语言一样，python也可以使用<code>\</code>来进行转义</li>
+</ul>
+<h2 id="python是大小写敏感的">python是大小写敏感的</h2><h2 id="冒号是本体">冒号是本体</h2><ul>
+<li>for循环的遍历，这个与其他语言的遍历没有太大的区别</li>
+</ul>
+<pre><code><span class="keyword">for</span> <span class="tag">a</span> <span class="keyword">in</span> <span class="tag">b</span>:
+        <span class="function"><span class="title">printf</span><span class="params">(a)</span></span> 
+        <span class="comment">//注意movie后面别忘记了加上一个冒号，这个是python很重要的一个特征</span>
+</code></pre><ul>
+<li>if后面有跟上条件并不需要加上括号，结束之后运行语句也不需要加花括号，只需要加上冒号便可；for循环也是一样的</li>
+</ul>
+<pre><code>movie = [<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>,[<span class="string">'s'</span>,<span class="string">'d'</span>,<span class="string">'e'</span>,<span class="string">'w'</span>,<span class="string">'q'</span>]]
+<span class="keyword">for</span> <span class="tag">i</span> <span class="keyword">in</span> movie:
+    <span class="keyword">if</span> <span class="function"><span class="title">isinstance</span><span class="params">(i,list)</span></span>:
+                <span class="keyword">for</span> inset <span class="keyword">in</span> <span class="tag">i</span>:
+                    <span class="function"><span class="title">print</span><span class="params">(inset)</span></span>
+    <span class="keyword">else</span>:
+        <span class="function"><span class="title">print</span><span class="params">(i)</span></span>
+</code></pre><h2 id="如何退出python模式">如何退出python模式</h2><ul>
+<li>control+z</li>
+</ul>
+<h2 id="对于isinstance的使用">对于isinstance的使用</h2><ul>
+<li>可以是用来判断对象的类型，比如<code>isinstance(movie,list)</code>用来判断movie是否是一个列表类型</li>
+</ul>
+<h2 id="在python中创建函数">在python中创建函数</h2><ul>
+<li><code>def 函数名(参数):函数代数组</code>，果然python中冒号本体</li>
+<li>写一个递归函数来实现列表输出</li>
+</ul>
+<pre><code>    <span class="function"><span class="keyword">def</span> <span class="title">print_list</span><span class="params">(the_list)</span>:</span>
+        <span class="keyword">for</span> insetl <span class="keyword">in</span> the_list:
+            <span class="keyword">if</span> isinstance(insetl,list):
+                print_list(insetl)
+            <span class="keyword">else</span>:
+                print(insetl)
+    //这里直接使用了递归来实现全部输出，关于递归的使用这一块，我有必要好好的进行学习一下    
+
+
++ 递归函数的递归深度是有限制的，当然如果想要嵌套的更深完全可以自己修改上限
+</code></pre><h2 id="python的注释方式">python的注释方式</h2><pre><code><span class="bullet">+ </span>“”“这里是python的注释”“”，其实这也可以自己当成是一个字符串，就是一个没有用来赋值的一个字符串，所以就算用单引号或者是双引号来注释都是可以的，只要自己注意格式便可
+<span class="bullet">+ </span>除了使用引号，还可以使用#号来进行注释，一个#就可以直接注释到语句尾
+<span class="bullet">+ </span>注释貌似不能够有中文字符，这是编译器的问题还是python就是这样规定的呢
+</code></pre><h2 id="python包的发布">python包的发布</h2><ul>
+<li>放到文件夹里面，然后新建setup.py描述文件</li>
+<li>cd到这个文件夹，然后运行<code>python3 setup.py sdist</code></li>
+<li>再运行<code>sudo python3 setup.py install</code></li>
+<li>pyc文件主要是给编译器优化的时候使用的</li>
+</ul>
+<h2 id="如何导入python的一个模块">如何导入python的一个模块</h2><pre><code>import <span class="built_in">print</span>_list <span class="comment">#不需要.py后缀</span>
+</code></pre><ul>
+<li>导入之后之后函数不能直接调用，就像<code>print_list</code>；这样调用会出现错误，就是python解释器找不到这个函数，因为命名空间的问题；正确的访问方式是<code>模块名.print_list(movie)</code>，这里的模块名并不是文件夹的名字，而是程序的文件名，比如程序是在print_list.py里面，那么print_list就是模块名</li>
+<li>当然也可以更为特定的导入， from 模块名 import print_list，这样就可以直接<code>print_list</code>来使用了，但是这样会覆盖掉自己在当前文件写的同名函数，所以不太好用</li>
+</ul>
+<h2 id="良好的代码设计模式">良好的代码设计模式</h2><ul>
+<li>对一个函数进行增强，并不需要再写一个全新的函数，这样会导致选择过多，比较合理的解决方案是通过提供参数来，通过参数来控制函数的行为，这样才是比较理想的  </li>
+<li>一点一点为用户考虑的设计想法实在是太棒了，让我学到了设计一个函数api如何才能够周全的考虑的问题，通过多样的参数与缺省值来控制函数的行为，而不是一点小修改就去设计一个新的api，这样会导致有太多的api，非常的糟糕</li>
+</ul>
+<h2 id="关于命名空间">关于命名空间</h2><ul>
+<li>每一个函数都会有一个命名空间</li>
+</ul>
+<h2 id="python中即强大又灵活的特性">python中即强大又灵活的特性</h2><ul>
+<li>python在运行之前并不会检查代码的合法性，也就是不管代码如何都一定会被执行，这才是重点</li>
+<li>不去编译，直接就开始运行，虽然非常的灵活强大，但是同时也会使得一些bug成为落网之鱼</li>
+</ul>
+<h2 id="对于缺省值的理解">对于缺省值的理解</h2><ul>
+<li>比如一个函数要求提供很多个接口，如果有的参数并不需要传入进来，每个都去写没有又是一件非常麻烦的事情，这样可以通过缺省值来解决这个烦恼，有了缺省值，有的参数没有写，那就会自动使用这个缺省值</li>
+</ul>
+<h2 id="关于print()函数自动换行功能的关闭">关于print()函数自动换行功能的关闭</h2><ul>
+<li><code>print(&quot;\t&quot;,end = &#39;&#39;)</code>，这一段函数的功能就是在输出一个制表符之后禁止自动换行，这其实是print的一个可选参数，用来关闭其自动换行的功能</li>
+</ul>
+<h2 id="直接在python的shell里面也可以进行目录的切换">直接在python的shell里面也可以进行目录的切换</h2><ul>
+<li>通过os模块可以直接获得当前所在的目录以及切换到任意的目录</li>
+<li><code>os.getcwd()</code>//获得当前的路径</li>
+<li><code>os.chdir(&#39;../../current&#39;)</code>//切换到指定的目录</li>
+</ul>
+<h2 id="使用python处理文档">使用python处理文档</h2><pre><code><span class="typedef"><span class="keyword">data</span> = open<span class="container">('<span class="title">sektch</span>.<span class="title">text'</span>)</span></span>
+<span class="title">print</span>(<span class="typedef"><span class="keyword">data</span>.readline<span class="container">()</span>,end='')#直接赋值之后就可以进行使用，注意这里，一条命令只能够读一行</span>
+<span class="typedef"><span class="keyword">data</span>.seek<span class="container">(0)</span>#会退到第一行</span>
+<span class="typedef"><span class="keyword">data</span>.close<span class="container">()</span>#处理完了之后就要进行关闭</span>
+</code></pre><ul>
+<li>处理大量的数据<ul>
+<li>为了能够正确的处理大量的数据，所以要加很多逻辑来做正确的安全判断或者直接在错误发生的时候执行相应的处理</li>
+<li>直接使用异常处理是比较明智的选择</li>
+</ul>
+</li>
+</ul>
+<h2 id="python下常用的BIF">python下常用的BIF</h2><ul>
+<li>find():作用是在一个字符串里面需找是否存在对应的元素</li>
+<li>each_line.find(‘:’)</li>
+</ul>
+<h2 id="小小的疑惑">小小的疑惑</h2><ul>
+<li>我在coderunner里面下写的data.close()在终端机下运行之后出现出现了错误，why</li>
+</ul>
+<h2 id="条件取反使用not关键字">条件取反使用not关键字</h2><h2 id="python的异常捕获(异常处理机制)">python的异常捕获(异常处理机制)</h2><ul>
+<li>在运行的时候出现了异常可以直接捕获到，然后对这个异常进行处理，python的异常处理非常的强大，允许错误发生，然后给你一个机会来恢复，太酷了，一旦发现了异常，可以直接进行修复之后再运行</li>
+<li>try与except语句，作为处理异常的机制非常的强大</li>
+</ul>
+<pre><code><span class="keyword">try</span>:
+    <span class="comment">#你想要执行的功能代码</span>
+<span class="keyword">except</span>:
+    <span class="comment">#try里面的代码发生了错误之后就会执行这里面的代码</span>
+    <span class="keyword">pass</span> <span class="comment">#可以用这个pass命令直接无视掉try里面的代码</span>
+</code></pre><ul>
+<li>try语句非常的使用，不仅可以让代码更加容易的进行阅读，而且出问题时更容易修正</li>
+<li>except还可以指定捕捉的错误类型，也就是只在特定的错误发生的时候才会去执行except下面的代码</li>
+</ul>
+<pre><code>try:
+    data = <span class="function"><span class="title">open</span><span class="params">(<span class="string">'sketch.text'</span>)</span></span>
+    <span class="keyword">for</span> each_line <span class="keyword">in</span> data:
+        <span class="id">#if</span> not each_line.<span class="function"><span class="title">find</span><span class="params">(<span class="string">':'</span>)</span></span> == -<span class="number">1</span>:
+        try:
+            (role, line_spoken) = each_line.<span class="function"><span class="title">split</span><span class="params">(<span class="string">':'</span>,<span class="number">1</span>)</span></span>
+            <span class="function"><span class="title">print</span><span class="params">(role,end=<span class="string">''</span>)</span></span>
+            <span class="function"><span class="title">print</span><span class="params">(<span class="string">' said: '</span>,end=<span class="string">''</span>)</span></span>
+            <span class="function"><span class="title">print</span><span class="params">(line_spoken,end=<span class="string">''</span>)</span></span>
+        except ValueError:
+            pass <span class="id">#x</span> 空语句，什么都不执行
+    data.<span class="function"><span class="title">close</span><span class="params">()</span></span>#关闭之前打开的文件
+except IOError:
+    <span class="function"><span class="title">print</span><span class="params">(<span class="string">'The data file is missing!'</span>)</span></span>
+</code></pre><h2 id="文件的持久化存储">文件的持久化存储</h2><ul>
+<li>将基于内存的数据存储到磁盘上，这就是持久存储的含义，内存上是不能保存数据的</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/04/22/python/" data-id="cidlbmtcx001vsngzkk9jg68p" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-python-twisted" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/04/22/python-twisted/" class="article-date">
+  <time datetime="2015-04-21T17:00:57.000Z" itemprop="datePublished">2015-04-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/04/22/python-twisted/">python-twisted</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="twisted入门">twisted入门</h2><blockquote>
+<p><a href="http://blog.sina.com.cn/s/blog_4b5039210102dtg6.html" target="_blank" rel="external">目录入口</a></p>
+</blockquote>
+<h2 id="如何理解异步模型">如何理解异步模型</h2><blockquote>
+<p>异步编程通常是通过fire and forget方式实现，发射事件后即忘记，做别的事情了，无需立即等待刚才发射的响应结果了。(发射事件的地方称为生产者，而将在另外一个地方响应事件的处理者称为消费者)</p>
+</blockquote>
+<ul>
+<li>也就是说事件一旦被发射出去之后就可以执行下一个新的任务了，发射期间是不能执行其他任务的，等到响应的结果回来之后就可以有消费者执行消费的任务，切换过来</li>
+<li>放到自己做app的经验当中来比喻就是，进行了一个下拉刷新的操作，这个时候发生了请求数据的事件，接下来仍然可以对app进行操作，等到数据回来之后数据就会被刷新，刷新数据的时候是不可以进行操作的；当然iOS的app实际并不是这样运作的，里面有多线程运作的机制</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://yoursite.com/2015/04/22/python-twisted/" data-id="cidlbmtd0001wsngz4ddohvf9" class="article-share-link" data-share="baidu">分享到</a>
+      
+
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Reading-list" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2015/04/21/Reading-list/" class="article-date">
@@ -98,7 +349,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/04/21/Reading-list/" data-id="cidkbvpw6003vbogzehqed97j" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/04/21/Reading-list/" data-id="cidlbmtjx0040sngzezlcu30s" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -153,7 +404,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/04/21/Design-Pattern/" data-id="cidkbvpxf005fbogzpqzj27ot" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/04/21/Design-Pattern/" data-id="cidlbmtm6005ksngzao5g7g9r" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -195,7 +446,7 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/04/20/Core-Animation/" data-id="cidkbvpxt005qbogzjac4s596" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/04/20/Core-Animation/" data-id="cidlbmtms005vsngz6u6isgvz" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -920,7 +1171,7 @@ screenBounds<span class="variable">.size</span><span class="variable">.width</sp
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://yoursite.com/2015/04/20/UIKit/" data-id="cidkbvpvw003fbogze26nyx6k" class="article-share-link" data-share="baidu">分享到</a>
+        <a data-url="http://yoursite.com/2015/04/20/UIKit/" data-id="cidlbmtit003ksngz2yn5ojjx" class="article-share-link" data-share="baidu">分享到</a>
       
 
       
@@ -950,7 +1201,7 @@ screenBounds<span class="variable">.size</span><span class="variable">.width</sp
   <div class="widget-wrap">
     <h3 class="widget-title">標簽</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Complier/">Complier</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Observer/">Observer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunLoop/">RunLoop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDK/">SDK</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Security/">Security</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/d/">d</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/design/">design</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS多线程/">iOS多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/keychain/">keychain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pattern/">pattern</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/warning/">warning</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据存储/">数据存储</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文件操作/">文件操作</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解读/">源码解读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CocoaPods/">CocoaPods</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Complier/">Complier</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/CoreGraphics/">CoreGraphics</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Crawler/">Crawler</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Efficiency/">Efficiency</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/GCD/">GCD</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Language/">Language</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Layout/">Layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Mac/">Mac</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSTimer/">NSTimer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NetWork/">NetWork</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Objective-C/">Objective-C</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Observer/">Observer</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OpenGL-ES/">OpenGL-ES</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/PaintCode/">PaintCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/QuartzCode/">QuartzCode</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RegularExpressions/">RegularExpressions</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/RunLoop/">RunLoop</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/SDK/">SDK</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Security/">Security</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Sketch/">Sketch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Swift/">Swift</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/System/">System</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableView/">UITableView</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UITableViewController/">UITableViewController</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UIViewAnimation/">UIViewAnimation</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/UI动效/">UI动效</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/">Web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/api/">api</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/app/">app</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/bigdata/">bigdata</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/design/">design</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/emacs/">emacs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/">git</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS多线程/">iOS多线程</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/keychain/">keychain</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/layout/">layout</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/pattern/">pattern</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/">python</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sicp/">sicp</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tips/">tips</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/warning/">warning</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web/">web</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/单元测试/">单元测试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据存储/">数据存储</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/文件操作/">文件操作</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/源码解读/">源码解读</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/线性代数/">线性代数</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/视图跳转/">视图跳转</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -959,7 +1210,7 @@ screenBounds<span class="variable">.size</span><span class="variable">.width</sp
   <div class="widget-wrap">
     <h3 class="widget-title">標簽雲</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/Complier/" style="font-size: 10px;">Complier</a> <a href="/tags/CoreGraphics/" style="font-size: 12.5px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 15px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 12.5px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 12.5px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 12.5px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/Observer/" style="font-size: 10px;">Observer</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 12.5px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 12.5px;">RegularExpressions</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/SDK/" style="font-size: 12.5px;">SDK</a> <a href="/tags/Security/" style="font-size: 12.5px;">Security</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/d/" style="font-size: 10px;">d</a> <a href="/tags/design/" style="font-size: 10px;">design</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/iOS/" style="font-size: 12.5px;">iOS</a> <a href="/tags/iOS多线程/" style="font-size: 10px;">iOS多线程</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/pattern/" style="font-size: 10px;">pattern</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 17.5px;">tips</a> <a href="/tags/warning/" style="font-size: 10px;">warning</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/数据存储/" style="font-size: 10px;">数据存储</a> <a href="/tags/文件操作/" style="font-size: 10px;">文件操作</a> <a href="/tags/源码解读/" style="font-size: 10px;">源码解读</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a>
+      <a href="/tags/CocoaPods/" style="font-size: 10px;">CocoaPods</a> <a href="/tags/Complier/" style="font-size: 12.5px;">Complier</a> <a href="/tags/CoreGraphics/" style="font-size: 12.5px;">CoreGraphics</a> <a href="/tags/Crawler/" style="font-size: 15px;">Crawler</a> <a href="/tags/Efficiency/" style="font-size: 10px;">Efficiency</a> <a href="/tags/GCD/" style="font-size: 10px;">GCD</a> <a href="/tags/Language/" style="font-size: 10px;">Language</a> <a href="/tags/Layout/" style="font-size: 10px;">Layout</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Mac/" style="font-size: 12.5px;">Mac</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/NetWork/" style="font-size: 12.5px;">NetWork</a> <a href="/tags/Nodejs/" style="font-size: 12.5px;">Nodejs</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/Observer/" style="font-size: 10px;">Observer</a> <a href="/tags/OpenGL-ES/" style="font-size: 10px;">OpenGL-ES</a> <a href="/tags/PaintCode/" style="font-size: 10px;">PaintCode</a> <a href="/tags/QuartzCode/" style="font-size: 12.5px;">QuartzCode</a> <a href="/tags/RegularExpressions/" style="font-size: 12.5px;">RegularExpressions</a> <a href="/tags/RunLoop/" style="font-size: 10px;">RunLoop</a> <a href="/tags/SDK/" style="font-size: 12.5px;">SDK</a> <a href="/tags/Security/" style="font-size: 12.5px;">Security</a> <a href="/tags/Sketch/" style="font-size: 10px;">Sketch</a> <a href="/tags/Swift/" style="font-size: 10px;">Swift</a> <a href="/tags/System/" style="font-size: 10px;">System</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITableViewController/" style="font-size: 10px;">UITableViewController</a> <a href="/tags/UIViewAnimation/" style="font-size: 20px;">UIViewAnimation</a> <a href="/tags/UI动效/" style="font-size: 10px;">UI动效</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/api/" style="font-size: 10px;">api</a> <a href="/tags/app/" style="font-size: 10px;">app</a> <a href="/tags/bigdata/" style="font-size: 10px;">bigdata</a> <a href="/tags/design/" style="font-size: 10px;">design</a> <a href="/tags/emacs/" style="font-size: 10px;">emacs</a> <a href="/tags/git/" style="font-size: 12.5px;">git</a> <a href="/tags/iOS/" style="font-size: 12.5px;">iOS</a> <a href="/tags/iOS多线程/" style="font-size: 10px;">iOS多线程</a> <a href="/tags/keychain/" style="font-size: 10px;">keychain</a> <a href="/tags/layout/" style="font-size: 10px;">layout</a> <a href="/tags/pattern/" style="font-size: 10px;">pattern</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/sicp/" style="font-size: 10px;">sicp</a> <a href="/tags/tips/" style="font-size: 17.5px;">tips</a> <a href="/tags/warning/" style="font-size: 10px;">warning</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/单元测试/" style="font-size: 10px;">单元测试</a> <a href="/tags/数据存储/" style="font-size: 10px;">数据存储</a> <a href="/tags/文件操作/" style="font-size: 10px;">文件操作</a> <a href="/tags/源码解读/" style="font-size: 10px;">源码解读</a> <a href="/tags/线性代数/" style="font-size: 10px;">线性代数</a> <a href="/tags/视图跳转/" style="font-size: 10px;">视图跳转</a>
     </div>
   </div>
 
@@ -968,7 +1219,7 @@ screenBounds<span class="variable">.size</span><span class="variable">.width</sp
   <div class="widget-wrap">
     <h3 class="widget-title">歸檔</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">53</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a><span class="archive-list-count">55</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">April 2015</a><span class="archive-list-count">14</span></li></ul>
     </div>
   </div>
 
@@ -980,6 +1231,14 @@ screenBounds<span class="variable">.size</span><span class="variable">.width</sp
       <ul>
         
           <li>
+            <a href="/2015/08/21/单元测试01/">单元测试01</a>
+          </li>
+        
+          <li>
+            <a href="/2015/08/21/关于iOS视图跳转方式的选择/">关于iOS视图跳转方式的选择</a>
+          </li>
+        
+          <li>
             <a href="/2015/08/20/编译器02/">编译器02</a>
           </li>
         
@@ -989,14 +1248,6 @@ screenBounds<span class="variable">.size</span><span class="variable">.width</sp
         
           <li>
             <a href="/2015/08/20/UXDesign/">UXDesign01</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/17/NSFileManager/">NSFileManager</a>
-          </li>
-        
-          <li>
-            <a href="/2015/08/17/支付宝SDK使用指南01/">支付宝SDK使用指南01</a>
           </li>
         
       </ul>
