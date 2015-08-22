@@ -4,17 +4,30 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives | Hexo</title>
+  <title>后端api的基本规范 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/archives/page/7/index.html">
+  <meta name="description" content="使用路径区分web与mobile的接口
+比如：http://host/m/getbannerimages/ 是手机上对应的请求横幅图片的接口；http://host/w/getbannerimages/ 是web端对应的请求横幅图片的接口
+
+关于api的模块分类
+可以将模块分为诸如公共模块、我的设置等等之类的模块，然后给每一个模块加上对应的索引，比如0–公共模块，0.0.0–检测更新，0.1.1–">
+<meta property="og:type" content="article">
+<meta property="og:title" content="后端api的基本规范">
+<meta property="og:url" content="http://yoursite.com/2015/08/22/后端api的基本规范/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description">
+<meta property="og:description" content="使用路径区分web与mobile的接口
+比如：http://host/m/getbannerimages/ 是手机上对应的请求横幅图片的接口；http://host/w/getbannerimages/ 是web端对应的请求横幅图片的接口
+
+关于api的模块分类
+可以将模块分为诸如公共模块、我的设置等等之类的模块，然后给每一个模块加上对应的索引，比如0–公共模块，0.0.0–检测更新，0.1.1–">
+<meta property="og:updated_time" content="2015-08-22T03:06:02.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
-<meta name="twitter:description">
+<meta name="twitter:title" content="后端api的基本规范">
+<meta name="twitter:description" content="使用路径区分web与mobile的接口
+比如：http://host/m/getbannerimages/ 是手机上对应的请求横幅图片的接口；http://host/w/getbannerimages/ 是web端对应的请求横幅图片的接口
+
+关于api的模块分类
+可以将模块分为诸如公共模块、我的设置等等之类的模块，然后给每一个模块加上对应的索引，比如0–公共模块，0.0.0–检测更新，0.1.1–">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -66,204 +79,80 @@
   </div>
 </header>
     <div class="outer">
-      <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2015" class="archive-year">2015</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/07/30/Objective-C的一些小技巧/" class="archive-article-date">
-  <time datetime="2015-07-30T07:36:12.000Z" itemprop="datePublished">Jul 30</time>
+      <section id="main"><article id="post-后端api的基本规范" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/22/后端api的基本规范/" class="article-date">
+  <time datetime="2015-08-22T02:47:01.000Z" itemprop="datePublished">2015-08-22</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/07/30/Objective-C的一些小技巧/">Objective-C的一些小技巧</a>
+    <h1 class="article-title" itemprop="name">
+      后端api的基本规范
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/07/27/对于语言的理解01/" class="archive-article-date">
-  <time datetime="2015-07-27T14:13:34.000Z" itemprop="datePublished">Jul 27</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/07/27/Scheme学习日志01/" class="archive-article-date">
-  <time datetime="2015-07-27T14:11:14.000Z" itemprop="datePublished">Jul 27</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/07/27/Scheme学习日志01/">Scheme学习日志01</a>
-    </h1>
-  
+        <h2 id="使用路径区分web与mobile的接口">使用路径区分web与mobile的接口</h2><ul>
+<li>比如：<a href="http://host/m/getbannerimages/" target="_blank" rel="external">http://host/m/getbannerimages/</a> 是手机上对应的请求横幅图片的接口；<a href="http://host/w/getbannerimages/" target="_blank" rel="external">http://host/w/getbannerimages/</a> 是web端对应的请求横幅图片的接口</li>
+</ul>
+<h2 id="关于api的模块分类">关于api的模块分类</h2><ul>
+<li>可以将模块分为诸如公共模块、我的设置等等之类的模块，然后给每一个模块加上对应的索引，比如0–公共模块，0.0.0–检测更新，0.1.1–获取滚动图片集之类的；这样之后交流就可以通过这样的索引快速定位到具体的api上面，非常的方便</li>
+</ul>
+<h2 id="关于请求状态码的规定">关于请求状态码的规定</h2><ul>
+<li>api的返回值一定要有固定的状态码进行说明，状态码的规格就是对应模块数字加上具体的错误代码，比如20001，就是第二个模块的0001号错误</li>
+<li>与具体的状态码相匹配的就是状态码说明文字，这个文字是用来将出错之后的信息展示给用户看的，具体会是什么样的错误，会随着后端代码的开发不断的完善</li>
+</ul>
+<h2 id="api的固有返回值类型">api的固有返回值类型</h2><ul>
+<li>状态码、状态码说明、json数据</li>
+</ul>
+<h2 id="关于请求头文件固定需要传输的数据">关于请求头文件固定需要传输的数据</h2><ul>
+<li>比如token之类的固定数据</li>
+</ul>
+<h2 id="一般在正式上线之前后端代码是部署在测试服务器上面的">一般在正式上线之前后端代码是部署在测试服务器上面的</h2><h2 id="返回的json数据的类型">返回的json数据的类型</h2><ul>
+<li>有json数组[]以及json基本数据类型{}</li>
+</ul>
+<h2 id="关于发送请求的类型">关于发送请求的类型</h2><ul>
+<li>获取数据选用get，修改数据使用post，这样做的好处是什么？</li>
+</ul>
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/07/27/如何通过快速反馈-Immediate-feedback-来提供自己的工作效率/" class="archive-article-date">
-  <time datetime="2015-07-27T05:39:36.000Z" itemprop="datePublished">Jul 27</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/07/27/如何通过快速反馈-Immediate-feedback-来提供自己的工作效率/">如何通过快速反馈(Immediate feedback)来提供自己的工作效率?</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/07/26/UIViewAnimation06/" class="archive-article-date">
-  <time datetime="2015-07-26T07:26:14.000Z" itemprop="datePublished">Jul 26</time>
-</a>
+    </div>
+    <footer class="article-footer">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/07/26/UIViewAnimation06/">UIViewAnimation06</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/07/25/UIViewAnimation05/" class="archive-article-date">
-  <time datetime="2015-07-25T11:00:04.000Z" itemprop="datePublished">Jul 25</time>
-</a>
+        <a data-url="http://yoursite.com/2015/08/22/后端api的基本规范/" data-id="cidmhiivy001b5hgzfwpnet05" class="article-share-link" data-share="baidu">分享到</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/07/25/UIViewAnimation05/">UIViewAnimation05</a>
-    </h1>
-  
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/07/25/Swift小问题汇总/" class="archive-article-date">
-  <time datetime="2015-07-25T05:06:04.000Z" itemprop="datePublished">Jul 25</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/07/25/Swift小问题汇总/">Swift小问题汇总</a>
-    </h1>
-  
 
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/07/24/UIViewAnimation04/" class="archive-article-date">
-  <time datetime="2015-07-24T15:59:03.000Z" itemprop="datePublished">Jul 24</time>
-</a>
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/07/24/UIViewAnimation04/">UIViewAnimation04</a>
-    </h1>
-  
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/api/">api</a></li></ul>
 
-    </header>
+    </footer>
   </div>
-</article>
   
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/07/24/Pyspider01/" class="archive-article-date">
-  <time datetime="2015-07-24T07:54:07.000Z" itemprop="datePublished">Jul 24</time>
-</a>
-      
+<nav id="article-nav">
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/07/24/Pyspider01/">Pyspider01</a>
-    </h1>
   
+    <a href="/2015/08/21/单元测试01/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">上一篇</strong>
+      <div class="article-nav-title">单元测试01</div>
+    </a>
+  
+</nav>
 
-    </header>
-  </div>
+  
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2015/07/24/Linux命令备忘录/" class="archive-article-date">
-  <time datetime="2015-07-24T07:44:12.000Z" itemprop="datePublished">Jul 24</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2015/07/24/Linux命令备忘录/">Linux命令备忘录</a>
-    </h1>
-  
 
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
 </section>
       
       <aside id="sidebar">
